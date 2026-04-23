@@ -1,0 +1,15 @@
+# Keys — never commit
+*.p8
+*.pub
+*.pem
+.rhodes-keys/
+
+# Streamlit local secrets
+streamlit/.streamlit/secrets.toml
+.streamlit/secrets.toml
+
+# dbt local
+dbt/profiles.yml
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
