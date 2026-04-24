@@ -32,6 +32,7 @@ enriched as (
 
         -- foreign keys to dims
         regions.region_sk,
+        sales.region,
         consultants.consultant_sk,
         communities.community_sk,
 

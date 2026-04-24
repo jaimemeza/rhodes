@@ -84,6 +84,16 @@ models:
               to: ref('dim_region')
               field: region_sk
 
+      - name: region
+        description: Sales region. Denormalized for query convenience.
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - South Texas
+                - Rio Grande Valley
+                - Coastal Bend
+
       - name: consultant_sk
         description: Foreign key to dim_consultant.
         tests:
