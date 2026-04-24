@@ -1,0 +1,33 @@
+name: rhodes_analytics
+version: "1.0.0"
+config-version: 2
+
+profile: rhodes_analytics
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  margin_formula: "upgrade_incentive"
+
+models:
+  rhodes_analytics:
+    staging:
+      +materialized: view
+      +schema: STAGING
+    marts:
+      core:
+        +materialized: table
+        +schema: ANALYTICS
+      agg:
+        +materialized: table
+        +schema: ANALYTICS

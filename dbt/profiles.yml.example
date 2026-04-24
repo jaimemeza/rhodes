@@ -1,0 +1,14 @@
+rhodes_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: flkmkxj-in29512
+      user: DBT_USER
+      private_key_path: ~/.rhodes-keys/rhodes_dbt_key.p8
+      role: RHODES_TRANSFORMER
+      warehouse: RHODES_TRANSFORM_WH
+      database: RHODES
+      schema: STAGING
+      threads: 4
+      client_session_keep_alive: false
