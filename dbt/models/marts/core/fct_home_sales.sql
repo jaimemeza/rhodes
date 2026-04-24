@@ -73,7 +73,10 @@ enriched as (
             as estimated_margin_pct,
 
         (sales.contract_price - sales.base_price) / nullif(sales.contract_price, 0)
-            as upgrade_capture_pct
+            as upgrade_capture_pct,
+
+        sales.agent_commission / nullif(sales.contract_price, 0)
+            as commission_rate
 
     from sales
     left join regions     on sales.region           = regions.region

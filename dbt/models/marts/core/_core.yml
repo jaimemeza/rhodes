@@ -224,3 +224,11 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: "between -1 and 1"
+
+      - name: commission_rate
+        description: "Agent commission as a fraction of contract price."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 0.1"
+              config:
+                where: "is_closed"

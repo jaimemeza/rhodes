@@ -154,11 +154,49 @@ models:
       - name: avg_upgrade_capture_pct
         description: Average upgrade capture rate for closed contracts.
 
+      - name: avg_commission_rate
+        description: Average commission rate for closed contracts.
+
       - name: cash_buyer_rate
         description: "Fraction of closed deals where loan_type = 'Cash'."
         tests:
           - dbt_utils.expression_is_true:
               expression: "between 0 and 1"
+
+      - name: closed_2023
+        description: Closed contracts signed in 2023.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: closed_2024
+        description: Closed contracts signed in 2024 (Jan–Sep).
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: closed_2024_annualized
+        description: 2024 closed contracts projected to a full year (×12/9).
+
+      - name: volume_yoy_pct
+        description: Annualized 2024 volume vs 2023 volume, as a fractional change. Can be negative or large.
+
+      - name: cancel_rate_2023
+        description: Cancellation rate for 2023 contracts only.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
+
+      - name: cancel_rate_2024
+        description: Cancellation rate for 2024 contracts only (Jan–Sep).
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
+
+      - name: cancel_rate_yoy_delta
+        description: "cancel_rate_2024 − cancel_rate_2023. Negative = improvement."
 
   - name: mart_consultant_region
     description: One row per consultant × region. Drill-down supporting the leaderboard with region-specific performance.
@@ -216,3 +254,149 @@ models:
 
       - name: avg_contract_price
         description: Average contract price for closed contracts in this region.
+
+  - name: mart_region_year
+    description: >
+      One row per region × year. Headline KPI source for the dashboard. Annualized
+      columns project 2024's 9 months of data to a full year for fair comparison
+      against annual targets.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [region_sk, contract_year]
+    columns:
+      - name: region_sk
+        description: Foreign key to dim_region.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_region')
+              field: region_sk
+
+      - name: region
+        description: Sales region name.
+
+      - name: contract_year
+        description: Calendar year of the contract date.
+        tests:
+          - not_null
+          - accepted_values:
+              values: [2023, 2024]
+
+      - name: contracts
+        description: Total contracts signed in this region and year.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: contracts_closed
+        description: Closed contracts.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: contracts_cancelled
+        description: Cancelled contracts.
+
+      - name: cancel_rate
+        description: Cancellations as a fraction of total contracts.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
+
+      - name: contracts_annualized
+        description: "Volume projected to full year (×12/9 for 2024, ×1 for 2023)."
+
+      - name: contracts_closed_annualized
+        description: "Closed contracts projected to full year (×12/9 for 2024, ×1 for 2023)."
+
+      - name: avg_contract_price
+        description: Average contract price for closed contracts.
+
+      - name: avg_days_to_close
+        description: Average days from contract to close for closed contracts.
+
+      - name: avg_estimated_margin_pct
+        description: Average estimated margin for closed contracts.
+
+      - name: avg_upgrade_capture_pct
+        description: Average upgrade capture rate for closed contracts.
+
+      - name: avg_commission_rate
+        description: Average commission rate for closed contracts.
+
+      - name: sales_target_units
+        description: Annual target for the region. Denormalized from dim_region for dashboard convenience.
+
+      - name: margin_target_pct
+        description: "Target margin percentage (0–1). Denormalized from dim_region for dashboard convenience."
+
+      - name: target_attainment_pct
+        description: Annualized closed contracts divided by sales_target_units. Above 1.0 = on pace to exceed target.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: annualization_factor
+        description: Multiplier applied to convert partial-year actuals to annualized projections.
+        tests:
+          - accepted_values:
+              values: [1.0, 1.3333333333333333]
+
+  - name: mart_channel_economics
+    description: >
+      One row per buyer_source. Reveals the relationship between acquisition channel
+      cost (commission rate) and quality (cancellation rate). The dashboard's strongest
+      single insight.
+    columns:
+      - name: buyer_source
+        description: Buyer acquisition channel.
+        tests:
+          - unique
+          - not_null
+
+      - name: contracts
+        description: Total contracts from this channel.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: closed_contracts
+        description: Closed contracts from this channel.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: cancelled_contracts
+        description: Cancelled contracts from this channel.
+
+      - name: cancel_rate
+        description: Cancellations as a fraction of total contracts.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
+
+      - name: avg_commission_rate
+        description: Average agent commission rate for closed contracts in this channel.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 0.1"
+
+      - name: avg_days_to_close
+        description: Average days from contract to close for closed contracts.
+
+      - name: avg_contract_price
+        description: Average contract price for closed contracts.
+
+      - name: avg_upgrade_capture_pct
+        description: Average upgrade capture rate for closed contracts.
+
+      - name: total_contract_value
+        description: Sum of contract prices for all closed contracts in this channel.
+
+      - name: total_commission_paid
+        description: Sum of agent commissions paid on closed contracts in this channel.
