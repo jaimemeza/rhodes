@@ -19,11 +19,10 @@ seeds:
           - unique
           - not_null
           - accepted_values:
-              arguments:
-                values:
-                  - South Texas
-                  - Rio Grande Valley
-                  - Coastal Bend
+              values:
+                - South Texas
+                - Rio Grande Valley
+                - Coastal Bend
 
       - name: regional_manager
         description: Full name of the Regional Manager responsible for this region.
@@ -40,8 +39,7 @@ seeds:
         tests:
           - not_null
           - dbt_utils.expression_is_true:
-              arguments:
-                expression: ">= 0"
+              expression: ">= 0"
 
       - name: margin_target_pct
         description: >
@@ -54,5 +52,4 @@ seeds:
         tests:
           - not_null
           - dbt_utils.expression_is_true:
-              arguments:
-                expression: "between 0 and 1"
+              expression: "between 0 and 1"
