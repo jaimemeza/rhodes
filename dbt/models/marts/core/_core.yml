@@ -1,0 +1,216 @@
+version: 2
+
+models:
+  - name: dim_region
+    description: One row per sales region. Contains the regional manager and annual performance targets.
+    columns:
+      - name: region_sk
+        description: Surrogate key for the region.
+        tests:
+          - unique
+          - not_null
+
+      - name: region
+        description: Sales region name (natural key).
+        tests:
+          - unique
+          - not_null
+
+      - name: regional_manager
+        description: Regional Manager for the region.
+
+      - name: sales_target_units
+        description: Annual unit sales target. Annualize actuals before comparing.
+
+      - name: margin_target_pct
+        description: "Target margin percentage (0–1). Compare against estimated_margin_pct in fct_home_sales."
+
+  - name: dim_consultant
+    description: One row per sales consultant derived from the contracts fact.
+    columns:
+      - name: consultant_sk
+        description: Surrogate key for the consultant.
+        tests:
+          - unique
+          - not_null
+
+      - name: sales_consultant
+        description: Sales consultant name (natural key).
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_community
+    description: One row per community. Carries the city and region hierarchy.
+    columns:
+      - name: community_sk
+        description: Surrogate key for the community.
+        tests:
+          - unique
+          - not_null
+
+      - name: community
+        description: Community or subdivision name (natural key).
+        tests:
+          - unique
+          - not_null
+
+      - name: city
+        description: City where the community is located.
+
+      - name: region
+        description: Sales region the community belongs to.
+
+  - name: fct_home_sales
+    description: >
+      One row per home sale contract. Enriched with dimensional foreign keys and
+      calculated metrics (price_per_sqft, estimated_margin_pct, upgrade_capture_pct).
+    tests:
+      # Ensures no rows are added or lost relative to the staging model.
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('stg_homebuilder_sales')
+    columns:
+      - name: contract_id
+        description: Natural primary key for the contract.
+        tests:
+          - unique
+          - not_null
+
+      - name: region_sk
+        description: Foreign key to dim_region.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_region')
+              field: region_sk
+
+      - name: consultant_sk
+        description: Foreign key to dim_consultant.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_consultant')
+              field: consultant_sk
+
+      - name: community_sk
+        description: Foreign key to dim_community.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_community')
+              field: community_sk
+
+      - name: contract_date
+        description: Date the contract was signed.
+        tests:
+          - not_null
+
+      - name: close_date
+        description: Date the home closed. Null for non-closed contracts.
+
+      - name: days_to_close
+        description: Calendar days between contract_date and close_date. Null when close_date is null.
+
+      - name: plan_name
+        description: Home floor plan name.
+
+      - name: sqft
+        description: Total square footage of the home.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: bedrooms
+        description: Number of bedrooms.
+
+      - name: bathrooms
+        description: Number of bathrooms, including half-bath increments.
+
+      - name: base_price
+        description: Base list price before upgrades or incentives.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: upgrade_amount
+        description: Total upgrade value selected by the buyer.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: incentive_amount
+        description: Total discount applied to the contract.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: contract_price
+        description: "Final sale price. Equals base_price + upgrade_amount − incentive_amount."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: agent_commission
+        description: Agent commission in dollars. Feeds into estimated_margin_pct.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: status
+        description: "Contract status. Closed = funded; Cancelled = voided; Under Contract = in process."
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - Closed
+                - Cancelled
+                - Under Contract
+
+      - name: is_closed
+        description: "True when status = 'Closed'."
+
+      - name: is_cancelled
+        description: "True when status = 'Cancelled'."
+
+      - name: is_under_contract
+        description: "True when status = 'Under Contract'."
+
+      - name: sales_consultant
+        description: Sales consultant who handled the contract.
+
+      - name: buyer_source
+        description: Lead source channel (e.g. Realtor, Online, Drive-By).
+
+      - name: loan_type
+        description: Financing type (e.g. Conventional, FHA, VA, Cash).
+
+      - name: price_per_sqft
+        description: Contract price divided by square footage.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: estimated_margin_pct
+        description: >
+          Revenue net of agent commission, as a proxy for margin. Proxy documented in
+          README — the dataset has no cost column by design.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "between -1 and 1"
+
+      - name: upgrade_capture_pct
+        description: >
+          Value added from upgrades net of incentives, as a fraction of contract price.
+          Separate from estimated_margin_pct; not compared against margin targets.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "between -1 and 1"
