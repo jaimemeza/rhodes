@@ -1,0 +1,216 @@
+version: 2
+
+models:
+  - name: stg_homebuilder_sales
+    description: >
+      One row per home sale contract. Thin rename layer over RHODES.RAW.HOMEBUILDER_SALES
+      with no business logic beyond three boolean convenience flags (is_closed,
+      is_cancelled, is_under_contract) and two derived integrity columns
+      (days_to_close_calc, contract_price_calc) that are validated against their
+      source counterparts via model-level tests. Margin and price-per-sqft metrics
+      are intentionally deferred to fct_home_sales.
+    tests:
+      # Verifies DAYS_TO_CLOSE in the source matches DATEDIFF(contract_date, close_date).
+      # Zero mismatches confirmed on initial load. Catches any data quality regression
+      # on reload. The OR close_date IS NULL guard handles Cancelled/Under Contract rows.
+      - dbt_utils.expression_is_true:
+          expression: "days_to_close_calc = days_to_close OR close_date IS NULL"
+      # Verifies CONTRACT_PRICE = BASE_PRICE + UPGRADE_AMOUNT − INCENTIVE_AMOUNT.
+      # Zero mismatches confirmed on initial load. Proves pricing identity is intact
+      # and gives a clear data quality screen-recording moment.
+      - dbt_utils.expression_is_true:
+          expression: "contract_price_calc = contract_price"
+    columns:
+      - name: contract_id
+        description: Natural primary key for the contract. Varchar identifier assigned at contract signing.
+        tests:
+          - unique
+          - not_null
+          - dbt_utils.not_empty_string
+
+      - name: region
+        description: Sales region. One of three regions served by Rhodes Homes in South Texas.
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - South Texas
+                - Rio Grande Valley
+                - Coastal Bend
+
+      - name: community
+        description: Subdivision or community name within the region where the home is located.
+        tests:
+          - not_null
+
+      - name: city
+        description: City where the community is located.
+        tests:
+          - not_null
+
+      - name: plan_name
+        description: Home floor plan name as offered by Rhodes Homes.
+        tests:
+          - not_null
+
+      - name: sqft
+        description: Total square footage of the home plan.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: bedrooms
+        description: Number of bedrooms. Integer value; expected range 1–10 per floor plan catalog.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "between 1 and 10"
+
+      - name: bathrooms
+        description: >
+          Number of bathrooms including half-baths (e.g. 2.5). Stored as NUMBER(38,1)
+          in the source to accommodate half-bath increments.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "between 1 and 10"
+
+      - name: base_price
+        description: Base list price of the home before any upgrades or incentives are applied.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: upgrade_amount
+        description: >
+          Total value of the upgrade package selected by the buyer. Added to base_price
+          to arrive at contract_price before incentives. Zero if no upgrades were selected.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: incentive_amount
+        description: >
+          Total incentive or discount applied to the contract. Positive value means a
+          price reduction. Zero if no incentives were offered. Subtracted from
+          (base_price + upgrade_amount) to yield contract_price.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: contract_price
+        description: >
+          Final contracted sale price: base_price + upgrade_amount − incentive_amount.
+          Confirmed to match this identity with zero mismatches across all 600 source rows.
+          Validated by the model-level expression_is_true test on contract_price_calc.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: contract_date
+        description: Date the purchase contract was signed by the buyer.
+        tests:
+          - not_null
+
+      - name: close_date
+        description: >
+          Date the home closed and funded. NULL for Cancelled (41 rows) and
+          Under Contract (31 rows) statuses — this is expected and correct.
+          Do not add a not_null test here.
+
+      - name: days_to_close
+        description: >
+          Number of calendar days between contract_date and close_date as recorded
+          in the source. NULL when close_date is NULL. Confirmed to match
+          DATEDIFF(contract_date, close_date) with zero mismatches across all
+          closed rows; validated by model-level test.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              config:
+                where: "close_date is not null"
+
+      - name: status
+        description: Current contract status. Closed = funded; Cancelled = voided; Under Contract = in process.
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - Closed
+                - Cancelled
+                - Under Contract
+
+      - name: is_closed
+        description: Boolean convenience flag. True when status = 'Closed'.
+
+      - name: is_cancelled
+        description: Boolean convenience flag. True when status = 'Cancelled'.
+
+      - name: is_under_contract
+        description: Boolean convenience flag. True when status = 'Under Contract'.
+
+      - name: sales_consultant
+        description: Full name of the Rhodes Homes sales consultant who handled the contract.
+        tests:
+          - not_null
+
+      - name: buyer_source
+        description: Lead source channel describing how the buyer found Rhodes Homes (e.g. Realtor, Online, Drive-By).
+        tests:
+          - not_null
+
+      - name: loan_type
+        description: Financing type selected by the buyer (e.g. Conventional, FHA, VA, Cash).
+        tests:
+          - not_null
+
+      - name: agent_commission
+        description: >
+          Real estate agent commission amount in dollars. NUMBER(38,1). Zero when the buyer
+          came direct (no agent). This column is the one real cost input available in the
+          dataset and feeds into estimated_margin_pct in fct_home_sales, defined as
+          (contract_price − agent_commission) / contract_price.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: days_to_close_calc
+        description: >
+          Derived: DATEDIFF(contract_date, close_date). NULL when close_date is NULL.
+          Validated against the source days_to_close column via model-level
+          expression_is_true test.
+
+      - name: contract_price_calc
+        description: >
+          Derived: base_price + upgrade_amount − incentive_amount. Validated against
+          the source contract_price column via model-level expression_is_true test.
+
+  - name: stg_regional_manager
+    description: >
+      Thin passthrough view over the regional_manager_lookup seed. One row per sales
+      region. Provides a stable ref() target so downstream models reference stg_*
+      models uniformly rather than mixing ref(seed) and ref(model) patterns.
+      All data quality tests live in dbt/seeds/schema.yml.
+    columns:
+      - name: region
+        description: Sales region name. Joins to stg_homebuilder_sales.region.
+
+      - name: regional_manager
+        description: Full name of the Regional Manager responsible for the region.
+
+      - name: sales_target_units
+        description: >
+          Annual unit sales target confirmed by Armando. Annualize actuals before
+          comparing — the source dataset spans two full years (2023 and 2024).
+
+      - name: margin_target_pct
+        description: >
+          Gross margin target as a decimal fraction (e.g. 0.18 = 18%). Compare against
+          estimated_margin_pct in fct_home_sales, which is the revenue-net-of-commission
+          proxy: (contract_price − agent_commission) / contract_price.

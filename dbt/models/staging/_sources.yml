@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: rhodes_raw
+    # Jinja is not supported in source YAML — database is hardcoded to RHODES.
+    database: RHODES
+    schema: RAW
+    description: >
+      Bronze layer. Raw tables loaded into RHODES.RAW by the ingestion process.
+      HOMEBUILDER_SALES was loaded once via Snowsight UI from
+      ingestion/seed_data/Homebuilder_Sales.csv. No loaded_at_field column exists
+      in the source — this is a static assessment snapshot, not a live operational feed.
+    tables:
+      - name: homebuilder_sales
+        description: >
+          600 rows, 20 columns. One row per home sale contract, covering contract dates
+          from 2023-01 through 2024-10, with close dates extending through 2025-03.
+          Loaded once via Snowsight UI. Types resolved cleanly by auto-detect; no casting
+          required downstream. 72 rows have NULL CLOSE_DATE, corresponding exactly to
+          41 Cancelled + 31 Under Contract rows.
+        # No loaded_at_field available — column does not exist in this static snapshot.
+        # To enable freshness checks on a live feed, add a load timestamp column and
+        # uncomment the block below.
+        #
+        # loaded_at_field: loaded_at
+        # freshness:
+        #   warn_after: {count: 7, period: day}
+        # NOTE: Disabled — this source is a one-time CSV snapshot for the take-home
+        # assessment, not a recurring load. Re-enable if the source ever becomes a
+        # live feed.
