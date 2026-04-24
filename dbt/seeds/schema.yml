@@ -1,0 +1,42 @@
+version: 2
+
+seeds:
+  - name: regional_manager_lookup
+    description: >
+      One row per sales region mapping the region name to its assigned Regional Manager,
+      annual unit sales target, and gross margin target. Used to join against sales facts
+      for target-vs-actual reporting. Source of truth is ingestion/seed_data/Regional_Manager_Lookup.xlsx.
+    config:
+      column_types:
+        region: varchar
+        regional_manager: varchar
+        sales_target_units: number
+        margin_target_pct: number(5,4)
+    columns:
+      - name: region
+        description: Sales region name (South Texas, Rio Grande Valley, or Coastal Bend).
+        tests:
+          - unique
+          - not_null
+          - accepted_values:
+              values: ["South Texas", "Rio Grande Valley", "Coastal Bend"]
+
+      - name: regional_manager
+        description: Full name of the Regional Manager responsible for this region.
+        tests:
+          - not_null
+          - unique
+
+      - name: sales_target_units
+        description: Annual unit sales target for the region (assumed annual; pending confirmation from Armando).
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: margin_target_pct
+        description: Gross margin target as a decimal fraction (e.g. 0.18 = 18%). Basis for actual-vs-target margin analysis.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
