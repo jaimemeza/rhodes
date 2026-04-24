@@ -14,12 +14,15 @@ seeds:
         margin_target_pct: number(5,4)
     columns:
       - name: region
-        description: Sales region name (South Texas, Rio Grande Valley, or Coastal Bend).
+        description: Sales region name. One of three regions in the dataset.
         tests:
           - unique
           - not_null
           - accepted_values:
-              values: ["South Texas", "Rio Grande Valley", "Coastal Bend"]
+              values:
+                - South Texas
+                - Rio Grande Valley
+                - Coastal Bend
 
       - name: regional_manager
         description: Full name of the Regional Manager responsible for this region.
@@ -28,14 +31,24 @@ seeds:
           - unique
 
       - name: sales_target_units
-        description: Annual unit sales target for the region (assumed annual; pending confirmation from Armando).
+        description: >
+          Annual unit sales target for the region, confirmed as calendar-year by Armando.
+          The source dataset spans two years (2023–2024), so actuals must be annualized
+          before comparing to this target. Dashboard shows both YTD-2024 and trailing-12-month
+          views against this value.
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 0"
 
       - name: margin_target_pct
-        description: Gross margin target as a decimal fraction (e.g. 0.18 = 18%). Basis for actual-vs-target margin analysis.
+        description: >
+          Gross margin target as a decimal fraction (e.g. 0.18 = 18%). The actual counterpart
+          is estimated_margin_pct in fct_home_sales, defined as
+          (contract_price - agent_commission) / contract_price. This is a named proxy —
+          no true margin is computable from the dataset because no cost column exists,
+          which Armando confirmed is intentional. Both target and actual are expressed as
+          a percentage of contract revenue, making them directly comparable.
         tests:
           - not_null
           - dbt_utils.expression_is_true:
