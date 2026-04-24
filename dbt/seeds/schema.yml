@@ -2,10 +2,7 @@ version: 2
 
 seeds:
   - name: regional_manager_lookup
-    description: >
-      One row per sales region mapping the region name to its assigned Regional Manager,
-      annual unit sales target, and gross margin target. Used to join against sales facts
-      for target-vs-actual reporting. Source of truth is ingestion/seed_data/Regional_Manager_Lookup.xlsx.
+    description: "One row per sales region with the assigned manager, unit target, and margin target."
     config:
       column_types:
         region: varchar
@@ -14,7 +11,7 @@ seeds:
         margin_target_pct: number(5,4)
     columns:
       - name: region
-        description: Sales region name. One of three regions in the dataset.
+        description: Sales region name.
         tests:
           - unique
           - not_null
@@ -25,30 +22,20 @@ seeds:
                 - Coastal Bend
 
       - name: regional_manager
-        description: Full name of the Regional Manager responsible for this region.
+        description: Regional Manager for the region.
         tests:
           - not_null
           - unique
 
       - name: sales_target_units
-        description: >
-          Annual unit sales target for the region, confirmed as calendar-year by Armando.
-          The source dataset spans two years (2023–2024), so actuals must be annualized
-          before comparing to this target. Dashboard shows both YTD-2024 and trailing-12-month
-          views against this value.
+        description: Annual unit sales target. Annualize actuals before comparing.
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 0"
 
       - name: margin_target_pct
-        description: >
-          Gross margin target as a decimal fraction (e.g. 0.18 = 18%). The actual counterpart
-          is estimated_margin_pct in fct_home_sales, defined as
-          (contract_price - agent_commission) / contract_price. This is a named proxy —
-          no true margin is computable from the dataset because no cost column exists,
-          which Armando confirmed is intentional. Both target and actual are expressed as
-          a percentage of contract revenue, making them directly comparable.
+        description: "Target margin percentage (0–1). Compare against estimated_margin_pct in fct_home_sales."
         tests:
           - not_null
           - dbt_utils.expression_is_true:
