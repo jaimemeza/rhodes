@@ -343,7 +343,7 @@ models:
         description: Multiplier applied to convert partial-year actuals to annualized projections.
         tests:
           - dbt_utils.expression_is_true:
-              expression: "annualization_factor = 1.0 or (annualization_factor between 1.33 and 1.34)"
+              expression: "(annualization_factor = 1.0) or (annualization_factor between 1.33 and 1.34)"
 
   - name: mart_channel_economics
     description: >
