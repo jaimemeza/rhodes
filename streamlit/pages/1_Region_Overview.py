@@ -3,7 +3,11 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from utils.snowflake import get_snowflake_connection
-from utils.queries import fetch_region_year
+from utils.queries import (
+    fetch_region_year,
+    fetch_pipeline_by_region,
+    fetch_cancel_trend,
+)
 
 st.set_page_config(page_title="Region Overview · Rhodes", layout="wide")
 
@@ -234,6 +238,139 @@ st.dataframe(
         ),
     },
 )
+
+# ── Pipeline & YTD revenue ─────────────────────────────────────────────
+st.markdown("<br>", unsafe_allow_html=True)
+st.subheader("Active Pipeline & YTD Revenue")
+st.caption(
+    "Under Contract = signed but not yet closed. "
+    f"YTD revenue = contract value of closed deals in {current_year}."
+)
+
+pipeline_df = fetch_pipeline_by_region(conn)
+
+
+def fmt_millions(v) -> str:
+    try:
+        return f"${float(v)/1_000_000:.1f}M"
+    except (TypeError, ValueError):
+        return "—"
+
+
+def fmt_thousands(v) -> str:
+    try:
+        return f"${float(v)/1_000:.0f}k"
+    except (TypeError, ValueError):
+        return "—"
+
+
+def build_pipeline_card(row) -> str:
+    region_name   = row["region"]
+    pipe_n        = int(row["pipeline_contracts"])
+    pipe_val      = fmt_millions(row["pipeline_value"])
+    closed_n      = int(row["closed_contracts"])
+    closed_val    = fmt_millions(row["closed_value"])
+    avg_price     = fmt_thousands(row["avg_contract_price"])
+    avg_days      = (
+        f"{float(row['avg_days_to_close']):.0f} days"
+        if row["avg_days_to_close"] is not None else "—"
+    )
+    avg_upgrade   = (
+        f"{float(row['avg_upgrade_capture'])*100:.1f}%"
+        if row["avg_upgrade_capture"] is not None else "—"
+    )
+    return f"""
+<div class="kpi-card">
+  <div class="kpi-region">{region_name}</div>
+  <div style="margin-top:10px; font-size:12px; color:{GRAY}; text-transform:uppercase;
+              letter-spacing:.05em;">Pipeline</div>
+  <div style="font-size:20px; font-weight:600; color:{TEXT};">
+    {pipe_n} contracts &nbsp;·&nbsp; {pipe_val}
+  </div>
+  <div style="margin-top:10px; font-size:12px; color:{GRAY}; text-transform:uppercase;
+              letter-spacing:.05em;">YTD Revenue</div>
+  <div style="font-size:20px; font-weight:600; color:{GREEN};">
+    {closed_val} &nbsp;·&nbsp; {closed_n} units
+  </div>
+  <div style="margin-top:12px; font-size:12px; color:{TEXT}; line-height:1.7;">
+    Avg contract price: <b>{avg_price}</b><br>
+    Avg days to close: <b>{avg_days}</b><br>
+    Avg upgrade capture: <b>{avg_upgrade}</b>
+  </div>
+</div>"""
+
+
+p_cols = st.columns(len(REGIONS))
+for col, region in zip(p_cols, REGIONS):
+    row = pipeline_df[pipeline_df["region"] == region]
+    if not row.empty:
+        with col:
+            st.markdown(
+                build_pipeline_card(row.iloc[0]),
+                unsafe_allow_html=True,
+            )
+
+# ── Cancellation rate trend ────────────────────────────────────────────
+st.markdown("<br>", unsafe_allow_html=True)
+st.subheader("Cancellation Rate — Last 12 Months")
+st.caption(
+    "Monthly cancel rate per region. "
+    "Identifies whether current-year rates are a trend or a spike."
+)
+
+cancel_df = fetch_cancel_trend(conn)
+
+REGION_COLORS = {
+    "Rio Grande Valley": GREEN,
+    "South Texas":       GRAY,
+    "Coastal Bend":      SOFT_NEG,
+}
+
+fig2 = go.Figure()
+for region in REGIONS:
+    rdf = cancel_df[cancel_df["region"] == region].sort_values("month_start")
+    if rdf.empty:
+        continue
+    fig2.add_trace(go.Scatter(
+        name=region,
+        x=rdf["month_start"],
+        y=rdf["cancel_rate"] * 100,
+        mode="lines+markers",
+        line=dict(color=REGION_COLORS.get(region, GRAY), width=2),
+        marker=dict(size=6),
+        customdata=list(zip(
+            [region] * len(rdf),
+            rdf["cancel_rate"] * 100,
+        )),
+        hovertemplate=(
+            "<b>%{customdata[0]}</b><br>"
+            "%{x|%b %Y}: %{customdata[1]:.1f}%<br>"
+            "<extra></extra>"
+        ),
+    ))
+
+fig2.update_layout(
+    plot_bgcolor="#ffffff",
+    paper_bgcolor="#ffffff",
+    font=dict(family="sans-serif", color=TEXT),
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
+    xaxis=dict(
+        title=None,
+        tickformat="%b %Y",
+        tickfont=dict(size=12),
+        gridcolor="#e8e8e8",
+    ),
+    yaxis=dict(
+        title="Cancel rate (%)",
+        range=[0, 20],
+        gridcolor="#e8e8e8",
+        ticksuffix="%",
+    ),
+    margin=dict(t=40, b=20, l=10, r=10),
+    height=340,
+)
+
+st.plotly_chart(fig2, use_container_width=True)
 
 # ── About these numbers ────────────────────────────────────────────────
 with st.expander("About these numbers"):

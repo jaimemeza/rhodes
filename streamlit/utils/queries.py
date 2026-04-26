@@ -60,3 +60,70 @@ def fetch_region_year(_conn) -> pd.DataFrame:
         return pd.DataFrame(cur.fetchall(), columns=cols)
     finally:
         cur.close()
+
+
+@st.cache_data(ttl=600)
+def fetch_pipeline_by_region(_conn) -> pd.DataFrame:
+    """
+    Returns active pipeline (Under Contract) and YTD closed value per region.
+    Queries fct_home_sales directly — not materialized in a mart because
+    pipeline state changes frequently in production.
+    """
+    query = """
+        select
+            region,
+            count_if(is_under_contract)                            as pipeline_contracts,
+            sum(iff(is_under_contract, contract_price, 0))         as pipeline_value,
+            count_if(is_closed)                                    as closed_contracts,
+            sum(iff(is_closed, contract_price, 0))                 as closed_value,
+            avg(iff(is_closed, contract_price, null))              as avg_contract_price,
+            avg(iff(is_closed, days_to_close, null))               as avg_days_to_close,
+            avg(iff(is_closed, upgrade_capture_pct, null))         as avg_upgrade_capture
+        from rhodes.analytics.fct_home_sales
+        where contract_date < '2024-10-01'
+          and year(contract_date) = (
+              select year(max(contract_date))
+              from rhodes.analytics.fct_home_sales
+              where contract_date < '2024-10-01'
+          )
+        group by region
+        order by region
+    """
+    cur = _conn.cursor()
+    try:
+        cur.execute(query)
+        cols = [c[0].lower() for c in cur.description]
+        return pd.DataFrame(cur.fetchall(), columns=cols)
+    finally:
+        cur.close()
+
+
+@st.cache_data(ttl=600)
+def fetch_cancel_trend(_conn) -> pd.DataFrame:
+    """
+    Returns monthly cancellation rate per region for the last 12 months.
+    Used for the cancel rate sparklines.
+    """
+    query = """
+        select
+            region,
+            date_trunc('month', contract_date)::date               as month_start,
+            count(*)                                               as contracts,
+            count_if(is_cancelled)                                 as cancellations,
+            count_if(is_cancelled) / nullif(count(*), 0)::float   as cancel_rate
+        from rhodes.analytics.fct_home_sales
+        where contract_date >= dateadd('month', -12,
+              (select max(contract_date)
+               from rhodes.analytics.fct_home_sales
+               where contract_date < '2024-10-01'))
+          and contract_date < '2024-10-01'
+        group by region, date_trunc('month', contract_date)::date
+        order by region, month_start
+    """
+    cur = _conn.cursor()
+    try:
+        cur.execute(query)
+        cols = [c[0].lower() for c in cur.description]
+        return pd.DataFrame(cur.fetchall(), columns=cols)
+    finally:
+        cur.close()
