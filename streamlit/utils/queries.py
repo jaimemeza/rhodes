@@ -135,18 +135,23 @@ def fetch_cancel_trend(_conn) -> pd.DataFrame:
     query = """
         select
             region,
-            date_trunc('month', contract_date)::date               as month_start,
-            count(*)                                               as contracts,
-            count_if(is_cancelled)                                 as cancellations,
-            count_if(is_cancelled) / nullif(count(*), 0)::float   as cancel_rate
+            'Q' || quarter(contract_date)::varchar
+                || ' ' || year(contract_date)::varchar          as quarter_label,
+            year(contract_date) * 10 + quarter(contract_date)   as sort_key,
+            count(*)                                            as contracts,
+            count_if(is_cancelled)                              as cancellations,
+            count_if(is_cancelled) / nullif(count(*), 0)::float as cancel_rate
         from rhodes.analytics.fct_home_sales
         where contract_date >= dateadd('month', -12,
               (select max(contract_date)
                from rhodes.analytics.fct_home_sales
                where contract_date < '2024-10-01'))
           and contract_date < '2024-10-01'
-        group by region, date_trunc('month', contract_date)::date
-        order by region, month_start
+        group by region,
+                 'Q' || quarter(contract_date)::varchar
+                     || ' ' || year(contract_date)::varchar,
+                 year(contract_date) * 10 + quarter(contract_date)
+        order by region, sort_key
     """
     cur = _conn.cursor()
     try:
