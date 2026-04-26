@@ -116,13 +116,13 @@ with tab1:
         )
         with card_cols[i]:
             st.markdown(f"""
-<div style="background:{SURFACE}; border-radius:10px; padding:16px 14px;
+<div style="background:{SURFACE}; border-radius:10px; padding:14px 16px;
             min-height:155px;">
-  <div style="font-size:13px; color:{TEXT_MUTED}; margin-bottom:6px;">
+  <div style="font-size:12px; color:{TEXT_MUTED}; margin-bottom:6px;">
     {region}</div>
-  <div style="font-size:36px; font-weight:700; color:{TEXT}; line-height:1;
+  <div style="font-size:28px; font-weight:700; color:{TEXT}; line-height:1;
               margin-bottom:4px;">~{year_end}</div>
-  <div style="font-size:13px; color:{TEXT_MUTED}; margin-bottom:6px;">
+  <div style="font-size:12px; color:{TEXT_MUTED}; margin-bottom:6px;">
     est. year-end closings</div>
   <div style="font-size:13px; font-weight:600; color:{g_color};
               margin-bottom:8px;">{g_label}</div>
