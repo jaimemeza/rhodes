@@ -47,7 +47,9 @@ def fetch_region_year(_conn) -> pd.DataFrame:
             closed_yoy_delta,
             closed_yoy_pct,
             cancel_rate_yoy_delta,
-            annualization_factor
+            annualization_factor,
+            same_period_closed_prior_year,
+            same_period_yoy_pct
         from rhodes.analytics.mart_region_year
         order by region, contract_year
     """

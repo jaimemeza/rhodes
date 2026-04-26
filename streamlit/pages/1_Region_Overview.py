@@ -16,12 +16,14 @@ TEXT     = "#1c1c1e"
 
 st.markdown("""
 <style>
-.kpi-card   { background:#f5f5f7; border-radius:10px; padding:20px 24px 16px 24px; }
-.kpi-region { font-size:15px; font-weight:600; color:#1c1c1e; margin-bottom:4px; }
-.kpi-number { font-size:40px; font-weight:700; color:#5a8c3e; line-height:1.1; }
-.kpi-yoy    { font-size:15px; margin:6px 0 2px 0; }
-.kpi-pace   { font-size:13px; color:#1c1c1e; margin-bottom:4px; }
-.kpi-caveat { font-size:11px; color:#8e8e93; font-style:italic; }
+.kpi-card    { background:#f5f5f7; border-radius:10px; padding:20px 24px 16px 24px; }
+.kpi-region  { font-size:15px; font-weight:600; color:#5a8c3e; margin-bottom:4px; }
+.kpi-number  { font-size:40px; font-weight:700; color:#1c1c1e; line-height:1.1; }
+.kpi-yoy     { font-size:15px; margin:6px 0 4px 0; }
+.kpi-divider { border:none; border-top:1px solid #d1d1d6; margin:12px 0 10px 0; }
+.kpi-bar-bg  { background:#e5e5ea; border-radius:6px; height:12px; margin-bottom:6px; }
+.kpi-units   { font-size:13px; color:#1c1c1e; margin-bottom:2px; }
+.kpi-caveat  { font-size:11px; color:#8e8e93; font-style:italic; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -29,7 +31,8 @@ st.markdown("""
 st.title("Region Overview")
 st.caption(
     "Year-over-year volume, target attainment, and margin posture by region. "
-    "2024 figures are annualized projections from 9 months of data."
+    "YoY uses same-period comparison (apples-to-apples). "
+    "Annualized pace shown as secondary context."
 )
 
 # ── Data ───────────────────────────────────────────────────────────────
@@ -41,6 +44,16 @@ if df.empty:
     st.stop()
 
 REGIONS = sorted(df["region"].unique())
+
+# Derive year context from data — no hardcoded years
+years_in_data  = sorted(df["contract_year"].unique())
+current_year   = int(years_in_data[-1])
+prior_year     = int(years_in_data[0]) if len(years_in_data) > 1 else current_year - 1
+
+_af = df[df["contract_year"] == current_year]["annualization_factor"]
+months_elapsed = round(12.0 / float(_af.iloc[0])) if not _af.empty and float(_af.iloc[0]) > 1 else 12
+MONTH_ABBR = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+month_abbr = MONTH_ABBR[months_elapsed - 1]
 
 
 def get_row(region: str, year: int):
@@ -56,35 +69,53 @@ def yoy_label(pct) -> str:
         if pd.isna(val):
             raise ValueError
     except (TypeError, ValueError):
-        return f'<span style="color:{GRAY}">— no prior year</span>'
+        return f'<span style="color:{GRAY}">— no prior year data</span>'
     if val > 0:
         color, arrow = SOFT_POS, "▲"
     elif val < 0:
         color, arrow = SOFT_NEG, "▼"
     else:
         color, arrow = GRAY, "−"
-    return f'<span style="color:{color}">{arrow} {abs(val) * 100:.1f}% YoY</span>'
+    return f'<span style="color:{color}">{arrow} {abs(val)*100:.1f}% YoY (same period)</span>'
 
 
-def build_kpi_card(region: str, r2024, r2023) -> str:
-    if r2024 is None:
-        closings = "—"
-        yoy      = f'<span style="color:{GRAY}">no 2024 data</span>'
-        pace     = "—"
-    else:
-        closings = str(int(r2024["contracts_closed_annualized"]))
-        yoy      = yoy_label(r2024.get("closed_yoy_pct"))
-        try:
-            pace = f"{float(r2024['target_attainment_annualized_pct']) * 100:.0f}% on pace to annual target"
-        except (TypeError, ValueError):
-            pace = "—"
+def build_kpi_card(region: str, r_curr, r_prev) -> str:
+    if r_curr is None:
+        return f"""
+<div class="kpi-card">
+  <div class="kpi-region">{region}</div>
+  <div class="kpi-number">—</div>
+  <div class="kpi-yoy" style="color:{GRAY}">no current year data</div>
+</div>"""
+
+    closings = int(r_curr["contracts_closed"])
+    yoy_html = yoy_label(r_curr.get("same_period_yoy_pct"))
+
+    try:
+        ytd_frac = float(r_curr["target_attainment_ytd_pct"])
+        bar_w    = min(100.0, ytd_frac * 100)
+        ytd_text = f"{ytd_frac * 100:.0f}%"
+        target   = int(r_curr["sales_target_units"])
+    except (TypeError, ValueError):
+        bar_w, ytd_text, target = 0.0, "—", 0
+
+    try:
+        ann_pct  = float(r_curr["target_attainment_annualized_pct"])
+        pace_str = f"{ann_pct * 100:.0f}%"
+    except (TypeError, ValueError):
+        pace_str = "—"
+
     return f"""
 <div class="kpi-card">
   <div class="kpi-region">{region}</div>
   <div class="kpi-number">{closings}</div>
-  <div class="kpi-yoy">{yoy}</div>
-  <div class="kpi-pace">{pace}</div>
-  <div class="kpi-caveat">Pace projection — assumes constant monthly volume</div>
+  <div class="kpi-yoy">{yoy_html}</div>
+  <hr class="kpi-divider">
+  <div class="kpi-bar-bg">
+    <div style="background:#5a8c3e; border-radius:6px; height:12px; width:{bar_w:.0f}%;"></div>
+  </div>
+  <div class="kpi-units">{closings} of {target} units · YTD attainment {ytd_text}</div>
+  <div class="kpi-caveat">Pace projection (×12/{months_elapsed}): {pace_str}</div>
 </div>"""
 
 
@@ -93,53 +124,53 @@ cols = st.columns(len(REGIONS))
 for col, region in zip(cols, REGIONS):
     with col:
         st.markdown(
-            build_kpi_card(region, get_row(region, 2024), get_row(region, 2023)),
+            build_kpi_card(region, get_row(region, current_year), get_row(region, prior_year)),
             unsafe_allow_html=True,
         )
 
 # ── Bar chart ──────────────────────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
-st.subheader("2023 vs 2024 (annualized) — closed contracts")
+st.subheader(
+    f"Jan–{month_abbr} {prior_year} vs Jan–{month_abbr} {current_year}"
+    " — same-period closed contracts"
+)
 
-y_2023, y_2024, cd_2023, cd_2024 = [], [], [], []
+y_prior, y_curr, cd_prior, cd_curr = [], [], [], []
 for region in REGIONS:
-    r23 = get_row(region, 2023)
-    r24 = get_row(region, 2024)
-    c23     = int(r23["contracts_closed"])             if r23 is not None else 0
-    c24_ann = int(r24["contracts_closed_annualized"])  if r24 is not None else 0
-    c24_raw = int(r24["contracts_closed"])             if r24 is not None else 0
-    y_2023.append(c23)
-    y_2024.append(c24_ann)
-    cd_2023.append((region, c23))
-    cd_2024.append((region, c24_raw, c24_ann))
+    r_curr = get_row(region, current_year)
+    sp_prior = int(r_curr["same_period_closed_prior_year"]) if r_curr is not None else 0
+    c_curr   = int(r_curr["contracts_closed"])              if r_curr is not None else 0
+    y_prior.append(sp_prior)
+    y_curr.append(c_curr)
+    cd_prior.append((region, prior_year,   sp_prior))
+    cd_curr.append( (region, current_year, c_curr))
 
 fig = go.Figure()
 
 fig.add_trace(go.Bar(
-    name="2023 (actual)",
+    name=f"Jan–{month_abbr} {prior_year}",
     x=REGIONS,
-    y=y_2023,
+    y=y_prior,
     marker_color=GRAY,
-    customdata=cd_2023,
+    customdata=cd_prior,
     hovertemplate=(
         "<b>%{customdata[0]}</b><br>"
-        "Year: 2023<br>"
-        "Closed: %{customdata[1]}<br>"
+        f"Jan–{month_abbr} %{{customdata[1]}}<br>"
+        "Closed: %{customdata[2]}<br>"
         "<extra></extra>"
     ),
 ))
 
 fig.add_trace(go.Bar(
-    name="2024 (annualized)",
+    name=f"Jan–{month_abbr} {current_year}",
     x=REGIONS,
-    y=y_2024,
+    y=y_curr,
     marker_color=GREEN,
-    customdata=cd_2024,
+    customdata=cd_curr,
     hovertemplate=(
         "<b>%{customdata[0]}</b><br>"
-        "Year: 2024<br>"
-        "Actual closings (9 mo): %{customdata[1]}<br>"
-        "Annualized projection: %{customdata[2]}<br>"
+        f"Jan–{month_abbr} %{{customdata[1]}}<br>"
+        "Closed: %{customdata[2]}<br>"
         "<extra></extra>"
     ),
 ))
@@ -160,8 +191,8 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 st.caption(
-    "2024 bar = raw closings × 12/9 (linear pace projection). "
-    "Annual targets are shown as attainment % in the cards above."
+    f"Both bars cover January–{month_abbr} only — a direct same-period comparison, "
+    "no extrapolation. Annual targets shown as attainment % in the cards above."
 )
 
 # ── Detail table ───────────────────────────────────────────────────────
@@ -177,17 +208,18 @@ DISPLAY_COLS = [
     "target_attainment_annualized_pct",
     "target_attainment_ytd_pct",
     "cancel_rate",
+    "same_period_yoy_pct",
     "closed_yoy_pct",
     "margin_attainment_delta",
 ]
 
 display_df = df[DISPLAY_COLS].copy()
 
-# Scale fractional values to percentage points so format strings render correctly
 PCT_COLS = [
     "target_attainment_annualized_pct",
     "target_attainment_ytd_pct",
     "cancel_rate",
+    "same_period_yoy_pct",
     "closed_yoy_pct",
     "margin_attainment_delta",
 ]
@@ -213,6 +245,9 @@ st.dataframe(
             "YTD attainment", format="%.1f%%"
         ),
         "cancel_rate": st.column_config.NumberColumn("Cancel rate", format="%.1f%%"),
+        "same_period_yoy_pct": st.column_config.NumberColumn(
+            "YoY (same period)", format="%+.1f%%"
+        ),
         "closed_yoy_pct": st.column_config.NumberColumn(
             "YoY (annualized)", format="%+.1f%%"
         ),
@@ -224,22 +259,31 @@ st.dataframe(
 
 # ── About these numbers ────────────────────────────────────────────────
 with st.expander("About these numbers"):
-    st.markdown("""
-**Annualization**
+    st.markdown(f"""
+**Year boundaries**
 
-The 2024 dataset covers January through September 2024 (9 months). Annualized figures
-multiply raw 9-month counts by 12/9 to project the full calendar year, assuming the
-monthly pace observed so far holds through December. This is a **linear extrapolation**
-— it does not adjust for seasonality, trend, or lumpiness in closing activity. For a
-trend-aware forward projection, see the **Forecast** page, which uses Snowflake Cortex
-FORECAST on the monthly time series.
+Year boundaries (`current_year`, `prior_year`, `months_elapsed`) are derived
+dynamically from `MAX(contract_date)` in the mart. For the current dataset that
+resolves to {current_year} / {prior_year} / {months_elapsed} months. As new data
+arrives, these update automatically without model changes.
+
+**Same-period YoY (headline)**
+
+*YoY (same period)* compares January–{month_abbr} {current_year} closings directly
+against January–{month_abbr} {prior_year} closings — the same calendar window in
+both years. This is an apples-to-apples measurement; no extrapolation is involved.
+
+**Annualized pace (secondary)**
+
+*Pace attainment* and *YoY (annualized)* multiply {months_elapsed}-month actuals by
+12/{months_elapsed} to project the full year, assuming constant monthly pace. This is
+linear extrapolation, not a trend-aware forecast. Trend-aware projections are on the
+**Forecast** page (Snowflake Cortex FORECAST on the monthly time series).
 
 **Margin attainment delta**
 
 *Margin Δ vs target* is `avg_estimated_margin_pct − margin_target_pct`. The estimated
-margin column is a documented proxy: revenue net of agent commission expressed as a
-fraction of contract price. The dataset has no construction cost column by design — this
-is the closest available measure of deal quality. As a result, large positive deltas
-should not be read as "beating the margin target by X percentage points" in an accounting
-sense. See the README for the full proxy definition and rationale.
+margin is a documented proxy (revenue net of agent commission ÷ contract price) — the
+dataset has no construction cost column by design. Large deltas reflect the proxy
+definition, not literal accounting outperformance. See the README for full context.
 """)

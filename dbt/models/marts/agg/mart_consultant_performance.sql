@@ -8,7 +8,18 @@ with sales as (
 
 ),
 
--- All-time aggregates (existing)
+bounds as (
+
+    select
+        max(contract_date)               as latest_contract_date,
+        year(max(contract_date))         as current_year,
+        year(max(contract_date)) - 1     as prior_year,
+        month(max(contract_date))        as months_elapsed
+    from sales
+
+),
+
+-- All-time aggregates
 overall as (
 
     select
@@ -32,45 +43,46 @@ overall as (
 
 ),
 
--- 2023 only
-y2023 as (
+y_prior_year as (
 
     select
         consultant_sk,
-        count_if(is_closed)                                          as closed_2023,
-        count_if(is_cancelled) / nullif(count(*), 0)::float          as cancel_rate_2023
+        count_if(is_closed)                                          as closed_prior_year,
+        count_if(is_cancelled) / nullif(count(*), 0)::float          as cancel_rate_prior_year
     from sales
-    where year(contract_date) = 2023
+    cross join bounds
+    where year(contract_date) = bounds.prior_year
     group by 1
 
 ),
 
--- 2024 only (Jan–Sep)
-y2024 as (
+y_current_year as (
 
     select
         consultant_sk,
-        count_if(is_closed)                                          as closed_2024,
-        count_if(is_cancelled) / nullif(count(*), 0)::float          as cancel_rate_2024
+        count_if(is_closed)                                          as closed_current_year,
+        count_if(is_cancelled) / nullif(count(*), 0)::float          as cancel_rate_current_year
     from sales
-    where year(contract_date) = 2024
+    cross join bounds
+    where year(contract_date) = bounds.current_year
     group by 1
 
 )
 
 select
     o.*,
-    coalesce(y2023.closed_2023, 0)                                   as closed_2023,
-    coalesce(y2024.closed_2024, 0)                                   as closed_2024,
-    round(coalesce(y2024.closed_2024, 0) * 12.0/9)::integer          as closed_2024_annualized,
-    -- Volume YoY: annualized 2024 vs 2023, expressed as % change
+    coalesce(yp.closed_prior_year, 0)                                    as closed_prior_year,
+    coalesce(yc.closed_current_year, 0)                                  as closed_current_year,
+    round(coalesce(yc.closed_current_year, 0) * (12.0 / bo.months_elapsed))::integer
+                                                                         as closed_current_year_annualized,
     round(
-        (coalesce(y2024.closed_2024, 0) * 12.0/9 - coalesce(y2023.closed_2023, 0))
-        / nullif(coalesce(y2023.closed_2023, 0), 0)::float
-    , 4)                                                             as volume_yoy_pct,
-    y2023.cancel_rate_2023,
-    y2024.cancel_rate_2024,
-    round(y2024.cancel_rate_2024 - y2023.cancel_rate_2023, 4)        as cancel_rate_yoy_delta
+        (coalesce(yc.closed_current_year, 0) * (12.0 / bo.months_elapsed) - coalesce(yp.closed_prior_year, 0))
+        / nullif(coalesce(yp.closed_prior_year, 0), 0)::float
+    , 4)                                                                 as volume_yoy_pct,
+    yp.cancel_rate_prior_year,
+    yc.cancel_rate_current_year,
+    round(yc.cancel_rate_current_year - yp.cancel_rate_prior_year, 4)   as cancel_rate_yoy_delta
 from overall o
-left join y2023 using (consultant_sk)
-left join y2024 using (consultant_sk)
+cross join bounds bo
+left join y_prior_year  yp using (consultant_sk)
+left join y_current_year yc using (consultant_sk)

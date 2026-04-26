@@ -1,10 +1,29 @@
 {{ config(schema='analytics', materialized='table') }}
 
+/*
+  Year boundaries and annualization are derived from MAX(contract_date), not
+  hardcoded. As new data arrives, current_year/prior_year/months_elapsed
+  update automatically. The one fixed value, contract_date < '2024-10-01',
+  is the documented partial-month exclusion (extract boundary on the static
+  snapshot), not a year assumption.
+*/
+
 with sales as (
 
     select *
     from {{ ref('fct_home_sales') }}
     where contract_date < '2024-10-01'
+
+),
+
+bounds as (
+
+    select
+        max(contract_date)               as latest_contract_date,
+        year(max(contract_date))         as current_year,
+        year(max(contract_date)) - 1     as prior_year,
+        month(max(contract_date))        as months_elapsed
+    from sales
 
 ),
 
@@ -37,8 +56,12 @@ with_annualization as (
 
     select
         b.*,
-        case when contract_year = 2024 then 12.0/9 else 1.0 end        as annualization_factor
+        case when b.contract_year = bo.current_year
+             then 12.0 / bo.months_elapsed
+             else 1.0
+        end                                                            as annualization_factor
     from by_region_year b
+    cross join bounds bo
 
 ),
 
@@ -92,31 +115,56 @@ with_yoy as (
             as cancel_rate_yoy_delta
     from with_attainment
 
+),
+
+-- Prior-year closings through the same month as current-year partial data.
+-- Cross join with bounds supplies prior_year and months_elapsed as scalars.
+prior_year_same_period as (
+
+    select
+        region_sk,
+        count_if(is_closed)                                            as same_period_closed_prior_year
+    from sales
+    cross join bounds
+    where year(contract_date)  = bounds.prior_year
+      and month(contract_date) <= bounds.months_elapsed
+    group by region_sk
+
 )
 
 select
-    region_sk,
-    region,
-    contract_year,
-    contracts,
-    contracts_closed,
-    contracts_cancelled,
-    cancel_rate,
-    contracts_annualized,
-    contracts_closed_annualized,
-    avg_contract_price,
-    avg_days_to_close,
-    avg_estimated_margin_pct,
-    avg_upgrade_capture_pct,
-    avg_commission_rate,
-    sales_target_units,
-    margin_target_pct,
-    target_attainment_annualized_pct,
-    target_attainment_ytd_pct,
-    margin_attainment_delta,
-    prior_year_closed_annualized,
-    closed_yoy_delta,
-    closed_yoy_pct,
-    cancel_rate_yoy_delta,
-    annualization_factor
-from with_yoy
+    w.region_sk,
+    w.region,
+    w.contract_year,
+    w.contracts,
+    w.contracts_closed,
+    w.contracts_cancelled,
+    w.cancel_rate,
+    w.contracts_annualized,
+    w.contracts_closed_annualized,
+    w.avg_contract_price,
+    w.avg_days_to_close,
+    w.avg_estimated_margin_pct,
+    w.avg_upgrade_capture_pct,
+    w.avg_commission_rate,
+    w.sales_target_units,
+    w.margin_target_pct,
+    w.target_attainment_annualized_pct,
+    w.target_attainment_ytd_pct,
+    w.margin_attainment_delta,
+    w.prior_year_closed_annualized,
+    w.closed_yoy_delta,
+    w.closed_yoy_pct,
+    w.cancel_rate_yoy_delta,
+    w.annualization_factor,
+    py.same_period_closed_prior_year,
+    iff(w.contract_year = bo.current_year,
+        round(
+            (w.contracts_closed - py.same_period_closed_prior_year)
+            / nullif(py.same_period_closed_prior_year, 0)::float
+        , 4),
+        null
+    )                                                                   as same_period_yoy_pct
+from with_yoy w
+left join prior_year_same_period py on w.region_sk = py.region_sk
+cross join bounds bo

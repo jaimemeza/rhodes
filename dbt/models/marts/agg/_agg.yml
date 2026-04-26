@@ -163,40 +163,40 @@ models:
           - dbt_utils.expression_is_true:
               expression: "between 0 and 1"
 
-      - name: closed_2023
-        description: Closed contracts signed in 2023.
+      - name: closed_prior_year
+        description: "Closed contracts in the prior calendar year. Currently 2023; updates with new data."
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 0"
 
-      - name: closed_2024
-        description: Closed contracts signed in 2024 (Jan–Sep).
+      - name: closed_current_year
+        description: "Closed contracts in the current partial year (Jan through most recent month). Currently Jan–Sep 2024."
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 0"
 
-      - name: closed_2024_annualized
-        description: 2024 closed contracts projected to a full year (×12/9).
+      - name: closed_current_year_annualized
+        description: "Current-year closed contracts projected to a full year by linear extrapolation."
 
       - name: volume_yoy_pct
-        description: Annualized 2024 volume vs 2023 volume, as a fractional change. Can be negative or large.
+        description: "Annualized current-year volume vs prior-year volume, as a fractional change. Can be negative or large."
 
-      - name: cancel_rate_2023
-        description: Cancellation rate for 2023 contracts only.
+      - name: cancel_rate_prior_year
+        description: "Cancellation rate for the prior calendar year."
         tests:
           - dbt_utils.expression_is_true:
               expression: "between 0 and 1"
 
-      - name: cancel_rate_2024
-        description: Cancellation rate for 2024 contracts only (Jan–Sep).
+      - name: cancel_rate_current_year
+        description: "Cancellation rate for the current partial year."
         tests:
           - dbt_utils.expression_is_true:
               expression: "between 0 and 1"
 
       - name: cancel_rate_yoy_delta
-        description: "cancel_rate_2024 − cancel_rate_2023. Negative = improvement."
+        description: "cancel_rate_current_year − cancel_rate_prior_year. Negative = improvement."
 
   - name: mart_consultant_region
     description: One row per consultant × region. Drill-down supporting the leaderboard with region-specific performance.
@@ -395,6 +395,21 @@ models:
         description: >
           Multiplier for linear extrapolation (12 / months_elapsed). 1.0 for 2023
           (12 months complete), ≈1.333 for 2024 (9 months elapsed).
+
+      - name: same_period_closed_prior_year
+        description: "Closed contracts in the prior year through the same month as the current-year partial data. Denominator for same_period_yoy_pct."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: same_period_yoy_pct
+        description: "Apples-to-apples YoY: current-year closings vs prior-year same-period closings. Null for prior year rows."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "between -1 and 5"
+              config:
+                where: "same_period_yoy_pct is not null"
 
   - name: mart_channel_economics
     description: >
