@@ -334,12 +334,53 @@ models:
       - name: margin_target_pct
         description: "Target margin percentage (0–1). Denormalized from dim_region for dashboard convenience."
 
-      - name: target_attainment_pct
-        description: Annualized closed contracts divided by sales_target_units. Above 1.0 = on pace to exceed target.
+      - name: target_attainment_annualized_pct
+        description: "Annualized closed contracts divided by annual target. ≥ 1.0 = on pace to exceed target."
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 0"
+
+      - name: target_attainment_ytd_pct
+        description: "Raw closed contracts divided by annual target. Shows % of annual target already hit, no annualization."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: margin_attainment_delta
+        description: "Average estimated margin minus the regional margin target. Positive = beating target, negative = below."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "between -1 and 1"
+
+      - name: prior_year_closed_annualized
+        description: "Annualized closed contracts for the prior year. Null on the first year per region."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              config:
+                where: "prior_year_closed_annualized is not null"
+
+      - name: closed_yoy_delta
+        description: "Annualized closed contracts minus prior year. Null on the first year per region."
+
+      - name: closed_yoy_pct
+        description: "Year-over-year change in annualized closings as a fraction (e.g. 0.08 = +8%). Null on the first year per region."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "between -1 and 5"
+              config:
+                where: "closed_yoy_pct is not null"
+
+      - name: cancel_rate_yoy_delta
+        description: "Cancel rate minus prior year cancel rate. Null on the first year per region."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "between -1 and 1"
+              config:
+                where: "cancel_rate_yoy_delta is not null"
 
       - name: annualization_factor
         description: Multiplier applied to convert partial-year actuals to annualized projections.
