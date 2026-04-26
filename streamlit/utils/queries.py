@@ -170,6 +170,28 @@ def fetch_channel_economics(_conn) -> pd.DataFrame:
 
 
 @st.cache_data(ttl=600)
+def fetch_consultant_performance(_conn) -> pd.DataFrame:
+    """Returns mart_consultant_performance with YoY columns, sorted by closings."""
+    query = """
+        select sales_consultant, closed_contracts,
+               closed_prior_year, closed_current_year,
+               closed_current_year_annualized,
+               cancel_rate, cancel_rate_prior_year,
+               cancel_rate_current_year, cancel_rate_yoy_delta,
+               avg_days_to_close, cash_buyer_rate, regions_worked
+        from rhodes.analytics.mart_consultant_performance
+        order by closed_contracts desc
+    """
+    cur = _conn.cursor()
+    try:
+        cur.execute(query)
+        cols = [c[0].lower() for c in cur.description]
+        return pd.DataFrame(cur.fetchall(), columns=cols)
+    finally:
+        cur.close()
+
+
+@st.cache_data(ttl=600)
 def fetch_cancel_trend(_conn) -> pd.DataFrame:
     """
     Returns monthly cancellation rate per region for the last 12 months.
