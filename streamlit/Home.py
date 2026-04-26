@@ -2,6 +2,7 @@ import streamlit as st
 
 from utils.snowflake import get_snowflake_connection
 from utils.queries import fetch_session_info
+from utils.styles import apply_global_styles
 
 st.set_page_config(
     page_title="Rhodes Sales Analytics",
@@ -9,39 +10,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
-
-st.markdown("""
-<style>
-/* Tighten default Streamlit padding */
-.block-container {
-    padding-top: 2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    max-width: 1400px;
-}
-
-/* Smaller base font for dense pages */
-html, body, [class*="css"] {
-    font-size: 14px;
-}
-
-/* KPI card numbers scale down slightly */
-.kpi-number {
-    font-size: clamp(24px, 2.5vw, 36px) !important;
-}
-
-/* Tighter sidebar */
-[data-testid="stSidebar"] {
-    min-width: 160px !important;
-    max-width: 180px !important;
-}
-
-/* Reduce vertical spacing between elements */
-[data-testid="stVerticalBlock"] > div {
-    gap: 0.5rem;
-}
-</style>
-""", unsafe_allow_html=True)
+apply_global_styles()
 
 # Attempt connection once; reuse cached resource on every page.
 _conn_error = None

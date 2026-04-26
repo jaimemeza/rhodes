@@ -8,8 +8,11 @@ from utils.queries import (
     fetch_channel_economics,
     fetch_consultant_performance,
 )
+from utils.styles import apply_global_styles
 
-st.set_page_config(page_title="Ask a Question · Rhodes", layout="wide")
+st.set_page_config(page_title="Ask a Question · Rhodes", layout="wide",
+                   initial_sidebar_state="collapsed")
+apply_global_styles()
 
 GREEN      = "#5a8c3e"
 SURFACE    = "#f5f5f7"

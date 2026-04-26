@@ -8,8 +8,11 @@ from utils.queries import (
     fetch_pipeline_by_region,
     fetch_region_year,
 )
+from utils.styles import apply_global_styles
 
-st.set_page_config(page_title="Revenue & Channels · Rhodes", layout="wide")
+st.set_page_config(page_title="Revenue & Channels · Rhodes", layout="wide",
+                   initial_sidebar_state="collapsed")
+apply_global_styles()
 
 GREEN       = "#5a8c3e"
 GREEN_LIGHT = "#7aa55c"

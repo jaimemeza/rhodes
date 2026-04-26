@@ -4,8 +4,11 @@ import streamlit as st
 
 from utils.snowflake import get_snowflake_connection
 from utils.queries import fetch_consultant_performance, fetch_consultant_region
+from utils.styles import apply_global_styles
 
-st.set_page_config(page_title="Consultants · Rhodes", layout="wide")
+st.set_page_config(page_title="Consultants · Rhodes", layout="wide",
+                   initial_sidebar_state="collapsed")
+apply_global_styles()
 
 GREEN       = "#5a8c3e"
 GREEN_LIGHT = "#7aa55c"
