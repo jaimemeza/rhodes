@@ -8,8 +8,11 @@ from utils.queries import (
     fetch_pipeline_by_region,
     fetch_cancel_trend,
 )
+from utils.styles import apply_global_styles
 
-st.set_page_config(page_title="Region Overview · Rhodes", layout="wide")
+st.set_page_config(page_title="Region Overview · Rhodes", layout="wide",
+                   initial_sidebar_state="collapsed")
+apply_global_styles()
 
 # ── Brand colors ───────────────────────────────────────────────────────
 GREEN       = "#5a8c3e"
