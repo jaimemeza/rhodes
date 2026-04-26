@@ -1,3 +1,4 @@
+import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
@@ -34,6 +35,16 @@ if channel_df.empty:
     st.stop()
 
 channel_df = channel_df.copy()
+channel_df["avg_commission_rate"] = pd.to_numeric(
+    channel_df["avg_commission_rate"], errors="coerce"
+)
+channel_df["cancel_rate"] = pd.to_numeric(
+    channel_df["cancel_rate"], errors="coerce"
+)
+for col in ["contracts", "closed_contracts", "total_contract_value",
+            "avg_days_to_close"]:
+    channel_df[col] = pd.to_numeric(channel_df[col], errors="coerce")
+
 channel_df["commission_pct"] = (channel_df["avg_commission_rate"] * 100).round(2)
 channel_df["cancel_pct"]     = (channel_df["cancel_rate"] * 100).round(2)
 channel_df["revenue_M"]      = (channel_df["total_contract_value"] / 1e6).round(1)
