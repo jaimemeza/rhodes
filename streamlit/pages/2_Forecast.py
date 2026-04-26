@@ -27,6 +27,8 @@ REGION_FILL = {
     "Coastal Bend":      "rgba(199,90,62,0.15)",
 }
 
+FORECAST_START_MS = pd.Timestamp("2024-09-15").timestamp() * 1000
+
 st.title("Forecast")
 st.caption(
     "Snowflake Cortex FORECAST — trained on 21 months of closing history. "
@@ -48,8 +50,9 @@ if fore_df.empty:
     )
     st.stop()
 
-hist_df         = hist_df.copy()
-hist_df["year"] = pd.to_datetime(hist_df["month_start"]).dt.year
+hist_df                  = hist_df.copy()
+hist_df["month_start"]   = pd.to_datetime(hist_df["month_start"])
+hist_df["year"]          = hist_df["month_start"].dt.year
 
 targets = (
     hist_df[["region", "sales_target_units"]]
@@ -92,6 +95,7 @@ tab1, tab2 = st.tabs(["Contract Volume", "Close Time"])
 # ══════════════════════════════════════════════════════════════════════
 with tab1:
     vol_fore = fore_df[fore_df["metric"] == "volume"].copy()
+    vol_fore["forecast_month"] = pd.to_datetime(vol_fore["forecast_month"])
 
     # ── Section A: Summary cards ────────────────────────────────────────
     card_cols = st.columns(3)
@@ -179,7 +183,7 @@ with tab1:
             ))
 
     fig.add_vline(
-        x="2024-09-15",
+        x=FORECAST_START_MS,
         line_dash="dot", line_color=GRAY,
         annotation_text="Forecast →",
         annotation_position="top right",
@@ -256,6 +260,7 @@ with tab2:
         (fore_df["metric"] == "days_to_close") &
         (fore_df["region"] != "Coastal Bend")
     ].copy()
+    close_fore["forecast_month"] = pd.to_datetime(close_fore["forecast_month"])
 
     fig2 = go.Figure()
     for region in ["Rio Grande Valley", "South Texas"]:
@@ -283,7 +288,7 @@ with tab2:
             ))
 
     fig2.add_vline(
-        x="2024-09-15",
+        x=FORECAST_START_MS,
         line_dash="dot", line_color=GRAY,
         annotation_text="Forecast →",
         annotation_position="top right",
