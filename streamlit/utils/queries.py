@@ -170,6 +170,26 @@ def fetch_channel_economics(_conn) -> pd.DataFrame:
 
 
 @st.cache_data(ttl=600)
+def fetch_consultant_region(_conn) -> pd.DataFrame:
+    """Returns mart_consultant_region for consultant × region drill-down."""
+    query = """
+        select sales_consultant, region, contracts,
+               closed_contracts, cancelled_contracts,
+               cancel_rate, avg_days_to_close,
+               total_contract_value
+        from rhodes.analytics.mart_consultant_region
+        order by sales_consultant, closed_contracts desc
+    """
+    cur = _conn.cursor()
+    try:
+        cur.execute(query)
+        cols = [c[0].lower() for c in cur.description]
+        return pd.DataFrame(cur.fetchall(), columns=cols)
+    finally:
+        cur.close()
+
+
+@st.cache_data(ttl=600)
 def fetch_consultant_performance(_conn) -> pd.DataFrame:
     """Returns mart_consultant_performance with YoY columns, sorted by closings."""
     query = """
