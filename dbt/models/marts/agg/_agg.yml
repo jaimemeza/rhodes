@@ -308,10 +308,16 @@ models:
               expression: "between 0 and 1"
 
       - name: contracts_annualized
-        description: "Volume projected to full year (×12/9 for 2024, ×1 for 2023)."
+        description: >
+          Total contracts projected to a full year by linear extrapolation (count × 12 /
+          months_elapsed). Assumes constant monthly pace; does not account for seasonality
+          or trend.
 
       - name: contracts_closed_annualized
-        description: "Closed contracts projected to full year (×12/9 for 2024, ×1 for 2023)."
+        description: >
+          Closed contracts projected to a full year by linear extrapolation. Assumes
+          constant monthly pace; for trend-aware forecasting, see Cortex FORECAST output
+          on mart_region_month.
 
       - name: avg_contract_price
         description: Average contract price for closed contracts.
@@ -335,7 +341,10 @@ models:
         description: "Target margin percentage (0–1). Denormalized from dim_region for dashboard convenience."
 
       - name: target_attainment_annualized_pct
-        description: "Annualized closed contracts divided by annual target. ≥ 1.0 = on pace to exceed target."
+        description: >
+          Linear-projection attainment — annualized closings at current monthly pace
+          divided by annual target. ≥ 1.0 = on pace to exceed target. Naive projection;
+          does not adjust for trend or seasonality.
         tests:
           - not_null
           - dbt_utils.expression_is_true:
@@ -383,7 +392,9 @@ models:
                 where: "cancel_rate_yoy_delta is not null"
 
       - name: annualization_factor
-        description: Multiplier applied to convert partial-year actuals to annualized projections.
+        description: >
+          Multiplier for linear extrapolation (12 / months_elapsed). 1.0 for 2023
+          (12 months complete), ≈1.333 for 2024 (9 months elapsed).
 
   - name: mart_channel_economics
     description: >
