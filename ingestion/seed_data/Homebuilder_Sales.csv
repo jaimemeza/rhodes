@@ -1,0 +1,601 @@
+Contract_ID,Community,City,Region,Plan_Name,Sqft,Bedrooms,Bathrooms,Base_Price,Upgrade_Amount,Incentive_Amount,Contract_Price,Contract_Date,Close_Date,Days_to_Close,Status,Buyer_Source,Agent_Commission,Loan_Type,Sales_Consultant
+CTR-0001,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,4,2.5,219900,24000,0,243900,2023-09-08,2023-12-20,103,Closed,Walk-In,7317.0,FHA,Maria Torres
+CTR-0002,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,3,2.5,249900,7500,5000,252400,2024-09-08,2024-10-20,42,Closed,Repeat/Referral,7572.0,USDA,Ana Garza
+CTR-0003,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,3,2.5,359900,5000,7500,357400,2024-03-08,2024-06-25,109,Closed,Walk-In,10722.0,FHA,Ana Garza
+CTR-0004,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,4,2.5,319900,8500,10000,318400,2023-02-14,2023-07-22,158,Closed,Walk-In,9552.0,USDA,Ana Garza
+CTR-0005,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,4,2.5,339900,2000,0,341900,2023-08-22,2023-11-30,100,Closed,Repeat/Referral,10257.0,VA,James Whitfield
+CTR-0006,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,6500,7500,273900,2023-10-01,2024-03-26,177,Closed,Zillow,8217.0,Conventional,James Whitfield
+CTR-0007,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,3,2.5,299900,8500,7500,300900,2024-07-24,2024-12-02,131,Closed,Realtor.com,9027.0,Cash,Ana Garza
+CTR-0008,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,3,2.5,249900,18500,7500,260900,2023-11-19,2024-04-20,153,Closed,Model Home Visit,7827.0,Conventional,James Whitfield
+CTR-0009,Del Sol Estates,Edinburg,Rio Grande Valley,Fiesta,2680,3,2.0,339900,19000,2500,356400,2024-08-20,2024-12-16,118,Closed,Model Home Visit,0,FHA,James Whitfield
+CTR-0010,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,4,2.0,359900,22000,2500,379400,2024-09-02,2024-10-26,54,Closed,Facebook Ads,11382.0,FHA,Marcus Bell
+CTR-0011,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,21000,0,380900,2023-04-25,2023-08-13,110,Closed,Facebook Ads,11427.0,USDA,Maria Torres
+CTR-0012,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,3,3.0,359900,20500,5000,375400,2024-09-15,2025-01-30,137,Closed,Event/Home Show,11262.0,VA,David Reyes
+CTR-0013,Esperanza Crossing,San Antonio,South Texas,Azalea,1450,5,2.5,219900,11500,10000,221400,2023-11-11,2024-03-10,120,Closed,Walk-In,6642.0,FHA,Sandra Kim
+CTR-0014,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,4,3.0,249900,21500,2500,268900,2024-07-16,2024-12-20,157,Closed,Realtor.com,8067.0,Conventional,Marcus Bell
+CTR-0015,Del Sol Estates,Edinburg,Rio Grande Valley,Desert Willow,2210,4,2.0,299900,22000,7500,314400,2024-01-18,2024-06-22,156,Closed,Walk-In,0,USDA,Sandra Kim
+CTR-0016,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,3,3.0,319900,7000,0,326900,2023-03-14,2023-06-19,97,Closed,Google Search,9807.0,Conventional,Ana Garza
+CTR-0017,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,3,2.0,249900,17500,0,267400,2024-08-07,2024-12-06,121,Closed,Realtor.com,8022.0,Cash,Ana Garza
+CTR-0018,Canyon Creek,San Antonio,South Texas,Desert Willow,2210,3,2.0,299900,15000,10000,304900,2023-02-25,,,Cancelled,Walk-In,9147.0,Conventional,Sandra Kim
+CTR-0019,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,3,2.0,249900,13500,0,263400,2023-10-13,2024-01-20,99,Closed,Event/Home Show,7902.0,USDA,Maria Torres
+CTR-0020,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,7500,0,367400,2024-02-21,2024-06-17,117,Closed,Zillow,11022.0,Cash,Ana Garza
+CTR-0021,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,13500,7500,280900,2024-07-23,2024-12-22,152,Closed,Realtor Referral,8427.0,USDA,Maria Torres
+CTR-0022,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,3,2.0,219900,1500,5000,216400,2024-05-03,2024-10-07,157,Closed,Walk-In,6492.0,USDA,Maria Torres
+CTR-0023,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,4,2.5,299900,3500,5000,298400,2023-09-10,2023-12-14,95,Closed,Event/Home Show,8952.0,Conventional,Marcus Bell
+CTR-0024,Sunrise Pointe,Brownsville,Rio Grande Valley,Bluebonnet,1720,3,2.5,249900,8500,2500,255900,2023-05-15,2023-09-20,128,Closed,Walk-In,7677.0,USDA,Sandra Kim
+CTR-0025,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,4,2.0,219900,17500,0,237400,2024-06-02,2024-10-14,134,Closed,Google Search,7122.0,Cash,Sandra Kim
+CTR-0026,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,4,2.0,319900,21000,5000,335900,2023-01-09,2023-06-18,160,Closed,Zillow,10077.0,FHA,Marcus Bell
+CTR-0027,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,4,2.5,274900,9000,5000,278900,2023-08-04,2023-11-28,116,Closed,Event/Home Show,8367.0,FHA,Maria Torres
+CTR-0028,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,4,3.0,359900,9000,0,368900,2023-01-04,2023-04-20,106,Closed,Model Home Visit,11067.0,Cash,Sandra Kim
+CTR-0029,Esperanza Crossing,San Antonio,South Texas,Azalea,1450,3,2.5,219900,2000,7500,214400,2023-06-02,2023-10-17,137,Closed,Zillow,0,VA,Maria Torres
+CTR-0030,Sunrise Pointe,Brownsville,Rio Grande Valley,Bluebonnet,1720,3,2.0,249900,22000,0,271900,2023-04-16,2023-09-24,161,Closed,Zillow,8157.0,Conventional,David Reyes
+CTR-0031,Esperanza Crossing,San Antonio,South Texas,Bluebonnet,1720,4,2.0,249900,24000,0,273900,2024-02-26,2024-06-26,121,Closed,Walk-In,8217.0,Cash,James Whitfield
+CTR-0032,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,2.5,359900,15000,0,374900,2023-11-09,2024-03-07,119,Closed,Repeat/Referral,11247.0,FHA,Ana Garza
+CTR-0033,Sunrise Pointe,Brownsville,Rio Grande Valley,Fiesta,2680,3,2.0,339900,16500,2500,353900,2024-07-03,,,Cancelled,Facebook Ads,0,USDA,David Reyes
+CTR-0034,Sunrise Pointe,Brownsville,Rio Grande Valley,Fiesta,2680,3,3.0,339900,10000,2500,347400,2024-09-12,2024-12-25,104,Closed,Facebook Ads,10422.0,Cash,Maria Torres
+CTR-0035,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,4,2.5,274900,14000,0,288900,2023-12-05,2024-05-27,174,Closed,Facebook Ads,8667.0,Cash,Ana Garza
+CTR-0036,Canyon Creek,San Antonio,South Texas,Fiesta,2680,4,3.0,339900,9500,5000,344400,2023-05-11,2023-11-02,175,Closed,Zillow,10332.0,VA,David Reyes
+CTR-0037,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,5,2.0,274900,9000,0,283900,2024-03-16,2024-08-30,167,Closed,Model Home Visit,8517.0,USDA,David Reyes
+CTR-0038,Tierra Nueva,Laredo,South Texas,Fiesta,2680,5,2.5,339900,2500,0,342400,2024-06-11,2024-11-27,169,Closed,Realtor.com,10272.0,Conventional,James Whitfield
+CTR-0039,Tierra Nueva,Laredo,South Texas,Azalea,1450,5,3.0,219900,1500,0,221400,2024-05-01,2024-08-08,99,Closed,Realtor.com,6642.0,Cash,David Reyes
+CTR-0040,Canyon Creek,San Antonio,South Texas,Bluebonnet,1720,4,2.0,249900,4500,7500,246900,2023-01-06,2023-04-19,103,Closed,Event/Home Show,0,USDA,James Whitfield
+CTR-0041,Villas at Paloma Creek,McAllen,Rio Grande Valley,Desert Willow,2210,4,3.0,299900,4000,10000,293900,2024-04-20,2024-09-28,161,Closed,Model Home Visit,8817.0,USDA,David Reyes
+CTR-0042,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,24000,10000,263900,2024-05-01,2024-08-30,121,Closed,Event/Home Show,7917.0,Conventional,Ana Garza
+CTR-0043,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,3,2.5,219900,23000,0,242900,2023-08-29,2024-01-06,130,Closed,Zillow,0,Conventional,Marcus Bell
+CTR-0044,Mesquite Ridge,Corpus Christi,Coastal Bend,Azalea,1450,4,2.5,219900,13500,2500,230900,2023-12-05,,,Cancelled,Realtor Referral,6927.0,Cash,Maria Torres
+CTR-0045,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,3,2.5,274900,24500,2500,296900,2024-03-05,2024-08-11,159,Closed,Model Home Visit,8907.0,Cash,David Reyes
+CTR-0046,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,3,2.5,299900,11000,7500,303400,2024-02-19,2024-07-17,149,Closed,Event/Home Show,9102.0,USDA,Sandra Kim
+CTR-0047,Esperanza Crossing,San Antonio,South Texas,Azalea,1450,4,2.5,219900,21000,2500,238400,2023-05-19,,,Under Contract,Google Search,0,VA,David Reyes
+CTR-0048,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,5,2.0,359900,2500,2500,359900,2023-01-20,2023-04-26,96,Closed,Walk-In,10797.0,FHA,James Whitfield
+CTR-0049,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,3.0,359900,500,5000,355400,2023-06-06,2023-11-03,150,Closed,Realtor.com,10662.0,VA,Ana Garza
+CTR-0050,Tierra Nueva,Laredo,South Texas,Evening Star,2450,4,3.0,319900,19500,7500,331900,2023-04-28,2023-08-16,110,Closed,Realtor Referral,9957.0,Cash,David Reyes
+CTR-0051,Mesquite Ridge,Corpus Christi,Coastal Bend,Azalea,1450,4,2.0,219900,19000,7500,231400,2023-09-06,2023-11-24,79,Closed,Walk-In,6942.0,VA,Sandra Kim
+CTR-0052,Canyon Creek,San Antonio,South Texas,Fiesta,2680,4,2.5,339900,12000,0,351900,2024-06-02,2024-09-01,91,Closed,Walk-In,10557.0,Cash,Marcus Bell
+CTR-0053,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,4,2.5,299900,5500,7500,297900,2024-06-18,2024-10-20,124,Closed,Model Home Visit,8937.0,USDA,Ana Garza
+CTR-0054,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,8000,10000,357900,2023-03-30,2023-08-24,147,Closed,Repeat/Referral,10737.0,Cash,Ana Garza
+CTR-0055,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,4,2.0,299900,6500,0,306400,2023-09-22,2024-03-06,166,Closed,Realtor Referral,9192.0,FHA,James Whitfield
+CTR-0056,Canyon Creek,San Antonio,South Texas,Desert Willow,2210,3,2.5,299900,18000,10000,307900,2023-09-04,2024-02-23,172,Closed,Realtor Referral,9237.0,Conventional,David Reyes
+CTR-0057,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,4,2.5,274900,21500,5000,291400,2024-01-13,2024-06-18,157,Closed,Event/Home Show,8742.0,Cash,Ana Garza
+CTR-0058,Del Sol Estates,Edinburg,Rio Grande Valley,Cactus Rose,1980,3,3.0,274900,7500,0,282400,2023-07-17,2023-12-22,158,Closed,Realtor.com,8472.0,Cash,Ana Garza
+CTR-0059,Del Sol Estates,Edinburg,Rio Grande Valley,Azalea,1450,4,2.5,219900,6000,0,225900,2023-08-21,,,Cancelled,Realtor Referral,6777.0,Conventional,Marcus Bell
+CTR-0060,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,4,2.0,219900,0,5000,214900,2023-10-19,2024-03-13,146,Closed,Facebook Ads,6447.0,FHA,David Reyes
+CTR-0061,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,3,3.0,219900,18500,7500,230900,2023-02-24,2023-08-05,162,Closed,Realtor.com,0,Cash,Sandra Kim
+CTR-0062,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,3.0,359900,17000,2500,374400,2024-04-06,2024-08-12,128,Closed,Facebook Ads,11232.0,FHA,Sandra Kim
+CTR-0063,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,3,2.0,359900,6500,7500,358900,2023-08-05,2023-11-13,100,Closed,Walk-In,0,Cash,David Reyes
+CTR-0064,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,1000,0,275900,2023-10-23,2024-04-19,179,Closed,Realtor.com,0,USDA,Marcus Bell
+CTR-0065,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,4,3.0,299900,3500,5000,298400,2023-08-19,2023-12-21,124,Closed,Zillow,0,USDA,Ana Garza
+CTR-0066,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,4,2.0,219900,15000,7500,227400,2023-11-08,2024-03-11,124,Closed,Walk-In,6822.0,Cash,Marcus Bell
+CTR-0067,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,5,2.5,319900,8000,0,327900,2023-04-04,2023-09-27,176,Closed,Realtor Referral,9837.0,USDA,Maria Torres
+CTR-0068,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,3,2.5,299900,17000,7500,309400,2024-03-28,2024-07-19,113,Closed,Model Home Visit,9282.0,VA,David Reyes
+CTR-0069,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,4,2.0,274900,21500,0,296400,2023-06-14,2023-12-09,178,Closed,Repeat/Referral,8892.0,Cash,Maria Torres
+CTR-0070,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,3,2.0,274900,10500,0,285400,2024-02-18,2024-05-18,90,Closed,Repeat/Referral,8562.0,USDA,Ana Garza
+CTR-0071,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,3,2.0,339900,14000,10000,343900,2023-02-22,2023-08-01,160,Closed,Model Home Visit,10317.0,USDA,James Whitfield
+CTR-0072,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,3,3.0,274900,18000,0,292900,2024-07-19,2024-11-14,118,Closed,Model Home Visit,8787.0,Conventional,David Reyes
+CTR-0073,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,3,3.0,319900,23000,0,342900,2024-03-01,2024-07-29,150,Closed,Repeat/Referral,10287.0,USDA,Marcus Bell
+CTR-0074,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,4,3.0,359900,2000,0,361900,2024-02-29,2024-08-01,154,Closed,Facebook Ads,0,Cash,James Whitfield
+CTR-0075,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,5,2.0,319900,15500,0,335400,2023-12-07,2024-05-14,159,Closed,Realtor.com,10062.0,USDA,David Reyes
+CTR-0076,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,2.0,359900,13000,0,372900,2023-11-22,2024-05-20,180,Closed,Zillow,11187.0,Conventional,Sandra Kim
+CTR-0077,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,5,2.0,359900,3000,10000,352900,2024-03-26,2024-06-22,88,Closed,Repeat/Referral,10587.0,FHA,David Reyes
+CTR-0078,Del Sol Estates,Edinburg,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,20000,7500,287400,2024-02-12,2024-06-23,132,Closed,Repeat/Referral,8622.0,Cash,Sandra Kim
+CTR-0079,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,4,2.0,319900,2000,0,321900,2023-10-22,2024-01-31,101,Closed,Walk-In,0,VA,Maria Torres
+CTR-0080,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,3,2.0,274900,1500,0,276400,2024-01-03,2024-04-20,108,Closed,Zillow,8292.0,FHA,Sandra Kim
+CTR-0081,Canyon Creek,San Antonio,South Texas,Evening Star,2450,4,3.0,319900,22000,0,341900,2024-05-24,2024-09-09,108,Closed,Model Home Visit,10257.0,FHA,David Reyes
+CTR-0082,Del Sol Estates,Edinburg,Rio Grande Valley,Fiesta,2680,5,2.5,339900,17500,0,357400,2023-03-17,2023-07-29,134,Closed,Repeat/Referral,10722.0,Cash,Ana Garza
+CTR-0083,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,3,3.0,299900,15500,0,315400,2023-08-31,2024-01-13,135,Closed,Facebook Ads,9462.0,Cash,Ana Garza
+CTR-0084,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,4,2.5,319900,22000,10000,331900,2023-02-20,2023-07-23,153,Closed,Realtor.com,9957.0,Conventional,Marcus Bell
+CTR-0085,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,3,3.0,319900,8000,7500,320400,2023-05-21,2023-11-07,170,Closed,Model Home Visit,9612.0,VA,Marcus Bell
+CTR-0086,Tierra Nueva,Laredo,South Texas,Azalea,1450,4,3.0,219900,9500,0,229400,2024-03-01,2024-06-15,106,Closed,Google Search,6882.0,VA,James Whitfield
+CTR-0087,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,3,2.0,359900,15500,10000,365400,2023-10-30,2024-03-11,133,Closed,Walk-In,10962.0,Cash,Sandra Kim
+CTR-0088,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,4,2.5,219900,12500,0,232400,2023-09-28,2024-02-23,148,Closed,Facebook Ads,6972.0,VA,Maria Torres
+CTR-0089,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,5,2.5,299900,500,5000,295400,2024-07-28,2025-01-12,168,Closed,Model Home Visit,0,Cash,Maria Torres
+CTR-0090,Tierra Nueva,Laredo,South Texas,Azalea,1450,4,3.0,219900,1000,0,220900,2024-05-19,2024-07-03,45,Closed,Model Home Visit,0,USDA,David Reyes
+CTR-0091,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,4,2.0,299900,21000,0,320900,2024-05-16,,,Under Contract,Realtor.com,9627.0,VA,Sandra Kim
+CTR-0092,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,3,2.5,219900,13000,0,232900,2023-07-14,,,Under Contract,Realtor Referral,6987.0,Conventional,James Whitfield
+CTR-0093,Mesquite Ridge,Corpus Christi,Coastal Bend,Azalea,1450,4,2.0,219900,18000,0,237900,2024-08-23,2024-12-20,119,Closed,Realtor Referral,7137.0,Conventional,Sandra Kim
+CTR-0094,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,3,2.0,359900,5500,0,365400,2023-01-27,2023-03-20,52,Closed,Google Search,0,VA,Maria Torres
+CTR-0095,Tierra Nueva,Laredo,South Texas,Fiesta,2680,4,3.0,339900,13500,5000,348400,2023-04-27,2023-09-24,150,Closed,Walk-In,10452.0,Conventional,Sandra Kim
+CTR-0096,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,3.0,339900,21500,5000,356400,2023-11-05,,,Cancelled,Walk-In,10692.0,Cash,Maria Torres
+CTR-0097,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,19500,0,294400,2023-03-09,2023-05-17,69,Closed,Google Search,8832.0,USDA,Ana Garza
+CTR-0098,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,5,2.0,319900,19500,2500,336900,2023-04-12,2023-07-25,104,Closed,Event/Home Show,10107.0,Cash,David Reyes
+CTR-0099,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,4,2.0,299900,11000,10000,300900,2024-04-09,2024-07-20,102,Closed,Facebook Ads,9027.0,Cash,Maria Torres
+CTR-0100,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,4,3.0,359900,2500,0,362400,2024-03-18,2024-06-03,77,Closed,Realtor Referral,10872.0,USDA,Ana Garza
+CTR-0101,Villas at Paloma Creek,McAllen,Rio Grande Valley,Desert Willow,2210,3,3.0,299900,11500,10000,301400,2024-03-09,2024-06-13,96,Closed,Google Search,9042.0,USDA,James Whitfield
+CTR-0102,Tierra Nueva,Laredo,South Texas,Fiesta,2680,4,3.0,339900,15500,0,355400,2023-04-21,2023-09-29,161,Closed,Realtor.com,10662.0,USDA,Sandra Kim
+CTR-0103,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,4,2.0,319900,21500,10000,331400,2023-10-01,2023-11-17,47,Closed,Google Search,9942.0,Conventional,James Whitfield
+CTR-0104,Canyon Creek,San Antonio,South Texas,Azalea,1450,3,2.5,219900,4500,7500,216900,2023-02-01,2023-04-05,63,Closed,Google Search,6507.0,VA,Marcus Bell
+CTR-0105,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,2.5,359900,18500,5000,373400,2023-03-28,2023-07-15,109,Closed,Walk-In,11202.0,Cash,David Reyes
+CTR-0106,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,5,2.5,299900,8500,0,308400,2024-06-08,,,Cancelled,Event/Home Show,9252.0,FHA,James Whitfield
+CTR-0107,Canyon Creek,San Antonio,South Texas,Evening Star,2450,4,2.0,319900,1500,0,321400,2023-07-29,2023-11-23,117,Closed,Facebook Ads,9642.0,FHA,David Reyes
+CTR-0108,Canyon Creek,San Antonio,South Texas,Bluebonnet,1720,3,2.5,249900,4000,2500,251400,2024-06-29,2024-11-30,154,Closed,Google Search,7542.0,FHA,David Reyes
+CTR-0109,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,3,2.5,299900,2500,10000,292400,2023-11-17,2024-04-28,163,Closed,Facebook Ads,8772.0,FHA,Ana Garza
+CTR-0110,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,4,2.5,359900,20000,2500,377400,2024-01-06,,,Cancelled,Walk-In,11322.0,VA,James Whitfield
+CTR-0111,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,3.0,359900,5500,0,365400,2024-06-06,2024-11-10,157,Closed,Google Search,10962.0,Conventional,James Whitfield
+CTR-0112,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,8000,0,257900,2023-06-27,,,Cancelled,Model Home Visit,7737.0,Cash,Marcus Bell
+CTR-0113,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,20500,0,380400,2023-06-04,2023-11-01,150,Closed,Facebook Ads,11412.0,VA,Sandra Kim
+CTR-0114,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,15000,2500,287400,2023-02-08,2023-05-02,83,Closed,Walk-In,8622.0,USDA,David Reyes
+CTR-0115,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,4,2.0,319900,18000,10000,327900,2023-02-12,2023-07-25,163,Closed,Model Home Visit,9837.0,FHA,David Reyes
+CTR-0116,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,4,3.0,359900,11000,7500,363400,2023-03-28,,,Cancelled,Event/Home Show,10902.0,Conventional,Ana Garza
+CTR-0117,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,4,2.0,274900,12500,2500,284900,2023-12-13,2024-03-18,96,Closed,Walk-In,8547.0,USDA,Marcus Bell
+CTR-0118,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,5,3.0,274900,8000,7500,275400,2024-09-09,,,Cancelled,Facebook Ads,8262.0,Cash,James Whitfield
+CTR-0119,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,3,3.0,274900,18000,2500,290400,2023-12-03,2024-05-26,175,Closed,Event/Home Show,8712.0,Cash,Sandra Kim
+CTR-0120,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,3,2.0,219900,11500,0,231400,2023-07-04,2023-11-14,133,Closed,Realtor.com,6942.0,FHA,Ana Garza
+CTR-0121,Villas at Paloma Creek,McAllen,Rio Grande Valley,Evening Star,2450,3,2.0,319900,17500,10000,327400,2024-06-23,2024-08-13,51,Closed,Repeat/Referral,9822.0,Conventional,Marcus Bell
+CTR-0122,Tierra Nueva,Laredo,South Texas,Fiesta,2680,3,3.0,339900,14000,0,353900,2024-02-25,2024-06-24,120,Closed,Model Home Visit,10617.0,Conventional,Ana Garza
+CTR-0123,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,4,2.5,359900,6000,0,365900,2024-08-07,2025-01-03,149,Closed,Event/Home Show,10977.0,Conventional,James Whitfield
+CTR-0124,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,3,2.5,359900,8000,0,367900,2024-05-07,2024-10-14,160,Closed,Event/Home Show,11037.0,FHA,James Whitfield
+CTR-0125,Del Sol Estates,Edinburg,Rio Grande Valley,Desert Willow,2210,3,2.5,299900,16500,0,316400,2024-03-23,2024-06-19,88,Closed,Google Search,9492.0,FHA,David Reyes
+CTR-0126,Sunrise Pointe,Brownsville,Rio Grande Valley,Bluebonnet,1720,3,2.0,249900,12500,0,262400,2024-01-19,2024-05-28,130,Closed,Google Search,7872.0,FHA,Ana Garza
+CTR-0127,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,3,3.0,339900,4500,10000,334400,2024-04-25,2024-07-24,90,Closed,Realtor.com,0,USDA,Sandra Kim
+CTR-0128,Canyon Creek,San Antonio,South Texas,Azalea,1450,3,2.0,219900,9000,0,228900,2023-11-05,2023-12-20,45,Closed,Model Home Visit,6867.0,Cash,Sandra Kim
+CTR-0129,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,2.5,339900,16500,5000,351400,2023-09-05,2024-01-10,127,Closed,Realtor.com,10542.0,Conventional,Marcus Bell
+CTR-0130,Villas at Paloma Creek,McAllen,Rio Grande Valley,Evening Star,2450,3,3.0,319900,11500,0,331400,2024-06-22,2024-11-23,154,Closed,Model Home Visit,9942.0,Cash,Ana Garza
+CTR-0131,Del Sol Estates,Edinburg,Rio Grande Valley,Fiesta,2680,3,2.0,339900,500,0,340400,2023-03-11,2023-09-01,174,Closed,Google Search,10212.0,VA,Sandra Kim
+CTR-0132,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,5,2.5,359900,21000,0,380900,2024-04-20,2024-09-18,151,Closed,Walk-In,11427.0,FHA,Ana Garza
+CTR-0133,Mesquite Ridge,Corpus Christi,Coastal Bend,Azalea,1450,4,2.0,219900,6500,0,226400,2023-11-20,2024-04-23,155,Closed,Model Home Visit,6792.0,Conventional,Ana Garza
+CTR-0134,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,2.5,359900,1500,10000,351400,2023-12-06,2024-04-21,137,Closed,Model Home Visit,10542.0,Conventional,David Reyes
+CTR-0135,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,4,2.5,274900,17000,0,291900,2023-03-26,2023-07-04,100,Closed,Zillow,8757.0,VA,Maria Torres
+CTR-0136,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,3,3.0,274900,21500,0,296400,2023-11-10,2024-04-02,144,Closed,Model Home Visit,8892.0,VA,Sandra Kim
+CTR-0137,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,3,2.0,274900,20500,10000,285400,2023-02-28,2023-05-09,70,Closed,Zillow,8562.0,USDA,Marcus Bell
+CTR-0138,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,4,2.0,219900,4000,0,223900,2023-08-30,2024-01-13,136,Closed,Realtor Referral,6717.0,Cash,Ana Garza
+CTR-0139,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,3,3.0,299900,2500,5000,297400,2023-05-21,2023-10-08,140,Closed,Walk-In,8922.0,Conventional,David Reyes
+CTR-0140,Canyon Creek,San Antonio,South Texas,Evening Star,2450,3,2.0,319900,3500,0,323400,2023-09-24,2024-01-19,117,Closed,Model Home Visit,9702.0,Conventional,Maria Torres
+CTR-0141,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,4,2.5,249900,23000,2500,270400,2023-03-31,2023-08-08,130,Closed,Event/Home Show,8112.0,VA,James Whitfield
+CTR-0142,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,3,2.5,359900,11500,5000,366400,2023-08-18,2023-09-29,42,Closed,Model Home Visit,0,USDA,Sandra Kim
+CTR-0143,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,4,2.5,299900,18000,0,317900,2024-09-18,2024-12-25,98,Closed,Model Home Visit,9537.0,Cash,Sandra Kim
+CTR-0144,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,5,3.0,249900,10000,7500,252400,2023-03-17,2023-09-10,177,Closed,Event/Home Show,0,Conventional,James Whitfield
+CTR-0145,Canyon Creek,San Antonio,South Texas,Evening Star,2450,4,3.0,319900,1500,10000,311400,2023-05-08,2023-09-13,128,Closed,Realtor.com,9342.0,VA,Maria Torres
+CTR-0146,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,20500,5000,265400,2023-10-09,2023-11-27,49,Closed,Zillow,0,Conventional,James Whitfield
+CTR-0147,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,2.5,359900,18000,0,377900,2023-01-30,2023-04-11,71,Closed,Realtor.com,11337.0,USDA,Marcus Bell
+CTR-0148,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,4,2.5,299900,20500,5000,315400,2023-10-24,2024-02-29,128,Closed,Repeat/Referral,9462.0,FHA,Marcus Bell
+CTR-0149,Esperanza Crossing,San Antonio,South Texas,Bluebonnet,1720,5,2.5,249900,14000,2500,261400,2024-05-10,2024-09-20,133,Closed,Google Search,7842.0,Cash,James Whitfield
+CTR-0150,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,3,2.5,319900,18000,0,337900,2023-11-23,2024-03-07,105,Closed,Walk-In,0,Cash,Sandra Kim
+CTR-0151,Canyon Creek,San Antonio,South Texas,Bluebonnet,1720,4,2.5,249900,5000,10000,244900,2023-12-02,2024-04-10,130,Closed,Event/Home Show,0,VA,David Reyes
+CTR-0152,Esperanza Crossing,San Antonio,South Texas,Azalea,1450,4,3.0,219900,12500,5000,227400,2024-04-13,2024-08-08,117,Closed,Facebook Ads,0,Cash,Ana Garza
+CTR-0153,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,3,3.0,359900,3500,2500,360900,2023-05-18,2023-10-01,136,Closed,Repeat/Referral,10827.0,USDA,James Whitfield
+CTR-0154,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,3,2.0,319900,9000,0,328900,2024-01-31,2024-07-09,160,Closed,Walk-In,9867.0,Cash,Ana Garza
+CTR-0155,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,3,3.0,319900,11500,10000,321400,2023-05-28,2023-10-30,155,Closed,Realtor Referral,9642.0,VA,David Reyes
+CTR-0156,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,4,2.5,249900,19500,5000,264400,2023-05-24,2023-11-08,168,Closed,Facebook Ads,7932.0,USDA,Sandra Kim
+CTR-0157,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,4,2.5,339900,18000,0,357900,2024-05-01,2024-09-15,137,Closed,Repeat/Referral,0,FHA,Sandra Kim
+CTR-0158,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,3,3.0,274900,21000,10000,285900,2024-08-15,2024-11-19,96,Closed,Repeat/Referral,0,Conventional,Maria Torres
+CTR-0159,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,5,3.0,249900,500,2500,247900,2023-11-18,2024-04-08,142,Closed,Model Home Visit,7437.0,FHA,Marcus Bell
+CTR-0160,Tierra Nueva,Laredo,South Texas,Evening Star,2450,4,3.0,319900,6500,5000,321400,2023-11-29,2024-04-28,151,Closed,Zillow,9642.0,VA,Sandra Kim
+CTR-0161,Sunrise Pointe,Brownsville,Rio Grande Valley,Fiesta,2680,3,2.5,339900,23500,7500,355900,2023-09-28,2024-01-20,114,Closed,Facebook Ads,10677.0,VA,Marcus Bell
+CTR-0162,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,4,2.0,339900,23000,2500,360400,2023-11-21,2024-04-30,161,Closed,Facebook Ads,10812.0,USDA,Marcus Bell
+CTR-0163,Canyon Creek,San Antonio,South Texas,Desert Willow,2210,5,2.5,299900,11000,10000,300900,2023-05-30,2023-10-03,126,Closed,Model Home Visit,0,Cash,James Whitfield
+CTR-0164,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,5,3.0,359900,17500,0,377400,2024-07-29,,,Cancelled,Realtor Referral,11322.0,Conventional,Marcus Bell
+CTR-0165,Mesquite Ridge,Corpus Christi,Coastal Bend,Azalea,1450,3,2.5,219900,3000,2500,220400,2023-12-05,2024-03-16,102,Closed,Event/Home Show,0,Cash,David Reyes
+CTR-0166,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,3,2.5,359900,9000,0,368900,2023-10-20,2024-01-29,101,Closed,Realtor Referral,11067.0,Conventional,Maria Torres
+CTR-0167,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,4,2.5,359900,16000,0,375900,2023-10-24,2024-01-23,91,Closed,Google Search,11277.0,USDA,Sandra Kim
+CTR-0168,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,5,2.0,249900,16500,2500,263900,2023-10-07,2024-01-19,104,Closed,Facebook Ads,7917.0,FHA,Marcus Bell
+CTR-0169,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,9500,5000,364400,2023-07-17,2024-01-04,171,Closed,Event/Home Show,10932.0,Cash,Marcus Bell
+CTR-0170,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,4,2.5,249900,4500,2500,251900,2023-11-28,2024-02-26,90,Closed,Facebook Ads,0,USDA,Marcus Bell
+CTR-0171,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,5,2.5,274900,21000,0,295900,2023-08-30,2023-10-06,37,Closed,Event/Home Show,0,FHA,Marcus Bell
+CTR-0172,Del Sol Estates,Edinburg,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,20000,0,294900,2023-08-13,2024-01-11,151,Closed,Google Search,8847.0,USDA,David Reyes
+CTR-0173,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,3,3.0,359900,8000,7500,360400,2024-09-02,2024-12-11,100,Closed,Google Search,10812.0,FHA,Maria Torres
+CTR-0174,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,3,3.0,319900,17500,0,337400,2023-06-18,2023-11-21,156,Closed,Model Home Visit,10122.0,Cash,Maria Torres
+CTR-0175,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,4,2.5,249900,16500,2500,263900,2024-04-12,2024-09-20,161,Closed,Realtor Referral,7917.0,FHA,Marcus Bell
+CTR-0176,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,4,2.0,319900,2000,0,321900,2024-03-09,2024-06-15,98,Closed,Walk-In,0,VA,David Reyes
+CTR-0177,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,4,2.0,359900,4000,10000,353900,2024-03-06,2024-07-22,138,Closed,Repeat/Referral,10617.0,USDA,James Whitfield
+CTR-0178,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,4,3.0,219900,5500,5000,220400,2024-02-07,2024-06-04,118,Closed,Facebook Ads,6612.0,USDA,David Reyes
+CTR-0179,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,3,3.0,359900,7500,0,367400,2024-04-16,2024-08-19,125,Closed,Walk-In,11022.0,Cash,Sandra Kim
+CTR-0180,Esperanza Crossing,San Antonio,South Texas,Bluebonnet,1720,3,3.0,249900,6500,0,256400,2023-04-14,2023-09-08,147,Closed,Realtor Referral,7692.0,FHA,David Reyes
+CTR-0181,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,17500,0,267400,2023-02-27,2023-04-16,48,Closed,Google Search,8022.0,VA,James Whitfield
+CTR-0182,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,5,3.0,249900,21500,5000,266400,2023-08-15,,,Cancelled,Zillow,7992.0,Cash,Sandra Kim
+CTR-0183,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,4,2.0,219900,11000,7500,223400,2024-01-26,2024-06-04,130,Closed,Facebook Ads,6702.0,USDA,David Reyes
+CTR-0184,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,2.0,359900,7000,0,366900,2023-05-28,2023-09-02,97,Closed,Event/Home Show,11007.0,Cash,James Whitfield
+CTR-0185,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,10500,7500,252900,2023-03-22,,,Cancelled,Facebook Ads,0,USDA,Sandra Kim
+CTR-0186,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,4,2.0,359900,2000,0,361900,2024-08-24,2025-02-01,161,Closed,Google Search,0,Conventional,James Whitfield
+CTR-0187,Villas at Paloma Creek,McAllen,Rio Grande Valley,Fiesta,2680,4,2.5,339900,24500,2500,361900,2023-09-06,2024-03-04,180,Closed,Event/Home Show,10857.0,Cash,David Reyes
+CTR-0188,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,3,2.5,274900,8500,0,283400,2024-06-09,,,Cancelled,Google Search,8502.0,VA,David Reyes
+CTR-0189,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,4,2.0,319900,7000,7500,319400,2023-05-30,2023-08-03,65,Closed,Repeat/Referral,9582.0,Conventional,Ana Garza
+CTR-0190,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,5,3.0,299900,18500,10000,308400,2023-09-09,2024-02-29,173,Closed,Model Home Visit,9252.0,Cash,David Reyes
+CTR-0191,Tierra Nueva,Laredo,South Texas,Fiesta,2680,4,2.0,339900,11500,0,351400,2023-05-24,2023-10-23,152,Closed,Realtor Referral,10542.0,FHA,Marcus Bell
+CTR-0192,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,4,2.0,359900,0,2500,357400,2023-05-21,,,Under Contract,Model Home Visit,0,USDA,Marcus Bell
+CTR-0193,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,3,3.0,339900,15500,0,355400,2023-01-07,,,Cancelled,Facebook Ads,10662.0,Cash,James Whitfield
+CTR-0194,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,3,2.5,219900,17000,0,236900,2023-09-04,2024-02-08,157,Closed,Repeat/Referral,7107.0,Cash,David Reyes
+CTR-0195,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,4,3.0,339900,7000,0,346900,2023-03-24,2023-09-13,173,Closed,Repeat/Referral,0,Cash,Maria Torres
+CTR-0196,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,2.0,339900,5500,0,345400,2024-05-26,2024-11-14,172,Closed,Walk-In,10362.0,Conventional,James Whitfield
+CTR-0197,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,3,2.0,274900,1500,0,276400,2023-10-15,2024-03-25,162,Closed,Google Search,0,USDA,James Whitfield
+CTR-0198,Canyon Creek,San Antonio,South Texas,Azalea,1450,5,2.0,219900,9500,0,229400,2024-07-31,2024-12-17,139,Closed,Repeat/Referral,6882.0,FHA,Sandra Kim
+CTR-0199,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,4,2.0,219900,3000,2500,220400,2023-08-26,2024-01-06,133,Closed,Repeat/Referral,6612.0,VA,David Reyes
+CTR-0200,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,3,3.0,249900,11500,5000,256400,2024-01-20,2024-07-15,177,Closed,Facebook Ads,7692.0,FHA,Maria Torres
+CTR-0201,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,4,2.5,249900,12000,7500,254400,2023-06-07,2023-10-15,130,Closed,Facebook Ads,0,VA,Maria Torres
+CTR-0202,Tierra Nueva,Laredo,South Texas,Azalea,1450,4,2.0,219900,6000,2500,223400,2024-04-04,2024-09-06,155,Closed,Google Search,0,USDA,Sandra Kim
+CTR-0203,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,3.0,359900,12500,0,372400,2023-10-26,2024-02-03,100,Closed,Realtor.com,11172.0,Conventional,Marcus Bell
+CTR-0204,Canyon Creek,San Antonio,South Texas,Bluebonnet,1720,3,2.5,249900,4500,0,254400,2023-11-05,,,Cancelled,Model Home Visit,7632.0,VA,James Whitfield
+CTR-0205,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,4,2.5,319900,20000,0,339900,2024-04-13,,,Under Contract,Repeat/Referral,10197.0,VA,David Reyes
+CTR-0206,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,5,3.0,274900,10500,5000,280400,2023-07-25,2023-11-14,112,Closed,Facebook Ads,8412.0,Cash,Sandra Kim
+CTR-0207,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,5,3.0,274900,12000,0,286900,2024-02-07,2024-07-18,162,Closed,Zillow,8607.0,FHA,Marcus Bell
+CTR-0208,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,5,2.5,339900,6500,2500,343900,2023-10-26,2024-02-01,98,Closed,Repeat/Referral,10317.0,Conventional,Marcus Bell
+CTR-0209,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,8000,7500,250400,2023-06-07,,,Cancelled,Repeat/Referral,7512.0,Cash,Sandra Kim
+CTR-0210,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,5,3.0,359900,11500,7500,363900,2024-07-03,,,Under Contract,Zillow,10917.0,FHA,Sandra Kim
+CTR-0211,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,4,3.0,359900,10500,10000,360400,2024-03-16,2024-04-21,36,Closed,Event/Home Show,10812.0,USDA,James Whitfield
+CTR-0212,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,4,2.5,274900,12500,2500,284900,2024-08-25,2024-12-12,109,Closed,Walk-In,0,FHA,Maria Torres
+CTR-0213,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,5,3.0,274900,10000,0,284900,2024-04-11,2024-09-14,156,Closed,Model Home Visit,8547.0,Cash,Ana Garza
+CTR-0214,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,5,2.0,274900,1000,10000,265900,2023-04-28,2023-06-18,51,Closed,Zillow,7977.0,USDA,James Whitfield
+CTR-0215,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,4,2.0,274900,18000,2500,290400,2024-04-18,2024-09-06,141,Closed,Repeat/Referral,0,USDA,James Whitfield
+CTR-0216,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,4,2.0,319900,14000,2500,331400,2023-01-05,2023-05-01,116,Closed,Walk-In,9942.0,USDA,James Whitfield
+CTR-0217,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,4,2.5,274900,6000,2500,278400,2023-04-27,2023-09-26,152,Closed,Repeat/Referral,8352.0,USDA,Maria Torres
+CTR-0218,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,5,2.0,274900,15000,5000,284900,2023-06-26,2023-12-23,180,Closed,Walk-In,8547.0,VA,Maria Torres
+CTR-0219,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,4,2.0,274900,3500,0,278400,2024-01-18,2024-06-21,155,Closed,Repeat/Referral,8352.0,Cash,Marcus Bell
+CTR-0220,Tierra Nueva,Laredo,South Texas,Evening Star,2450,3,2.5,319900,5000,2500,322400,2023-10-23,2023-12-12,50,Closed,Google Search,9672.0,Conventional,James Whitfield
+CTR-0221,Canyon Creek,San Antonio,South Texas,Evening Star,2450,3,2.0,319900,16500,7500,328900,2024-05-21,2024-10-20,152,Closed,Model Home Visit,9867.0,USDA,Maria Torres
+CTR-0222,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,4,3.0,274900,1000,0,275900,2023-08-19,2023-12-08,111,Closed,Model Home Visit,8277.0,FHA,Sandra Kim
+CTR-0223,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,2.0,274900,17500,10000,282400,2024-01-11,2024-04-15,95,Closed,Realtor.com,8472.0,Conventional,Ana Garza
+CTR-0224,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,5,3.0,299900,8500,0,308400,2023-03-31,2023-07-14,105,Closed,Google Search,0,Cash,James Whitfield
+CTR-0225,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,3,2.5,359900,6500,10000,356400,2023-07-31,2024-01-09,162,Closed,Event/Home Show,10692.0,VA,Ana Garza
+CTR-0226,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,5,2.0,359900,16500,7500,368900,2023-04-08,2023-06-25,78,Closed,Facebook Ads,11067.0,Conventional,James Whitfield
+CTR-0227,Tierra Nueva,Laredo,South Texas,Fiesta,2680,5,2.5,339900,10500,10000,340400,2023-09-11,2024-03-05,176,Closed,Facebook Ads,0,Cash,David Reyes
+CTR-0228,Villas at Paloma Creek,McAllen,Rio Grande Valley,Fiesta,2680,4,3.0,339900,3000,2500,340400,2024-06-11,2024-12-06,178,Closed,Model Home Visit,10212.0,FHA,Marcus Bell
+CTR-0229,Villas at Paloma Creek,McAllen,Rio Grande Valley,Fiesta,2680,4,2.5,339900,15000,7500,347400,2024-01-02,2024-06-08,158,Closed,Realtor.com,10422.0,VA,Ana Garza
+CTR-0230,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,3,3.0,319900,18500,0,338400,2024-08-02,2024-12-13,133,Closed,Realtor Referral,10152.0,Cash,Maria Torres
+CTR-0231,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,5,2.5,359900,5000,2500,362400,2024-04-12,2024-06-08,57,Closed,Zillow,10872.0,Conventional,Ana Garza
+CTR-0232,Villas at Paloma Creek,McAllen,Rio Grande Valley,Fiesta,2680,5,3.0,339900,11500,0,351400,2023-03-26,2023-09-15,173,Closed,Facebook Ads,10542.0,Conventional,David Reyes
+CTR-0233,Villas at Paloma Creek,McAllen,Rio Grande Valley,Fiesta,2680,3,2.0,339900,3000,0,342900,2023-08-07,2023-11-21,106,Closed,Model Home Visit,10287.0,VA,Maria Torres
+CTR-0234,Canyon Creek,San Antonio,South Texas,Fiesta,2680,4,2.5,339900,4000,2500,341400,2023-03-14,2023-06-23,101,Closed,Google Search,0,Conventional,David Reyes
+CTR-0235,Tierra Nueva,Laredo,South Texas,Fiesta,2680,5,2.0,339900,22000,0,361900,2023-03-12,2023-06-11,91,Closed,Google Search,0,Conventional,David Reyes
+CTR-0236,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,7000,0,366900,2023-04-13,2023-05-20,37,Closed,Repeat/Referral,11007.0,Conventional,Ana Garza
+CTR-0237,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,3,3.0,249900,18000,5000,262900,2024-09-06,2025-01-10,126,Closed,Facebook Ads,7887.0,USDA,Sandra Kim
+CTR-0238,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,5,3.0,339900,12500,0,352400,2023-02-25,2023-06-25,120,Closed,Model Home Visit,0,FHA,Sandra Kim
+CTR-0239,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,4,2.0,274900,10000,0,284900,2024-02-01,2024-07-12,162,Closed,Zillow,8547.0,FHA,Sandra Kim
+CTR-0240,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,4,2.5,219900,8500,0,228400,2023-02-10,2023-06-30,140,Closed,Event/Home Show,6852.0,Cash,Maria Torres
+CTR-0241,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,4,3.0,274900,2500,0,277400,2023-03-22,2023-07-16,116,Closed,Google Search,0,FHA,Ana Garza
+CTR-0242,Canyon Creek,San Antonio,South Texas,Fiesta,2680,3,2.0,339900,7500,0,347400,2023-09-08,,,Cancelled,Zillow,0,Conventional,Marcus Bell
+CTR-0243,Esperanza Crossing,San Antonio,South Texas,Bluebonnet,1720,5,2.0,249900,16000,0,265900,2024-06-19,2024-10-20,123,Closed,Facebook Ads,0,FHA,Ana Garza
+CTR-0244,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,4,2.0,274900,17000,0,291900,2023-09-27,2024-03-08,163,Closed,Event/Home Show,8757.0,Cash,Sandra Kim
+CTR-0245,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,3,2.0,274900,5000,0,279900,2023-04-16,2023-10-09,176,Closed,Event/Home Show,0,FHA,James Whitfield
+CTR-0246,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,3,2.5,299900,11500,2500,308900,2023-06-03,2023-09-05,94,Closed,Repeat/Referral,9267.0,Conventional,David Reyes
+CTR-0247,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,3,2.5,274900,2500,5000,272400,2024-01-17,2024-03-30,73,Closed,Event/Home Show,0,FHA,David Reyes
+CTR-0248,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,5,3.0,359900,10000,0,369900,2023-03-30,2023-06-29,91,Closed,Facebook Ads,11097.0,Conventional,David Reyes
+CTR-0249,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,4,2.0,319900,16000,10000,325900,2023-07-20,2023-12-26,159,Closed,Realtor Referral,9777.0,Conventional,Sandra Kim
+CTR-0250,Sunrise Pointe,Brownsville,Rio Grande Valley,Fiesta,2680,3,2.0,339900,22500,0,362400,2023-12-10,2024-02-20,72,Closed,Facebook Ads,10872.0,USDA,James Whitfield
+CTR-0251,Canyon Creek,San Antonio,South Texas,Desert Willow,2210,5,2.5,299900,1500,0,301400,2023-10-14,2024-01-10,88,Closed,Repeat/Referral,9042.0,Cash,Marcus Bell
+CTR-0252,Villas at Paloma Creek,McAllen,Rio Grande Valley,Evening Star,2450,3,2.5,319900,3000,5000,317900,2023-05-17,,,Cancelled,Zillow,9537.0,VA,Ana Garza
+CTR-0253,Canyon Creek,San Antonio,South Texas,Fiesta,2680,3,2.0,339900,24000,0,363900,2023-11-22,,,Under Contract,Walk-In,10917.0,Conventional,David Reyes
+CTR-0254,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,3,2.0,274900,13000,0,287900,2024-07-02,2024-10-26,116,Closed,Walk-In,8637.0,VA,Marcus Bell
+CTR-0255,Esperanza Crossing,San Antonio,South Texas,Bluebonnet,1720,4,2.0,249900,10500,0,260400,2023-04-04,2023-08-17,135,Closed,Facebook Ads,0,FHA,David Reyes
+CTR-0256,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,3,2.0,319900,24500,5000,339400,2023-09-13,2023-10-19,36,Closed,Realtor Referral,10182.0,Conventional,James Whitfield
+CTR-0257,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,3,3.0,274900,22000,7500,289400,2023-03-28,2023-07-29,123,Closed,Walk-In,0,Cash,James Whitfield
+CTR-0258,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,10500,0,370400,2023-02-13,2023-05-20,96,Closed,Repeat/Referral,11112.0,Cash,Marcus Bell
+CTR-0259,Canyon Creek,San Antonio,South Texas,Bluebonnet,1720,5,2.5,249900,11500,0,261400,2023-07-11,2023-12-05,147,Closed,Realtor.com,0,Cash,David Reyes
+CTR-0260,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,5,3.0,219900,2500,0,222400,2024-01-28,2024-03-10,42,Closed,Realtor.com,6672.0,FHA,David Reyes
+CTR-0261,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,3,2.5,299900,17500,10000,307400,2024-05-11,2024-10-20,162,Closed,Zillow,9222.0,USDA,James Whitfield
+CTR-0262,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,3,3.0,359900,9000,0,368900,2024-04-28,2024-10-09,164,Closed,Walk-In,11067.0,Conventional,Ana Garza
+CTR-0263,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,4,2.0,359900,7000,5000,361900,2024-02-02,2024-05-24,112,Closed,Google Search,10857.0,VA,Sandra Kim
+CTR-0264,Tierra Nueva,Laredo,South Texas,Evening Star,2450,4,2.0,319900,6000,10000,315900,2024-05-19,2024-09-08,112,Closed,Realtor.com,0,FHA,Sandra Kim
+CTR-0265,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,3,2.0,219900,10500,5000,225400,2023-07-26,2023-12-06,133,Closed,Google Search,6762.0,Conventional,Sandra Kim
+CTR-0266,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,4,2.0,359900,3500,10000,353400,2024-06-22,2024-09-29,99,Closed,Repeat/Referral,10602.0,VA,Ana Garza
+CTR-0267,Sunrise Pointe,Brownsville,Rio Grande Valley,Bluebonnet,1720,5,3.0,249900,5000,7500,247400,2024-03-23,2024-08-22,152,Closed,Event/Home Show,0,VA,James Whitfield
+CTR-0268,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,3,3.0,299900,10000,7500,302400,2023-10-29,,,Cancelled,Realtor Referral,9072.0,VA,Sandra Kim
+CTR-0269,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,5,3.0,339900,18500,0,358400,2024-05-23,,,Under Contract,Walk-In,10752.0,VA,David Reyes
+CTR-0270,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,5,2.5,274900,6500,0,281400,2023-03-11,2023-06-22,103,Closed,Model Home Visit,0,Conventional,David Reyes
+CTR-0271,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,3,2.5,299900,11500,5000,306400,2024-01-20,2024-03-20,60,Closed,Realtor.com,9192.0,FHA,Maria Torres
+CTR-0272,Del Sol Estates,Edinburg,Rio Grande Valley,Azalea,1450,4,2.0,219900,10000,0,229900,2023-04-18,2023-05-28,40,Closed,Walk-In,0,VA,Sandra Kim
+CTR-0273,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,3,2.5,339900,1000,2500,338400,2023-06-18,2023-11-10,145,Closed,Realtor.com,0,USDA,Marcus Bell
+CTR-0274,Del Sol Estates,Edinburg,Rio Grande Valley,Fiesta,2680,3,2.5,339900,9000,0,348900,2023-09-01,2023-10-26,55,Closed,Zillow,10467.0,FHA,David Reyes
+CTR-0275,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,2.0,274900,21500,7500,288900,2024-09-06,,,Under Contract,Walk-In,8667.0,VA,David Reyes
+CTR-0276,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,3,2.5,299900,21500,0,321400,2023-04-04,2023-08-21,139,Closed,Google Search,9642.0,FHA,Ana Garza
+CTR-0277,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,5,2.5,299900,8500,0,308400,2023-10-03,2024-01-20,109,Closed,Walk-In,9252.0,USDA,David Reyes
+CTR-0278,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,4,2.0,319900,1500,10000,311400,2024-02-01,2024-06-23,143,Closed,Model Home Visit,9342.0,Cash,Ana Garza
+CTR-0279,Villas at Paloma Creek,McAllen,Rio Grande Valley,Desert Willow,2210,3,2.5,299900,23000,0,322900,2024-05-29,2024-11-01,156,Closed,Zillow,9687.0,Conventional,James Whitfield
+CTR-0280,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,2.5,359900,6000,0,365900,2023-02-13,2023-08-09,177,Closed,Zillow,10977.0,VA,Marcus Bell
+CTR-0281,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,5,3.0,219900,12500,5000,227400,2024-02-11,2024-06-15,125,Closed,Realtor Referral,6822.0,USDA,Sandra Kim
+CTR-0282,Canyon Creek,San Antonio,South Texas,Azalea,1450,4,2.0,219900,13500,0,233400,2023-06-01,2023-11-12,164,Closed,Walk-In,7002.0,VA,Sandra Kim
+CTR-0283,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,3,2.5,299900,8500,2500,305900,2024-05-12,,,Under Contract,Repeat/Referral,0,VA,Marcus Bell
+CTR-0284,Mesquite Ridge,Corpus Christi,Coastal Bend,Azalea,1450,4,2.5,219900,24000,2500,241400,2023-10-03,2024-01-03,92,Closed,Facebook Ads,7242.0,FHA,James Whitfield
+CTR-0285,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,3,2.5,274900,24000,2500,296400,2023-11-25,2024-04-16,143,Closed,Model Home Visit,0,Cash,Sandra Kim
+CTR-0286,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,1500,5000,356400,2023-06-12,2023-08-26,75,Closed,Event/Home Show,0,Conventional,James Whitfield
+CTR-0287,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,2.5,359900,1500,0,361400,2023-02-03,2023-06-19,136,Closed,Model Home Visit,10842.0,FHA,Marcus Bell
+CTR-0288,Esperanza Crossing,San Antonio,South Texas,Bluebonnet,1720,4,3.0,249900,12000,2500,259400,2024-08-31,2025-01-28,150,Closed,Zillow,7782.0,FHA,Ana Garza
+CTR-0289,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,4,3.0,299900,1500,0,301400,2024-08-08,2024-12-03,117,Closed,Realtor.com,9042.0,Cash,Sandra Kim
+CTR-0290,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,4,3.0,359900,22000,0,381900,2024-04-30,2024-10-19,172,Closed,Realtor.com,11457.0,VA,Marcus Bell
+CTR-0291,Del Sol Estates,Edinburg,Rio Grande Valley,Desert Willow,2210,4,2.0,299900,12000,10000,301900,2023-12-24,2024-04-19,117,Closed,Repeat/Referral,9057.0,FHA,Sandra Kim
+CTR-0292,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,4,2.5,319900,21000,5000,335900,2024-09-15,,,Under Contract,Google Search,10077.0,VA,James Whitfield
+CTR-0293,Tierra Nueva,Laredo,South Texas,Evening Star,2450,4,2.5,319900,7500,0,327400,2024-09-06,2025-01-14,130,Closed,Model Home Visit,9822.0,Cash,David Reyes
+CTR-0294,Canyon Creek,San Antonio,South Texas,Fiesta,2680,5,2.5,339900,1000,5000,335900,2024-08-08,2024-12-19,133,Closed,Event/Home Show,0,VA,Sandra Kim
+CTR-0295,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,3,3.0,359900,5500,10000,355400,2024-07-25,2024-11-04,102,Closed,Event/Home Show,10662.0,VA,Marcus Bell
+CTR-0296,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,3,2.5,249900,11500,0,261400,2023-11-11,2024-03-22,132,Closed,Model Home Visit,7842.0,FHA,Marcus Bell
+CTR-0297,Villas at Paloma Creek,McAllen,Rio Grande Valley,Desert Willow,2210,3,2.0,299900,6000,5000,300900,2023-05-03,2023-09-18,138,Closed,Zillow,9027.0,VA,David Reyes
+CTR-0298,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,5,2.0,249900,10000,10000,249900,2023-07-04,2023-12-03,152,Closed,Google Search,7497.0,FHA,David Reyes
+CTR-0299,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,3,3.0,249900,24500,10000,264400,2023-06-22,2023-10-10,110,Closed,Walk-In,7932.0,Cash,Marcus Bell
+CTR-0300,Canyon Creek,San Antonio,South Texas,Desert Willow,2210,4,3.0,299900,14000,2500,311400,2024-01-28,2024-04-01,64,Closed,Realtor Referral,9342.0,Conventional,Maria Torres
+CTR-0301,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,2.5,339900,24000,0,363900,2023-08-20,2024-01-01,134,Closed,Event/Home Show,0,Conventional,Maria Torres
+CTR-0302,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,4,2.5,274900,9500,2500,281900,2024-06-16,2024-10-27,133,Closed,Zillow,8457.0,VA,James Whitfield
+CTR-0303,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,3,2.0,359900,13000,0,372900,2023-08-22,2023-12-06,106,Closed,Event/Home Show,0,VA,Marcus Bell
+CTR-0304,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,3,3.0,299900,20500,0,320400,2024-07-01,2024-12-14,166,Closed,Realtor Referral,9612.0,FHA,David Reyes
+CTR-0305,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,4,2.5,299900,4000,5000,298900,2023-09-16,2024-01-03,109,Closed,Realtor Referral,8967.0,FHA,Marcus Bell
+CTR-0306,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,3,2.0,319900,19500,7500,331900,2023-05-21,2023-09-01,103,Closed,Facebook Ads,9957.0,Cash,James Whitfield
+CTR-0307,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,2.5,359900,8500,10000,358400,2024-06-19,2024-11-01,135,Closed,Realtor Referral,10752.0,Conventional,Marcus Bell
+CTR-0308,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,3,3.0,274900,7500,0,282400,2023-01-14,2023-04-28,104,Closed,Zillow,8472.0,FHA,Marcus Bell
+CTR-0309,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,3,2.5,274900,21000,0,295900,2024-04-12,2024-08-17,127,Closed,Zillow,0,VA,Marcus Bell
+CTR-0310,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,4,2.5,299900,24000,0,323900,2023-04-08,,,Under Contract,Google Search,9717.0,USDA,Ana Garza
+CTR-0311,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,11000,0,285900,2023-04-27,2023-09-22,148,Closed,Model Home Visit,8577.0,Conventional,Maria Torres
+CTR-0312,Tierra Nueva,Laredo,South Texas,Fiesta,2680,3,3.0,339900,23500,0,363400,2023-06-13,2023-09-09,88,Closed,Model Home Visit,10902.0,Cash,Ana Garza
+CTR-0313,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,5,2.5,359900,22000,10000,371900,2023-05-14,,,Cancelled,Facebook Ads,0,FHA,Marcus Bell
+CTR-0314,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,5,3.0,339900,11000,5000,345900,2024-06-19,,,Cancelled,Google Search,0,Cash,James Whitfield
+CTR-0315,Esperanza Crossing,San Antonio,South Texas,Azalea,1450,4,2.0,219900,21000,0,240900,2024-06-01,2024-11-01,153,Closed,Model Home Visit,0,VA,Ana Garza
+CTR-0316,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,4,2.5,319900,7000,5000,321900,2024-01-23,,,Cancelled,Walk-In,9657.0,VA,Maria Torres
+CTR-0317,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,4,3.0,339900,21000,0,360900,2023-04-16,2023-07-19,94,Closed,Walk-In,0,VA,Sandra Kim
+CTR-0318,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,4,3.0,339900,22000,2500,359400,2023-12-16,2024-03-21,96,Closed,Google Search,10782.0,USDA,David Reyes
+CTR-0319,Sunrise Pointe,Brownsville,Rio Grande Valley,Fiesta,2680,4,3.0,339900,14500,0,354400,2023-04-10,,,Under Contract,Facebook Ads,10632.0,VA,Marcus Bell
+CTR-0320,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,3,2.5,219900,5000,2500,222400,2023-05-24,,,Cancelled,Repeat/Referral,0,Conventional,Marcus Bell
+CTR-0321,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,4,3.0,219900,24500,2500,241900,2023-02-17,2023-08-12,176,Closed,Model Home Visit,7257.0,USDA,Sandra Kim
+CTR-0322,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,3,3.0,299900,0,5000,294900,2023-02-19,2023-07-14,145,Closed,Event/Home Show,8847.0,USDA,James Whitfield
+CTR-0323,Tierra Nueva,Laredo,South Texas,Azalea,1450,4,2.5,219900,12500,7500,224900,2024-09-06,2025-01-15,131,Closed,Realtor.com,6747.0,VA,Ana Garza
+CTR-0324,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,5,3.0,359900,4000,0,363900,2024-02-27,2024-07-31,155,Closed,Google Search,10917.0,USDA,Marcus Bell
+CTR-0325,Mesquite Ridge,Corpus Christi,Coastal Bend,Bluebonnet,1720,4,3.0,249900,6500,5000,251400,2023-10-25,2024-04-18,176,Closed,Zillow,7542.0,VA,Marcus Bell
+CTR-0326,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,4,2.5,359900,11500,5000,366400,2024-05-06,2024-10-28,175,Closed,Event/Home Show,10992.0,FHA,Sandra Kim
+CTR-0327,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,5,2.5,219900,12000,0,231900,2023-02-24,2023-06-19,115,Closed,Facebook Ads,6957.0,Conventional,Maria Torres
+CTR-0328,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,5,3.0,249900,24500,5000,269400,2023-02-03,,,Cancelled,Realtor.com,8082.0,USDA,David Reyes
+CTR-0329,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,4,2.0,319900,22500,0,342400,2023-02-18,2023-07-07,139,Closed,Google Search,10272.0,FHA,Marcus Bell
+CTR-0330,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,5,3.0,249900,20000,10000,259900,2024-03-29,2024-09-16,171,Closed,Event/Home Show,7797.0,Conventional,Marcus Bell
+CTR-0331,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,4,2.5,274900,14500,0,289400,2023-03-18,2023-07-08,112,Closed,Realtor Referral,8682.0,USDA,Ana Garza
+CTR-0332,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,4,3.0,249900,19000,10000,258900,2023-09-19,2023-11-17,59,Closed,Zillow,0,FHA,Marcus Bell
+CTR-0333,Del Sol Estates,Edinburg,Rio Grande Valley,Desert Willow,2210,4,2.0,299900,18500,5000,313400,2024-01-02,2024-03-17,75,Closed,Zillow,0,USDA,James Whitfield
+CTR-0334,Canyon Creek,San Antonio,South Texas,Evening Star,2450,3,3.0,319900,17500,2500,334900,2023-04-05,2023-07-31,117,Closed,Facebook Ads,10047.0,USDA,David Reyes
+CTR-0335,Esperanza Crossing,San Antonio,South Texas,Azalea,1450,5,2.5,219900,21500,0,241400,2024-04-01,2024-09-20,172,Closed,Realtor Referral,7242.0,Cash,Maria Torres
+CTR-0336,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,4,2.5,274900,17500,7500,284900,2023-10-17,2023-12-19,63,Closed,Event/Home Show,8547.0,FHA,Ana Garza
+CTR-0337,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,5,3.0,274900,16500,0,291400,2023-04-09,2023-09-14,158,Closed,Realtor.com,8742.0,Conventional,Marcus Bell
+CTR-0338,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,3,2.5,359900,3000,0,362900,2024-07-04,2024-11-26,145,Closed,Zillow,10887.0,VA,Maria Torres
+CTR-0339,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,4,2.5,219900,1500,0,221400,2023-09-15,2024-02-25,163,Closed,Repeat/Referral,6642.0,Cash,David Reyes
+CTR-0340,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,5,2.0,219900,12500,7500,224900,2023-05-02,2023-10-21,172,Closed,Realtor Referral,6747.0,VA,Sandra Kim
+CTR-0341,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,2.0,274900,22000,0,296900,2024-09-13,2024-11-30,78,Closed,Realtor Referral,8907.0,USDA,James Whitfield
+CTR-0342,Tierra Nueva,Laredo,South Texas,Fiesta,2680,3,3.0,339900,12500,10000,342400,2024-07-12,2024-12-30,171,Closed,Google Search,10272.0,USDA,James Whitfield
+CTR-0343,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,3,2.5,219900,0,5000,214900,2024-09-02,2025-02-09,160,Closed,Google Search,6447.0,USDA,James Whitfield
+CTR-0344,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,4,2.5,249900,7000,5000,251900,2023-09-16,2024-01-07,113,Closed,Realtor Referral,7557.0,USDA,Maria Torres
+CTR-0345,Del Sol Estates,Edinburg,Rio Grande Valley,Fiesta,2680,5,3.0,339900,2000,0,341900,2023-04-11,2023-09-22,164,Closed,Zillow,10257.0,Conventional,Maria Torres
+CTR-0346,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,4,3.0,319900,2000,0,321900,2023-11-22,2024-04-02,132,Closed,Zillow,9657.0,VA,Ana Garza
+CTR-0347,Canyon Creek,San Antonio,South Texas,Bluebonnet,1720,5,3.0,249900,0,0,249900,2023-09-10,2024-02-29,172,Closed,Zillow,7497.0,VA,David Reyes
+CTR-0348,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,3,3.0,299900,11500,10000,301400,2023-11-09,2024-02-20,103,Closed,Facebook Ads,9042.0,Conventional,Ana Garza
+CTR-0349,Villas at Paloma Creek,McAllen,Rio Grande Valley,Fiesta,2680,3,3.0,339900,2000,0,341900,2024-06-03,2024-11-14,164,Closed,Realtor.com,10257.0,VA,Sandra Kim
+CTR-0350,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,4,3.0,339900,4500,0,344400,2024-02-06,2024-07-20,165,Closed,Model Home Visit,10332.0,FHA,David Reyes
+CTR-0351,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,4,2.0,319900,0,7500,312400,2023-09-02,2024-02-17,168,Closed,Zillow,9372.0,Conventional,Sandra Kim
+CTR-0352,Tierra Nueva,Laredo,South Texas,Fiesta,2680,3,2.0,339900,23500,2500,360900,2024-01-03,2024-03-21,78,Closed,Google Search,0,Conventional,Sandra Kim
+CTR-0353,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,5,2.5,299900,15000,2500,312400,2023-02-17,2023-04-29,71,Closed,Event/Home Show,9372.0,VA,Sandra Kim
+CTR-0354,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,4,2.5,299900,21000,2500,318400,2024-01-10,2024-04-18,99,Closed,Realtor.com,9552.0,VA,Ana Garza
+CTR-0355,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,5,2.5,359900,15500,5000,370400,2023-01-07,2023-04-24,107,Closed,Event/Home Show,0,Conventional,James Whitfield
+CTR-0356,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,5,2.5,249900,11500,5000,256400,2023-05-02,2023-09-22,143,Closed,Model Home Visit,7692.0,Cash,James Whitfield
+CTR-0357,Tierra Nueva,Laredo,South Texas,Fiesta,2680,3,3.0,339900,13000,0,352900,2023-09-07,2023-11-12,66,Closed,Event/Home Show,0,Conventional,Maria Torres
+CTR-0358,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,3,2.0,274900,5500,5000,275400,2024-02-20,2024-07-31,162,Closed,Facebook Ads,8262.0,Cash,Sandra Kim
+CTR-0359,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,4,3.0,359900,15500,0,375400,2023-08-13,2024-01-26,166,Closed,Zillow,11262.0,USDA,Ana Garza
+CTR-0360,Tierra Nueva,Laredo,South Texas,Fiesta,2680,3,2.0,339900,22000,0,361900,2024-04-09,2024-07-16,98,Closed,Walk-In,10857.0,USDA,Sandra Kim
+CTR-0361,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,4,2.0,359900,4500,5000,359400,2023-04-09,2023-09-24,168,Closed,Event/Home Show,10782.0,FHA,David Reyes
+CTR-0362,Tierra Nueva,Laredo,South Texas,Evening Star,2450,3,3.0,319900,17500,10000,327400,2023-01-02,2023-06-27,176,Closed,Google Search,9822.0,USDA,David Reyes
+CTR-0363,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,2.0,359900,15500,10000,365400,2024-01-26,2024-07-23,179,Closed,Facebook Ads,10962.0,FHA,Ana Garza
+CTR-0364,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,5,2.5,274900,6000,0,280900,2023-01-08,2023-04-23,105,Closed,Realtor.com,8427.0,Cash,Ana Garza
+CTR-0365,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,5,2.5,249900,13500,7500,255900,2024-08-22,2025-01-27,158,Closed,Facebook Ads,7677.0,Conventional,David Reyes
+CTR-0366,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,5,2.0,249900,12000,5000,256900,2024-07-22,2024-11-28,129,Closed,Repeat/Referral,7707.0,FHA,Marcus Bell
+CTR-0367,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,3,2.5,299900,22500,0,322400,2023-04-13,2023-09-01,141,Closed,Realtor Referral,9672.0,FHA,Maria Torres
+CTR-0368,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,4,3.0,299900,19500,2500,316900,2023-04-01,2023-05-15,44,Closed,Repeat/Referral,9507.0,USDA,Ana Garza
+CTR-0369,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,4,2.0,359900,5500,7500,357900,2024-05-21,2024-09-13,115,Closed,Event/Home Show,10737.0,FHA,Sandra Kim
+CTR-0370,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,4,3.0,319900,5500,7500,317900,2023-02-06,,,Under Contract,Repeat/Referral,9537.0,Cash,David Reyes
+CTR-0371,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,4,2.5,319900,500,7500,312900,2023-03-12,2023-08-19,160,Closed,Google Search,9387.0,Conventional,Sandra Kim
+CTR-0372,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,4,2.5,299900,13000,5000,307900,2023-01-05,2023-05-27,142,Closed,Event/Home Show,9237.0,FHA,Sandra Kim
+CTR-0373,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,4,3.0,319900,18500,0,338400,2024-03-29,2024-09-07,162,Closed,Google Search,0,Cash,Sandra Kim
+CTR-0374,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,4,2.5,299900,3500,0,303400,2023-03-11,2023-07-07,118,Closed,Google Search,0,USDA,Sandra Kim
+CTR-0375,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,3,2.5,339900,8500,0,348400,2023-10-22,2024-01-03,73,Closed,Event/Home Show,10452.0,VA,Ana Garza
+CTR-0376,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,3,2.0,319900,8500,0,328400,2023-07-14,2023-11-06,115,Closed,Facebook Ads,0,Conventional,James Whitfield
+CTR-0377,Sunrise Pointe,Brownsville,Rio Grande Valley,Bluebonnet,1720,3,2.5,249900,3000,0,252900,2023-03-22,2023-09-12,174,Closed,Event/Home Show,0,VA,Sandra Kim
+CTR-0378,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,3,3.0,299900,18500,10000,308400,2023-10-09,2024-03-12,155,Closed,Zillow,0,Cash,David Reyes
+CTR-0379,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,3,3.0,319900,11000,2500,328400,2023-06-28,2023-10-11,105,Closed,Realtor Referral,9852.0,Conventional,David Reyes
+CTR-0380,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,2.0,274900,11500,5000,281400,2023-09-23,2024-01-24,123,Closed,Google Search,8442.0,Cash,David Reyes
+CTR-0381,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,4,3.0,299900,22500,10000,312400,2024-01-17,2024-06-06,141,Closed,Zillow,0,Conventional,Maria Torres
+CTR-0382,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,7500,5000,362400,2024-03-18,2024-07-11,115,Closed,Zillow,10872.0,Conventional,David Reyes
+CTR-0383,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,4,2.0,249900,20500,5000,265400,2024-06-30,2024-11-29,152,Closed,Realtor Referral,7962.0,Conventional,Maria Torres
+CTR-0384,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,2.5,359900,8000,2500,365400,2023-04-09,2023-08-19,132,Closed,Event/Home Show,10962.0,FHA,David Reyes
+CTR-0385,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,2.5,274900,22000,5000,291900,2023-07-23,2024-01-12,173,Closed,Facebook Ads,0,USDA,David Reyes
+CTR-0386,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,4,3.0,219900,12000,5000,226900,2023-10-21,2024-02-06,108,Closed,Google Search,6807.0,USDA,Sandra Kim
+CTR-0387,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,4,3.0,359900,2000,0,361900,2023-06-15,2023-10-23,130,Closed,Facebook Ads,10857.0,Cash,Ana Garza
+CTR-0388,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,3,3.0,359900,11500,7500,363900,2024-08-24,2025-01-18,147,Closed,Realtor Referral,10917.0,Conventional,Marcus Bell
+CTR-0389,Del Sol Estates,Edinburg,Rio Grande Valley,Fiesta,2680,3,2.0,339900,22500,7500,354900,2023-03-23,,,Under Contract,Event/Home Show,10647.0,Cash,Sandra Kim
+CTR-0390,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,5,2.5,219900,8500,5000,223400,2023-06-09,2023-09-06,89,Closed,Realtor.com,6702.0,Cash,Marcus Bell
+CTR-0391,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,4,3.0,249900,17000,10000,256900,2023-06-24,2023-09-04,72,Closed,Model Home Visit,7707.0,VA,Sandra Kim
+CTR-0392,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,22500,5000,267400,2023-07-01,2023-11-26,148,Closed,Repeat/Referral,8022.0,USDA,Ana Garza
+CTR-0393,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,3,3.0,299900,17500,0,317400,2023-04-02,2023-08-16,136,Closed,Realtor Referral,9522.0,Conventional,Ana Garza
+CTR-0394,Del Sol Estates,Edinburg,Rio Grande Valley,Desert Willow,2210,4,2.0,299900,17500,0,317400,2024-05-18,2024-10-16,151,Closed,Facebook Ads,9522.0,FHA,Sandra Kim
+CTR-0395,Sunrise Pointe,Brownsville,Rio Grande Valley,Bluebonnet,1720,3,2.5,249900,13000,5000,257900,2024-03-23,2024-07-11,110,Closed,Repeat/Referral,7737.0,FHA,David Reyes
+CTR-0396,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,3,2.0,319900,20000,10000,329900,2023-10-06,2024-03-12,158,Closed,Walk-In,9897.0,VA,Maria Torres
+CTR-0397,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,3,2.5,319900,14500,0,334400,2024-09-29,,,Under Contract,Zillow,10032.0,VA,James Whitfield
+CTR-0398,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,4,2.5,339900,0,0,339900,2023-04-03,2023-09-03,153,Closed,Model Home Visit,10197.0,FHA,Ana Garza
+CTR-0399,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,24500,0,384400,2023-02-27,,,Cancelled,Facebook Ads,0,FHA,Marcus Bell
+CTR-0400,Mesquite Ridge,Corpus Christi,Coastal Bend,Desert Willow,2210,4,3.0,299900,14500,0,314400,2023-02-04,2023-05-17,102,Closed,Model Home Visit,9432.0,VA,Ana Garza
+CTR-0401,Tierra Nueva,Laredo,South Texas,Fiesta,2680,3,3.0,339900,23500,0,363400,2024-07-16,2024-11-15,122,Closed,Google Search,10902.0,Conventional,Maria Torres
+CTR-0402,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,3,2.0,339900,14000,0,353900,2023-01-16,2023-05-21,125,Closed,Realtor.com,10617.0,USDA,Marcus Bell
+CTR-0403,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,5,2.0,339900,19500,0,359400,2024-01-16,2024-05-16,121,Closed,Google Search,0,FHA,Ana Garza
+CTR-0404,Tierra Nueva,Laredo,South Texas,Fiesta,2680,4,3.0,339900,17500,10000,347400,2023-04-20,2023-06-03,44,Closed,Google Search,10422.0,Conventional,Maria Torres
+CTR-0405,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,5,2.5,274900,23500,0,298400,2023-09-14,2024-02-13,152,Closed,Event/Home Show,8952.0,Conventional,Sandra Kim
+CTR-0406,Tierra Nueva,Laredo,South Texas,Evening Star,2450,4,2.0,319900,11000,0,330900,2024-04-24,2024-10-07,166,Closed,Walk-In,9927.0,Cash,Ana Garza
+CTR-0407,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,4,2.5,319900,12000,2500,329400,2023-01-01,2023-06-04,154,Closed,Realtor Referral,9882.0,USDA,James Whitfield
+CTR-0408,Sunrise Pointe,Brownsville,Rio Grande Valley,Fiesta,2680,3,3.0,339900,2000,7500,334400,2024-07-05,2024-10-27,114,Closed,Event/Home Show,10032.0,VA,Ana Garza
+CTR-0409,Canyon Creek,San Antonio,South Texas,Fiesta,2680,3,2.0,339900,10500,0,350400,2023-04-09,,,Cancelled,Realtor Referral,10512.0,Cash,James Whitfield
+CTR-0410,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,4,2.0,219900,18500,7500,230900,2024-02-02,2024-07-08,157,Closed,Realtor Referral,6927.0,USDA,Marcus Bell
+CTR-0411,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,4,3.0,219900,6500,7500,218900,2024-05-18,2024-08-26,100,Closed,Google Search,6567.0,Cash,Ana Garza
+CTR-0412,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,4,2.0,359900,20000,0,379900,2024-06-25,2024-07-29,34,Closed,Realtor.com,0,FHA,Marcus Bell
+CTR-0413,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,5,3.0,319900,12500,0,332400,2023-07-17,2023-11-15,121,Closed,Event/Home Show,9972.0,Cash,Marcus Bell
+CTR-0414,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,3,3.0,359900,20500,5000,375400,2024-01-02,2024-06-29,179,Closed,Zillow,11262.0,Cash,Sandra Kim
+CTR-0415,Sunrise Pointe,Brownsville,Rio Grande Valley,Fiesta,2680,4,2.5,339900,5000,5000,339900,2024-09-06,2025-01-19,135,Closed,Google Search,10197.0,Cash,Marcus Bell
+CTR-0416,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,4,2.5,319900,7500,5000,322400,2024-07-12,2024-12-19,160,Closed,Model Home Visit,9672.0,FHA,Marcus Bell
+CTR-0417,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,3,2.5,274900,19500,0,294400,2024-06-14,2024-09-08,86,Closed,Realtor.com,8832.0,FHA,Marcus Bell
+CTR-0418,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,4,3.0,319900,16500,5000,331400,2024-08-07,,,Cancelled,Facebook Ads,0,Conventional,James Whitfield
+CTR-0419,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,3,2.5,359900,9500,0,369400,2024-08-07,2024-12-02,117,Closed,Model Home Visit,11082.0,USDA,Maria Torres
+CTR-0420,Del Sol Estates,Edinburg,Rio Grande Valley,Azalea,1450,4,2.0,219900,23500,10000,233400,2024-08-13,2024-11-18,97,Closed,Repeat/Referral,7002.0,Conventional,Marcus Bell
+CTR-0421,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,3.0,339900,20500,2500,357900,2023-02-25,2023-05-31,95,Closed,Google Search,10737.0,Conventional,James Whitfield
+CTR-0422,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,2.0,339900,23500,2500,360900,2024-04-01,2024-09-11,163,Closed,Facebook Ads,0,Conventional,Ana Garza
+CTR-0423,Villas at Paloma Creek,McAllen,Rio Grande Valley,Desert Willow,2210,3,2.5,299900,18500,7500,310900,2023-02-20,,,Cancelled,Zillow,9327.0,USDA,James Whitfield
+CTR-0424,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,4,3.0,299900,21000,5000,315900,2023-07-20,2023-12-24,157,Closed,Repeat/Referral,0,USDA,Maria Torres
+CTR-0425,Villas at Paloma Creek,McAllen,Rio Grande Valley,Fiesta,2680,3,2.5,339900,13500,2500,350900,2024-01-10,2024-05-20,131,Closed,Facebook Ads,10527.0,USDA,David Reyes
+CTR-0426,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,3,3.0,299900,1000,10000,290900,2023-08-28,2024-01-12,137,Closed,Walk-In,8727.0,FHA,James Whitfield
+CTR-0427,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,3,3.0,359900,9000,0,368900,2023-12-18,2024-03-31,104,Closed,Google Search,11067.0,USDA,James Whitfield
+CTR-0428,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,4,3.0,319900,17000,10000,326900,2023-09-22,2024-03-09,169,Closed,Realtor Referral,9807.0,USDA,Maria Torres
+CTR-0429,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,3,2.5,249900,1500,0,251400,2023-07-25,2024-01-10,169,Closed,Realtor Referral,7542.0,VA,Marcus Bell
+CTR-0430,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,5,2.0,359900,3500,0,363400,2023-10-27,2024-04-17,173,Closed,Event/Home Show,10902.0,VA,David Reyes
+CTR-0431,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,6500,5000,251400,2024-04-13,,,Cancelled,Model Home Visit,7542.0,Conventional,Maria Torres
+CTR-0432,Sunrise Pointe,Brownsville,Rio Grande Valley,Fiesta,2680,4,2.0,339900,11500,0,351400,2024-10-02,2025-03-05,154,Closed,Facebook Ads,0,USDA,Ana Garza
+CTR-0433,Mesquite Ridge,Corpus Christi,Coastal Bend,Bluebonnet,1720,4,2.0,249900,11000,2500,258400,2023-05-21,2023-07-14,54,Closed,Realtor.com,7752.0,USDA,James Whitfield
+CTR-0434,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,3,2.5,274900,19500,0,294400,2024-04-04,2024-07-29,116,Closed,Realtor.com,8832.0,USDA,James Whitfield
+CTR-0435,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,4,2.0,359900,4500,7500,356900,2024-08-01,,,Cancelled,Zillow,10707.0,FHA,Ana Garza
+CTR-0436,Canyon Creek,San Antonio,South Texas,Desert Willow,2210,4,3.0,299900,9500,2500,306900,2023-10-08,,,Under Contract,Facebook Ads,9207.0,USDA,James Whitfield
+CTR-0437,Mesquite Ridge,Corpus Christi,Coastal Bend,Bluebonnet,1720,5,3.0,249900,22500,0,272400,2024-01-03,2024-03-22,79,Closed,Model Home Visit,8172.0,VA,James Whitfield
+CTR-0438,Canyon Creek,San Antonio,South Texas,Desert Willow,2210,4,2.0,299900,15500,0,315400,2023-06-17,2023-09-19,94,Closed,Facebook Ads,9462.0,Conventional,James Whitfield
+CTR-0439,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,4,2.0,249900,14000,10000,253900,2024-09-23,2025-02-01,131,Closed,Repeat/Referral,7617.0,USDA,Marcus Bell
+CTR-0440,Canyon Creek,San Antonio,South Texas,Fiesta,2680,4,2.0,339900,10000,2500,347400,2024-09-18,2025-02-28,163,Closed,Realtor Referral,10422.0,Cash,David Reyes
+CTR-0441,Esperanza Crossing,San Antonio,South Texas,Bluebonnet,1720,3,2.5,249900,16500,5000,261400,2024-02-10,2024-05-15,95,Closed,Realtor Referral,7842.0,Cash,David Reyes
+CTR-0442,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,4,3.0,359900,9000,2500,366400,2023-06-20,2023-12-05,168,Closed,Zillow,10992.0,Cash,Maria Torres
+CTR-0443,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,19000,7500,261400,2024-07-13,2024-09-07,56,Closed,Model Home Visit,0,Conventional,David Reyes
+CTR-0444,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,10500,7500,277900,2023-06-17,,,Cancelled,Walk-In,8337.0,Cash,Marcus Bell
+CTR-0445,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,3,2.0,299900,18000,2500,315400,2023-02-14,2023-06-26,132,Closed,Zillow,9462.0,Conventional,Marcus Bell
+CTR-0446,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,3,2.5,299900,10000,0,309900,2024-04-01,,,Under Contract,Facebook Ads,0,Cash,David Reyes
+CTR-0447,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,3,3.0,319900,16000,0,335900,2023-08-11,2024-01-08,150,Closed,Realtor Referral,10077.0,VA,Sandra Kim
+CTR-0448,Mesquite Ridge,Corpus Christi,Coastal Bend,Azalea,1450,4,2.0,219900,6000,0,225900,2023-02-26,2023-05-31,94,Closed,Facebook Ads,0,FHA,Maria Torres
+CTR-0449,Canyon Creek,San Antonio,South Texas,Bluebonnet,1720,3,2.5,249900,5000,7500,247400,2023-10-19,2024-04-14,178,Closed,Event/Home Show,7422.0,USDA,Ana Garza
+CTR-0450,Esperanza Crossing,San Antonio,South Texas,Azalea,1450,4,2.5,219900,9500,0,229400,2024-01-13,2024-04-20,98,Closed,Walk-In,6882.0,Conventional,Maria Torres
+CTR-0451,Del Sol Estates,Edinburg,Rio Grande Valley,Cactus Rose,1980,3,2.5,274900,17000,2500,289400,2024-06-21,2024-10-15,116,Closed,Event/Home Show,0,USDA,Marcus Bell
+CTR-0452,Del Sol Estates,Edinburg,Rio Grande Valley,Desert Willow,2210,4,3.0,299900,19500,10000,309400,2023-11-21,2024-05-02,163,Closed,Zillow,9282.0,Cash,Sandra Kim
+CTR-0453,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,5,2.0,299900,5500,5000,300400,2023-08-27,,,Under Contract,Walk-In,9012.0,USDA,David Reyes
+CTR-0454,Canyon Creek,San Antonio,South Texas,Azalea,1450,4,2.5,219900,10500,0,230400,2024-07-27,,,Under Contract,Walk-In,6912.0,USDA,Sandra Kim
+CTR-0455,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,3,2.5,359900,0,0,359900,2023-12-08,2024-05-18,162,Closed,Zillow,0,VA,Marcus Bell
+CTR-0456,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,4,2.5,299900,1000,7500,293400,2023-05-20,2023-11-06,170,Closed,Google Search,8802.0,FHA,Sandra Kim
+CTR-0457,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,3,2.0,319900,23500,7500,335900,2023-11-20,2024-02-20,92,Closed,Google Search,10077.0,VA,Maria Torres
+CTR-0458,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,5,2.5,299900,20500,5000,315400,2023-06-19,2023-11-05,139,Closed,Facebook Ads,0,FHA,Ana Garza
+CTR-0459,Canyon Creek,San Antonio,South Texas,Azalea,1450,4,2.0,219900,16000,0,235900,2024-01-16,2024-05-23,128,Closed,Walk-In,7077.0,Conventional,Maria Torres
+CTR-0460,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,4,2.5,319900,500,10000,310400,2024-05-09,2024-08-26,109,Closed,Event/Home Show,9312.0,Conventional,Maria Torres
+CTR-0461,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,4,2.5,249900,23500,0,273400,2024-04-15,,,Under Contract,Walk-In,0,FHA,Maria Torres
+CTR-0462,Del Sol Estates,Edinburg,Rio Grande Valley,Azalea,1450,4,2.5,219900,18500,10000,228400,2023-11-16,2024-03-11,116,Closed,Facebook Ads,0,Cash,Marcus Bell
+CTR-0463,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,4500,0,279400,2023-10-08,2023-12-16,69,Closed,Event/Home Show,0,VA,Ana Garza
+CTR-0464,Tierra Nueva,Laredo,South Texas,Fiesta,2680,3,2.0,339900,9000,5000,343900,2023-09-08,2024-01-15,129,Closed,Model Home Visit,10317.0,FHA,David Reyes
+CTR-0465,Esperanza Crossing,San Antonio,South Texas,Azalea,1450,4,2.5,219900,12500,0,232400,2023-03-30,2023-07-20,112,Closed,Model Home Visit,6972.0,VA,Ana Garza
+CTR-0466,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,3,3.0,339900,24500,7500,356900,2024-06-30,2024-09-27,89,Closed,Zillow,10707.0,Cash,Maria Torres
+CTR-0467,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,4,2.5,274900,22000,7500,289400,2024-04-21,2024-08-17,118,Closed,Facebook Ads,8682.0,Conventional,Marcus Bell
+CTR-0468,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,3.0,359900,10500,2500,367900,2024-05-14,,,Cancelled,Facebook Ads,11037.0,USDA,James Whitfield
+CTR-0469,Villas at Paloma Creek,McAllen,Rio Grande Valley,Desert Willow,2210,3,3.0,299900,23000,10000,312900,2023-04-20,,,Under Contract,Repeat/Referral,9387.0,Conventional,Sandra Kim
+CTR-0470,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,4,2.5,299900,12500,0,312400,2023-12-15,2024-06-10,178,Closed,Repeat/Referral,9372.0,USDA,Marcus Bell
+CTR-0471,Mesquite Ridge,Corpus Christi,Coastal Bend,Bluebonnet,1720,4,3.0,249900,21500,7500,263900,2023-03-21,2023-08-31,163,Closed,Model Home Visit,0,FHA,David Reyes
+CTR-0472,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,4,3.0,274900,13000,0,287900,2024-09-04,2024-11-25,82,Closed,Google Search,8637.0,FHA,Maria Torres
+CTR-0473,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,3.0,359900,4500,5000,359400,2023-01-01,2023-06-24,174,Closed,Repeat/Referral,10782.0,Cash,James Whitfield
+CTR-0474,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,5,2.5,339900,10000,0,349900,2024-08-06,2025-01-29,176,Closed,Repeat/Referral,10497.0,FHA,Sandra Kim
+CTR-0475,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,3,3.0,319900,16500,2500,333900,2023-05-11,2023-08-16,97,Closed,Realtor Referral,10017.0,USDA,Ana Garza
+CTR-0476,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,4,2.5,359900,9000,10000,358900,2023-02-01,2023-07-30,179,Closed,Repeat/Referral,10767.0,Cash,Sandra Kim
+CTR-0477,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,3,2.5,339900,5500,2500,342900,2023-05-23,2023-10-09,139,Closed,Repeat/Referral,10287.0,Conventional,James Whitfield
+CTR-0478,Esperanza Crossing,San Antonio,South Texas,Azalea,1450,3,2.0,219900,21000,0,240900,2023-05-28,2023-10-27,152,Closed,Zillow,7227.0,Cash,David Reyes
+CTR-0479,Canyon Creek,San Antonio,South Texas,Evening Star,2450,4,2.0,319900,5500,2500,322900,2024-06-05,2024-10-30,147,Closed,Repeat/Referral,0,USDA,David Reyes
+CTR-0480,Mesquite Ridge,Corpus Christi,Coastal Bend,Fiesta,2680,5,2.5,339900,16000,0,355900,2024-02-25,2024-08-06,163,Closed,Model Home Visit,10677.0,FHA,Sandra Kim
+CTR-0481,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,3,2.5,339900,2500,0,342400,2024-06-23,2024-10-26,125,Closed,Walk-In,0,FHA,Marcus Bell
+CTR-0482,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,4,2.5,319900,1500,0,321400,2024-07-01,2024-11-28,150,Closed,Google Search,9642.0,VA,Ana Garza
+CTR-0483,Tierra Nueva,Laredo,South Texas,Azalea,1450,4,2.0,219900,22500,5000,237400,2023-11-08,2024-04-18,162,Closed,Zillow,7122.0,VA,Marcus Bell
+CTR-0484,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,4,2.0,274900,15500,0,290400,2023-05-10,2023-09-12,125,Closed,Facebook Ads,8712.0,FHA,Sandra Kim
+CTR-0485,Tierra Nueva,Laredo,South Texas,Evening Star,2450,3,3.0,319900,24000,0,343900,2024-04-02,2024-07-23,112,Closed,Model Home Visit,10317.0,FHA,Ana Garza
+CTR-0486,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,5,3.0,249900,19500,10000,259400,2023-06-07,2023-10-27,142,Closed,Model Home Visit,0,Conventional,James Whitfield
+CTR-0487,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,3,2.5,219900,21000,0,240900,2023-04-29,2023-06-27,59,Closed,Event/Home Show,7227.0,Cash,David Reyes
+CTR-0488,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,17000,10000,256900,2024-03-21,2024-06-18,89,Closed,Google Search,7707.0,FHA,Maria Torres
+CTR-0489,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,4,3.0,359900,14000,5000,368900,2023-10-07,2024-02-08,124,Closed,Repeat/Referral,11067.0,Conventional,Marcus Bell
+CTR-0490,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,4,2.0,319900,11000,7500,323400,2023-07-04,2023-10-03,91,Closed,Realtor Referral,9702.0,USDA,Maria Torres
+CTR-0491,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,7000,7500,274400,2023-10-18,,,Under Contract,Realtor.com,8232.0,FHA,Marcus Bell
+CTR-0492,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,5,2.0,219900,19500,0,239400,2024-01-20,2024-07-10,172,Closed,Walk-In,7182.0,VA,Ana Garza
+CTR-0493,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,4,2.0,339900,2000,7500,334400,2024-04-09,2024-08-12,125,Closed,Google Search,10032.0,FHA,Ana Garza
+CTR-0494,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,4,2.5,299900,12500,0,312400,2023-03-03,2023-07-04,123,Closed,Realtor.com,0,Conventional,Marcus Bell
+CTR-0495,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,3,2.0,219900,4500,5000,219400,2024-03-17,,,Cancelled,Realtor Referral,6582.0,USDA,Marcus Bell
+CTR-0496,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,5,2.5,359900,14500,0,374400,2024-05-24,,,Under Contract,Zillow,11232.0,Cash,Sandra Kim
+CTR-0497,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,4,2.0,319900,23000,10000,332900,2024-05-17,2024-10-05,141,Closed,Walk-In,9987.0,FHA,David Reyes
+CTR-0498,Palms at Midway,Mission,Rio Grande Valley,Azalea,1450,4,3.0,219900,18500,5000,233400,2024-01-03,2024-05-10,128,Closed,Walk-In,7002.0,VA,Maria Torres
+CTR-0499,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,5,2.5,359900,9500,7500,361900,2023-07-27,2023-10-30,95,Closed,Facebook Ads,10857.0,FHA,Marcus Bell
+CTR-0500,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,4,2.5,299900,2500,7500,294900,2024-03-24,,,Under Contract,Realtor.com,8847.0,FHA,Sandra Kim
+CTR-0501,Del Sol Estates,Edinburg,Rio Grande Valley,Desert Willow,2210,4,2.0,299900,17000,10000,306900,2024-04-05,,,Under Contract,Realtor Referral,9207.0,Conventional,Marcus Bell
+CTR-0502,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,4,2.0,339900,17500,0,357400,2024-08-16,,,Under Contract,Model Home Visit,10722.0,Conventional,Marcus Bell
+CTR-0503,Tierra Nueva,Laredo,South Texas,Azalea,1450,3,2.0,219900,5500,7500,217900,2023-02-21,2023-06-03,102,Closed,Walk-In,0,Cash,Sandra Kim
+CTR-0504,Mesquite Ridge,Corpus Christi,Coastal Bend,Azalea,1450,3,2.5,219900,6500,2500,223900,2023-12-12,2024-06-05,176,Closed,Event/Home Show,0,Conventional,Maria Torres
+CTR-0505,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,4,2.0,274900,2000,0,276900,2023-10-08,2023-12-03,56,Closed,Zillow,8307.0,USDA,Maria Torres
+CTR-0506,Tierra Nueva,Laredo,South Texas,Azalea,1450,3,2.0,219900,20500,5000,235400,2024-01-21,2024-04-22,92,Closed,Realtor Referral,7062.0,USDA,Ana Garza
+CTR-0507,Canyon Creek,San Antonio,South Texas,Fiesta,2680,3,3.0,339900,15500,7500,347900,2023-05-10,2023-10-28,171,Closed,Realtor.com,10437.0,FHA,Sandra Kim
+CTR-0508,Tierra Nueva,Laredo,South Texas,Fiesta,2680,3,2.0,339900,16000,5000,350900,2023-04-01,2023-08-07,128,Closed,Realtor.com,0,USDA,Maria Torres
+CTR-0509,Sunrise Pointe,Brownsville,Rio Grande Valley,Guadalupe,2920,3,2.0,359900,24500,5000,379400,2024-06-03,2024-11-20,170,Closed,Realtor.com,11382.0,Cash,David Reyes
+CTR-0510,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,3,2.0,249900,21500,0,271400,2023-02-25,2023-07-01,126,Closed,Model Home Visit,8142.0,FHA,Sandra Kim
+CTR-0511,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,4,2.0,249900,500,2500,247900,2024-06-11,2024-09-06,87,Closed,Google Search,7437.0,VA,James Whitfield
+CTR-0512,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,2.5,274900,7000,0,281900,2023-08-31,2023-12-24,115,Closed,Model Home Visit,0,FHA,David Reyes
+CTR-0513,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,4,2.0,249900,19500,2500,266900,2023-07-02,2023-10-17,107,Closed,Google Search,0,VA,James Whitfield
+CTR-0514,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,3,2.5,339900,18500,0,358400,2023-10-15,2024-01-07,84,Closed,Google Search,10752.0,USDA,James Whitfield
+CTR-0515,Tierra Nueva,Laredo,South Texas,Evening Star,2450,4,2.5,319900,18000,10000,327900,2023-08-24,2023-11-16,84,Closed,Realtor.com,9837.0,Cash,Ana Garza
+CTR-0516,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,2.0,339900,14000,7500,346400,2023-09-10,2024-02-02,145,Closed,Zillow,10392.0,Cash,Maria Torres
+CTR-0517,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,4,2.5,299900,24000,10000,313900,2024-05-31,2024-08-02,63,Closed,Walk-In,9417.0,Conventional,Maria Torres
+CTR-0518,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,3.0,339900,23500,2500,360900,2023-08-12,2023-09-29,48,Closed,Realtor Referral,10827.0,VA,James Whitfield
+CTR-0519,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,3,2.5,359900,18500,7500,370900,2024-08-20,2024-10-18,59,Closed,Repeat/Referral,0,Cash,Marcus Bell
+CTR-0520,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,5,3.0,359900,20500,0,380400,2024-01-30,2024-06-10,132,Closed,Facebook Ads,11412.0,USDA,Sandra Kim
+CTR-0521,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,3,2.0,359900,22000,0,381900,2024-09-27,2025-01-02,97,Closed,Google Search,11457.0,Cash,Ana Garza
+CTR-0522,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,3,2.5,319900,1000,0,320900,2024-01-11,2024-06-20,161,Closed,Realtor.com,9627.0,Conventional,Sandra Kim
+CTR-0523,Villas at Paloma Creek,McAllen,Rio Grande Valley,Fiesta,2680,4,2.5,339900,15500,7500,347900,2024-08-17,2025-02-12,179,Closed,Realtor.com,10437.0,VA,Sandra Kim
+CTR-0524,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,5,3.0,274900,1500,0,276400,2024-01-17,2024-06-17,152,Closed,Model Home Visit,8292.0,USDA,Ana Garza
+CTR-0525,Palms at Midway,Mission,Rio Grande Valley,Evening Star,2450,3,2.0,319900,12000,10000,321900,2023-03-09,,,Under Contract,Walk-In,0,VA,Maria Torres
+CTR-0526,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,4,2.5,299900,4500,10000,294400,2023-07-29,,,Cancelled,Zillow,8832.0,Cash,David Reyes
+CTR-0527,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,4,3.0,274900,6000,0,280900,2023-01-23,2023-05-22,119,Closed,Google Search,8427.0,VA,Marcus Bell
+CTR-0528,Sunrise Pointe,Brownsville,Rio Grande Valley,Desert Willow,2210,3,2.5,299900,19000,7500,311400,2024-06-26,2024-11-19,146,Closed,Facebook Ads,9342.0,Conventional,David Reyes
+CTR-0529,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,4,2.0,274900,1500,0,276400,2023-12-28,2024-04-17,111,Closed,Event/Home Show,0,Conventional,Marcus Bell
+CTR-0530,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,3,3.0,249900,7500,0,257400,2023-02-12,2023-07-25,163,Closed,Zillow,7722.0,FHA,Marcus Bell
+CTR-0531,Sunrise Pointe,Brownsville,Rio Grande Valley,Cactus Rose,1980,4,2.5,274900,4500,0,279400,2024-04-04,2024-07-23,110,Closed,Realtor Referral,8382.0,Conventional,David Reyes
+CTR-0532,Sunrise Pointe,Brownsville,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,0,7500,242400,2024-07-13,2024-11-22,132,Closed,Facebook Ads,7272.0,Conventional,Sandra Kim
+CTR-0533,Palms at Midway,Mission,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,22500,0,297400,2024-05-05,2024-08-20,107,Closed,Realtor Referral,8922.0,Conventional,David Reyes
+CTR-0534,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,3,2.0,219900,10500,0,230400,2024-09-14,2025-02-25,164,Closed,Facebook Ads,6912.0,FHA,Sandra Kim
+CTR-0535,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,5,2.5,339900,22000,0,361900,2024-06-08,2024-11-07,152,Closed,Realtor Referral,10857.0,Cash,James Whitfield
+CTR-0536,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,3,2.0,274900,12500,0,287400,2023-01-13,2023-05-27,134,Closed,Event/Home Show,8622.0,Cash,Marcus Bell
+CTR-0537,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,3,2.0,359900,14000,0,373900,2023-06-17,2023-11-08,144,Closed,Walk-In,11217.0,VA,David Reyes
+CTR-0538,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,4,2.5,219900,19000,10000,228900,2024-01-20,2024-03-16,56,Closed,Zillow,6867.0,USDA,James Whitfield
+CTR-0539,Mesquite Ridge,Corpus Christi,Coastal Bend,Bluebonnet,1720,5,2.5,249900,12500,0,262400,2024-07-21,2024-11-26,128,Closed,Event/Home Show,7872.0,Conventional,Maria Torres
+CTR-0540,Esperanza Crossing,San Antonio,South Texas,Bluebonnet,1720,5,3.0,249900,8500,0,258400,2024-04-28,2024-07-09,72,Closed,Model Home Visit,7752.0,Conventional,Maria Torres
+CTR-0541,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,5,3.0,359900,9000,2500,366400,2023-03-10,2023-07-24,136,Closed,Facebook Ads,10992.0,Cash,Marcus Bell
+CTR-0542,Villas at Paloma Creek,McAllen,Rio Grande Valley,Cactus Rose,1980,4,3.0,274900,16500,7500,283900,2024-08-12,2024-09-27,46,Closed,Google Search,0,Conventional,Ana Garza
+CTR-0543,Tierra Nueva,Laredo,South Texas,Azalea,1450,4,2.0,219900,8500,0,228400,2024-03-05,,,Under Contract,Walk-In,6852.0,Conventional,Maria Torres
+CTR-0544,Tierra Nueva,Laredo,South Texas,Evening Star,2450,3,3.0,319900,10500,10000,320400,2023-11-20,2024-05-15,177,Closed,Google Search,9612.0,USDA,Ana Garza
+CTR-0545,Tierra Nueva,Laredo,South Texas,Azalea,1450,3,2.0,219900,4000,5000,218900,2023-10-16,2024-03-16,152,Closed,Zillow,6567.0,Conventional,Sandra Kim
+CTR-0546,Mesquite Ridge,Corpus Christi,Coastal Bend,Guadalupe,2920,4,2.5,359900,6000,10000,355900,2024-07-26,2024-12-30,157,Closed,Walk-In,10677.0,FHA,Maria Torres
+CTR-0547,Tierra Nueva,Laredo,South Texas,Azalea,1450,4,2.0,219900,15500,0,235400,2023-11-16,2024-03-02,107,Closed,Event/Home Show,7062.0,VA,Maria Torres
+CTR-0548,Villas at Paloma Creek,McAllen,Rio Grande Valley,Bluebonnet,1720,4,3.0,249900,4000,10000,243900,2023-05-26,2023-10-02,129,Closed,Walk-In,0,FHA,Maria Torres
+CTR-0549,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,3,2.5,359900,15500,10000,365400,2024-03-17,,,Cancelled,Model Home Visit,10962.0,FHA,Maria Torres
+CTR-0550,Del Sol Estates,Edinburg,Rio Grande Valley,Fiesta,2680,5,2.5,339900,0,10000,329900,2023-04-09,2023-09-23,167,Closed,Zillow,9897.0,FHA,Maria Torres
+CTR-0551,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,4,3.0,359900,24000,0,383900,2024-08-16,2024-12-04,110,Closed,Realtor.com,11517.0,FHA,Maria Torres
+CTR-0552,Esperanza Crossing,San Antonio,South Texas,Evening Star,2450,3,3.0,319900,7000,7500,319400,2023-07-16,2023-11-04,111,Closed,Walk-In,9582.0,Cash,Ana Garza
+CTR-0553,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,3,2.5,299900,22000,0,321900,2023-07-05,2023-11-20,138,Closed,Repeat/Referral,9657.0,FHA,David Reyes
+CTR-0554,Villas at Paloma Creek,McAllen,Rio Grande Valley,Evening Star,2450,3,2.5,319900,4000,2500,321400,2024-01-05,2024-06-14,161,Closed,Model Home Visit,0,VA,David Reyes
+CTR-0555,Del Sol Estates,Edinburg,Rio Grande Valley,Fiesta,2680,5,2.5,339900,14500,0,354400,2024-07-21,2024-12-12,144,Closed,Model Home Visit,0,Conventional,Maria Torres
+CTR-0556,Palms at Midway,Mission,Rio Grande Valley,Fiesta,2680,5,2.0,339900,3000,2500,340400,2024-03-24,,,Under Contract,Walk-In,10212.0,FHA,Ana Garza
+CTR-0557,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,5,2.5,274900,6500,5000,276400,2024-02-18,2024-05-11,83,Closed,Facebook Ads,8292.0,VA,David Reyes
+CTR-0558,Canyon Creek,San Antonio,South Texas,Desert Willow,2210,5,2.0,299900,16500,0,316400,2023-05-31,2023-09-11,103,Closed,Realtor.com,9492.0,FHA,Maria Torres
+CTR-0559,Esperanza Crossing,San Antonio,South Texas,Guadalupe,2920,4,3.0,359900,2000,2500,359400,2023-01-28,2023-06-15,138,Closed,Facebook Ads,10782.0,FHA,Maria Torres
+CTR-0560,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,4,2.0,359900,15000,0,374900,2023-10-28,2024-03-28,152,Closed,Event/Home Show,11247.0,FHA,David Reyes
+CTR-0561,Villas at Paloma Creek,McAllen,Rio Grande Valley,Desert Willow,2210,5,2.0,299900,14500,0,314400,2024-01-21,,,Cancelled,Facebook Ads,9432.0,Cash,David Reyes
+CTR-0562,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,4,2.5,274900,23000,2500,295400,2024-05-14,2024-10-23,162,Closed,Event/Home Show,8862.0,Cash,Sandra Kim
+CTR-0563,Tierra Nueva,Laredo,South Texas,Evening Star,2450,4,2.0,319900,1500,2500,318900,2023-09-27,2024-02-12,138,Closed,Facebook Ads,9567.0,FHA,Sandra Kim
+CTR-0564,Esperanza Crossing,San Antonio,South Texas,Bluebonnet,1720,4,2.5,249900,12000,0,261900,2024-08-20,2024-11-15,87,Closed,Repeat/Referral,7857.0,Cash,Ana Garza
+CTR-0565,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,2.0,339900,8000,0,347900,2023-08-29,,,Cancelled,Walk-In,10437.0,FHA,Sandra Kim
+CTR-0566,Sunrise Pointe,Brownsville,Rio Grande Valley,Azalea,1450,4,2.5,219900,15000,7500,227400,2024-03-08,2024-07-29,143,Closed,Realtor Referral,6822.0,USDA,David Reyes
+CTR-0567,Sunrise Pointe,Brownsville,Rio Grande Valley,Evening Star,2450,3,3.0,319900,3000,10000,312900,2024-05-15,2024-07-27,73,Closed,Google Search,9387.0,VA,Ana Garza
+CTR-0568,Canyon Creek,San Antonio,South Texas,Bluebonnet,1720,4,2.5,249900,16000,7500,258400,2023-03-19,2023-08-24,158,Closed,Facebook Ads,7752.0,Conventional,Sandra Kim
+CTR-0569,Villas at Paloma Creek,McAllen,Rio Grande Valley,Fiesta,2680,3,2.5,339900,18500,0,358400,2024-08-29,2024-12-05,98,Closed,Repeat/Referral,10752.0,FHA,Marcus Bell
+CTR-0570,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,5,3.0,319900,9500,2500,326900,2024-07-06,2024-11-26,143,Closed,Model Home Visit,9807.0,Conventional,Maria Torres
+CTR-0571,Tierra Nueva,Laredo,South Texas,Evening Star,2450,4,3.0,319900,16000,0,335900,2024-04-23,2024-10-11,171,Closed,Repeat/Referral,10077.0,FHA,Sandra Kim
+CTR-0572,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,4,2.0,274900,15000,0,289900,2023-09-04,2024-02-28,177,Closed,Repeat/Referral,8697.0,Conventional,David Reyes
+CTR-0573,Del Sol Estates,Edinburg,Rio Grande Valley,Guadalupe,2920,3,2.0,359900,9000,7500,361400,2023-06-14,2023-11-27,166,Closed,Zillow,0,Conventional,Ana Garza
+CTR-0574,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,4,2.5,299900,18000,2500,315400,2024-03-08,2024-06-10,94,Closed,Realtor Referral,9462.0,USDA,James Whitfield
+CTR-0575,Esperanza Crossing,San Antonio,South Texas,Fiesta,2680,4,3.0,339900,15500,10000,345400,2023-01-21,,,Cancelled,Repeat/Referral,10362.0,FHA,David Reyes
+CTR-0576,Tierra Nueva,Laredo,South Texas,Bluebonnet,1720,4,2.5,249900,3500,5000,248400,2024-05-27,2024-10-30,156,Closed,Event/Home Show,7452.0,FHA,James Whitfield
+CTR-0577,Villas at Paloma Creek,McAllen,Rio Grande Valley,Guadalupe,2920,3,2.0,359900,10000,0,369900,2024-08-21,2024-12-19,120,Closed,Walk-In,0,VA,David Reyes
+CTR-0578,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,4,3.0,274900,19000,0,293900,2024-05-17,2024-11-12,179,Closed,Repeat/Referral,8817.0,Conventional,Ana Garza
+CTR-0579,Tierra Nueva,Laredo,South Texas,Cactus Rose,1980,5,3.0,274900,15500,7500,282900,2024-01-12,2024-04-13,92,Closed,Realtor Referral,8487.0,FHA,Marcus Bell
+CTR-0580,Mesquite Ridge,Corpus Christi,Coastal Bend,Cactus Rose,1980,4,2.0,274900,18000,2500,290400,2023-11-13,2024-05-10,179,Closed,Walk-In,8712.0,Cash,David Reyes
+CTR-0581,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,4,3.0,299900,8000,0,307900,2023-04-03,2023-08-01,120,Closed,Zillow,9237.0,VA,Marcus Bell
+CTR-0582,Canyon Creek,San Antonio,South Texas,Guadalupe,2920,5,2.5,359900,1000,0,360900,2023-03-24,2023-08-23,152,Closed,Google Search,10827.0,FHA,James Whitfield
+CTR-0583,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,3,3.0,319900,2000,0,321900,2024-03-06,2024-08-13,160,Closed,Realtor Referral,9657.0,Conventional,Marcus Bell
+CTR-0584,Palms at Midway,Mission,Rio Grande Valley,Guadalupe,2920,3,2.0,359900,21000,0,380900,2023-01-04,2023-06-23,170,Closed,Walk-In,11427.0,USDA,Marcus Bell
+CTR-0585,Tierra Nueva,Laredo,South Texas,Guadalupe,2920,4,2.0,359900,19000,7500,371400,2024-02-25,2024-07-04,130,Closed,Zillow,11142.0,USDA,Ana Garza
+CTR-0586,Del Sol Estates,Edinburg,Rio Grande Valley,Bluebonnet,1720,3,2.0,249900,2500,2500,249900,2024-01-12,2024-05-29,138,Closed,Realtor.com,7497.0,USDA,Marcus Bell
+CTR-0587,Mesquite Ridge,Corpus Christi,Coastal Bend,Azalea,1450,3,2.5,219900,15000,0,234900,2023-09-26,,,Cancelled,Zillow,7047.0,Conventional,Sandra Kim
+CTR-0588,Villas at Paloma Creek,McAllen,Rio Grande Valley,Azalea,1450,5,2.0,219900,23500,5000,238400,2024-03-21,2024-08-16,148,Closed,Realtor.com,7152.0,Conventional,Ana Garza
+CTR-0589,Del Sol Estates,Edinburg,Rio Grande Valley,Fiesta,2680,5,3.0,339900,16000,2500,353400,2023-05-14,2023-09-07,116,Closed,Facebook Ads,10602.0,Conventional,David Reyes
+CTR-0590,Tierra Nueva,Laredo,South Texas,Desert Willow,2210,4,3.0,299900,4500,0,304400,2023-10-25,2024-02-22,120,Closed,Google Search,9132.0,Cash,Maria Torres
+CTR-0591,Esperanza Crossing,San Antonio,South Texas,Desert Willow,2210,5,3.0,299900,4000,10000,293900,2023-11-28,2024-04-16,140,Closed,Repeat/Referral,8817.0,VA,Maria Torres
+CTR-0592,Villas at Paloma Creek,McAllen,Rio Grande Valley,Evening Star,2450,3,2.5,319900,1500,0,321400,2023-12-07,2024-05-05,150,Closed,Realtor Referral,9642.0,USDA,Sandra Kim
+CTR-0593,Canyon Creek,San Antonio,South Texas,Cactus Rose,1980,3,3.0,274900,12500,7500,279900,2024-01-15,2024-04-11,87,Closed,Facebook Ads,8397.0,Cash,Ana Garza
+CTR-0594,Palms at Midway,Mission,Rio Grande Valley,Bluebonnet,1720,5,2.5,249900,2500,0,252400,2024-06-27,,,Under Contract,Facebook Ads,0,Cash,Ana Garza
+CTR-0595,Del Sol Estates,Edinburg,Rio Grande Valley,Evening Star,2450,4,3.0,319900,24500,0,344400,2024-06-13,2024-10-02,111,Closed,Zillow,10332.0,Cash,Maria Torres
+CTR-0596,Mesquite Ridge,Corpus Christi,Coastal Bend,Bluebonnet,1720,4,2.0,249900,1500,0,251400,2023-07-07,2023-08-22,46,Closed,Walk-In,7542.0,Cash,Ana Garza
+CTR-0597,Palms at Midway,Mission,Rio Grande Valley,Desert Willow,2210,5,3.0,299900,16000,0,315900,2023-06-01,2023-07-06,35,Closed,Zillow,9477.0,VA,Sandra Kim
+CTR-0598,Mesquite Ridge,Corpus Christi,Coastal Bend,Evening Star,2450,4,2.0,319900,0,5000,314900,2024-08-07,2024-11-14,99,Closed,Walk-In,9447.0,VA,Marcus Bell
+CTR-0599,Villas at Paloma Creek,McAllen,Rio Grande Valley,Desert Willow,2210,4,3.0,299900,12000,5000,306900,2023-04-19,,,Cancelled,Model Home Visit,9207.0,VA,Sandra Kim
+CTR-0600,Esperanza Crossing,San Antonio,South Texas,Cactus Rose,1980,3,2.0,274900,1000,7500,268400,2024-09-29,2025-02-07,131,Closed,Zillow,8052.0,VA,Ana Garza
