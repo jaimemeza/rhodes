@@ -99,6 +99,34 @@ def fetch_pipeline_by_region(_conn) -> pd.DataFrame:
 
 
 @st.cache_data(ttl=600)
+def fetch_channel_economics(_conn) -> pd.DataFrame:
+    """Returns mart_channel_economics, sorted by total_contract_value descending."""
+    query = """
+        select
+            buyer_source,
+            contracts,
+            closed_contracts,
+            cancelled_contracts,
+            cancel_rate,
+            avg_commission_rate,
+            avg_days_to_close,
+            avg_contract_price,
+            avg_upgrade_capture_pct,
+            total_contract_value,
+            total_commission_paid
+        from rhodes.analytics.mart_channel_economics
+        order by total_contract_value desc
+    """
+    cur = _conn.cursor()
+    try:
+        cur.execute(query)
+        cols = [c[0].lower() for c in cur.description]
+        return pd.DataFrame(cur.fetchall(), columns=cols)
+    finally:
+        cur.close()
+
+
+@st.cache_data(ttl=600)
 def fetch_cancel_trend(_conn) -> pd.DataFrame:
     """
     Returns monthly cancellation rate per region for the last 12 months.
