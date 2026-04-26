@@ -28,6 +28,7 @@ REGION_FILL = {
 }
 
 FORECAST_START_MS = pd.Timestamp("2024-09-15").timestamp() * 1000
+FORECAST_END_MS   = pd.Timestamp("2025-01-01").timestamp() * 1000
 
 st.title("Forecast")
 st.caption(
@@ -180,13 +181,15 @@ with tab1:
                 mode="lines",
                 line=dict(dash="dot", color=color, width=1),
                 opacity=0.4,
+                showlegend=False,
             ))
 
-    fig.add_vline(
-        x=FORECAST_START_MS,
-        line_dash="dot", line_color=GRAY,
+    fig.add_vrect(
+        x0=FORECAST_START_MS, x1=FORECAST_END_MS,
+        fillcolor="rgba(240,244,255,0.6)",
+        layer="below", line_width=0,
         annotation_text="Forecast →",
-        annotation_position="top right",
+        annotation_position="top left",
         annotation_font_size=11,
         annotation_font_color=TEXT_MUTED,
     )
@@ -313,14 +316,22 @@ with tab2:
         f = close_fore[close_fore["region"] == region].sort_values("forecast_month")
         if h.empty or f.empty:
             continue
-        latest_hist  = float(h.iloc[-1]["avg_days_to_close"])
-        oct_row      = f[f["forecast_month"] == f["forecast_month"].min()]
+        oct_row = f[f["forecast_month"] == f["forecast_month"].min()]
         if oct_row.empty:
             continue
+        recent_avg   = float(
+            h[h["month_start"].dt.year == 2024]["avg_days_to_close"].mean()
+        )
         forecast_oct = float(oct_row.iloc[0]["forecast"])
-        direction    = "improving" if forecast_oct < latest_hist else "stable or rising"
+        delta        = forecast_oct - recent_avg
+        if delta < -3:
+            direction_text = f"improved by {abs(delta):.0f} days"
+        elif delta > 3:
+            direction_text = f"worsened by {abs(delta):.0f} days"
+        else:
+            direction_text = "remained stable"
         st.info(
-            f"**{region}** close times are {direction} — Cortex projects "
+            f"**{region}** close times have {direction_text} — Cortex projects "
             f"approximately {forecast_oct:.0f} days in Oct 2024, compared to a "
-            f"recent average of {latest_hist:.0f} days."
+            f"2024 average of {recent_avg:.0f} days."
         )
