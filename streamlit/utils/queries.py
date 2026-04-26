@@ -98,6 +98,49 @@ def fetch_pipeline_by_region(_conn) -> pd.DataFrame:
         cur.close()
 
 
+@st.cache_data(ttl=3600)
+def fetch_region_month(_conn) -> pd.DataFrame:
+    """Returns mart_region_month for time-series history and forecast input."""
+    query = """
+        select region, month_start, contracts_closed,
+               cancel_rate, avg_days_to_close,
+               sales_target_units
+        from rhodes.analytics.mart_region_month
+        order by region, month_start
+    """
+    cur = _conn.cursor()
+    try:
+        cur.execute(query)
+        cols = [c[0].lower() for c in cur.description]
+        return pd.DataFrame(cur.fetchall(), columns=cols)
+    finally:
+        cur.close()
+
+
+@st.cache_data(ttl=3600)
+def fetch_forecast_results(_conn) -> pd.DataFrame:
+    """Returns volume and close-time Cortex FORECAST results, unioned."""
+    query = """
+        select 'volume'        as metric,
+               region, forecast_month, forecast,
+               lower_bound, upper_bound
+        from rhodes.analytics.forecast_results
+        union all
+        select 'days_to_close' as metric,
+               region, forecast_month, forecast,
+               lower_bound, upper_bound
+        from rhodes.analytics.close_time_forecast_results
+        order by metric, region, forecast_month
+    """
+    cur = _conn.cursor()
+    try:
+        cur.execute(query)
+        cols = [c[0].lower() for c in cur.description]
+        return pd.DataFrame(cur.fetchall(), columns=cols)
+    finally:
+        cur.close()
+
+
 @st.cache_data(ttl=600)
 def fetch_channel_economics(_conn) -> pd.DataFrame:
     """Returns mart_channel_economics, sorted by total_contract_value descending."""
