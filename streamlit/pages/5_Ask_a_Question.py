@@ -1,5 +1,3 @@
-import json
-
 import pandas as pd
 import streamlit as st
 
@@ -149,35 +147,22 @@ def build_context(question: str) -> tuple[str, str]:
 
 # ── Cortex caller ──────────────────────────────────────────────────────
 def ask_cortex(question: str, context: str) -> str:
-    system = (
+    full_prompt = (
         "You are a data analyst for Rhodes Homes, a residential home builder "
-        "in South Texas. Answer the user's question using ONLY the provided "
-        "data context. Be concise, cite specific numbers, and flag clearly if "
-        "the data does not support the question."
+        "in South Texas. Answer the question using ONLY the provided data "
+        "context. Be concise, cite specific numbers, and flag clearly if the "
+        "data does not support the question.\n\n"
+        f"DATA CONTEXT:\n{context}\n\n"
+        f"QUESTION: {question}"
     )
-    messages = [
-        {"role": "system", "content": system},
-        {"role": "user",
-         "content": f"DATA CONTEXT:\n{context}\n\nQUESTION: {question}"},
-    ]
+    sql = "SELECT SNOWFLAKE.CORTEX.COMPLETE(%s, %s) AS response"
     cur = conn.cursor()
     try:
-        cur.execute(
-            "SELECT SNOWFLAKE.CORTEX.COMPLETE(?, PARSE_JSON(?))",
-            (CORTEX_MODEL, json.dumps(messages)),
-        )
-        row = cur.fetchone()
-        if not row:
-            return "No response received from the model."
-        raw = row[0]
-        if isinstance(raw, str):
-            try:
-                return json.loads(raw)["choices"][0]["message"]["content"]
-            except Exception:
-                return raw
-        return str(raw)
-    except Exception as exc:
-        return f"Cortex error: {exc}"
+        cur.execute(sql, (CORTEX_MODEL, full_prompt))
+        result = cur.fetchone()
+        return result[0].strip() if result else "No response."
+    except Exception as e:
+        return f"Unable to generate a response: {e}"
     finally:
         cur.close()
 
