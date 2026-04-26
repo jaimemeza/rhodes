@@ -31,8 +31,7 @@ st.markdown("""
 st.title("Region Overview")
 st.caption(
     "Year-over-year volume, target attainment, and margin posture by region. "
-    "YoY uses same-period comparison (apples-to-apples). "
-    "Annualized pace shown as secondary context."
+    "YoY uses same-period comparison (apples-to-apples)."
 )
 
 # ── Data ───────────────────────────────────────────────────────────────
@@ -99,12 +98,6 @@ def build_kpi_card(region: str, r_curr, r_prev) -> str:
     except (TypeError, ValueError):
         bar_w, ytd_text, target = 0.0, "—", 0
 
-    try:
-        ann_pct  = float(r_curr["target_attainment_annualized_pct"])
-        pace_str = f"{ann_pct * 100:.0f}%"
-    except (TypeError, ValueError):
-        pace_str = "—"
-
     return f"""
 <div class="kpi-card">
   <div class="kpi-region">{region}</div>
@@ -115,7 +108,6 @@ def build_kpi_card(region: str, r_curr, r_prev) -> str:
     <div style="background:#5a8c3e; border-radius:6px; height:12px; width:{bar_w:.0f}%;"></div>
   </div>
   <div class="kpi-units">{closings} of {target} units · YTD attainment {ytd_text}</div>
-  <div class="kpi-caveat">Pace projection (×12/{months_elapsed}): {pace_str}</div>
 </div>"""
 
 
@@ -203,24 +195,19 @@ DISPLAY_COLS = [
     "region",
     "contract_year",
     "contracts_closed",
-    "contracts_closed_annualized",
     "sales_target_units",
-    "target_attainment_annualized_pct",
     "target_attainment_ytd_pct",
     "cancel_rate",
     "same_period_yoy_pct",
-    "closed_yoy_pct",
     "margin_attainment_delta",
 ]
 
 display_df = df[DISPLAY_COLS].copy()
 
 PCT_COLS = [
-    "target_attainment_annualized_pct",
     "target_attainment_ytd_pct",
     "cancel_rate",
     "same_period_yoy_pct",
-    "closed_yoy_pct",
     "margin_attainment_delta",
 ]
 for col in PCT_COLS:
@@ -234,22 +221,13 @@ st.dataframe(
         "region": st.column_config.TextColumn("Region"),
         "contract_year": st.column_config.NumberColumn("Year", format="%d"),
         "contracts_closed": st.column_config.NumberColumn("Closed", format="%d"),
-        "contracts_closed_annualized": st.column_config.NumberColumn(
-            "Closed (annualized)", format="%d"
-        ),
         "sales_target_units": st.column_config.NumberColumn("Target", format="%d"),
-        "target_attainment_annualized_pct": st.column_config.NumberColumn(
-            "Pace attainment", format="%.1f%%"
-        ),
         "target_attainment_ytd_pct": st.column_config.NumberColumn(
             "YTD attainment", format="%.1f%%"
         ),
         "cancel_rate": st.column_config.NumberColumn("Cancel rate", format="%.1f%%"),
         "same_period_yoy_pct": st.column_config.NumberColumn(
             "YoY (same period)", format="%+.1f%%"
-        ),
-        "closed_yoy_pct": st.column_config.NumberColumn(
-            "YoY (annualized)", format="%+.1f%%"
         ),
         "margin_attainment_delta": st.column_config.NumberColumn(
             "Margin Δ vs target", format="%+.1f%%"
@@ -267,18 +245,12 @@ dynamically from `MAX(contract_date)` in the mart. For the current dataset that
 resolves to {current_year} / {prior_year} / {months_elapsed} months. As new data
 arrives, these update automatically without model changes.
 
-**Same-period YoY (headline)**
+**Same-period YoY**
 
 *YoY (same period)* compares January–{month_abbr} {current_year} closings directly
 against January–{month_abbr} {prior_year} closings — the same calendar window in
 both years. This is an apples-to-apples measurement; no extrapolation is involved.
-
-**Annualized pace (secondary)**
-
-*Pace attainment* and *YoY (annualized)* multiply {months_elapsed}-month actuals by
-12/{months_elapsed} to project the full year, assuming constant monthly pace. This is
-linear extrapolation, not a trend-aware forecast. Trend-aware projections are on the
-**Forecast** page (Snowflake Cortex FORECAST on the monthly time series).
+For trend-aware forward projections, see the **Forecast** page.
 
 **Margin attainment delta**
 
