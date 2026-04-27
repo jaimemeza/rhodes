@@ -212,6 +212,37 @@ def fetch_consultant_performance(_conn) -> pd.DataFrame:
 
 
 @st.cache_data(ttl=600)
+def fetch_monthly_closings(_conn) -> pd.DataFrame:
+    """Returns monthly closings per region for the two most recent years,
+    Jan-Sep only (same-period comparison)."""
+    query = """
+        select
+            region,
+            year(month_start)          as year,
+            monthname(month_start)     as month_name,
+            month(month_start)         as month_num,
+            contracts_closed
+        from rhodes.analytics.mart_region_month
+        where month(month_start) <= 9
+          and year(month_start) in (
+              select distinct year(month_start)
+              from rhodes.analytics.mart_region_month
+              where month_start < '2024-10-01'
+              order by 1 desc
+              limit 2
+          )
+        order by region, year, month_num
+    """
+    cur = _conn.cursor()
+    try:
+        cur.execute(query)
+        cols = [c[0].lower() for c in cur.description]
+        return pd.DataFrame(cur.fetchall(), columns=cols)
+    finally:
+        cur.close()
+
+
+@st.cache_data(ttl=600)
 def fetch_cancel_trend(_conn) -> pd.DataFrame:
     """
     Returns monthly cancellation rate per region for the last 12 months.
@@ -225,10 +256,11 @@ def fetch_cancel_trend(_conn) -> pd.DataFrame:
             count_if(is_cancelled)                              as cancellations,
             count_if(is_cancelled) / nullif(count(*), 0)::float as cancel_rate
         from rhodes.analytics.fct_home_sales
-        where contract_date >= dateadd('month', -12,
-              (select max(contract_date)
-               from rhodes.analytics.fct_home_sales
-               where contract_date < '2024-10-01'))
+        where year(contract_date) = (
+              select year(max(contract_date))
+              from rhodes.analytics.fct_home_sales
+              where contract_date < '2024-10-01'
+          )
           and contract_date < '2024-10-01'
         group by region, date_trunc('month', contract_date)::date
         order by region, month_start
