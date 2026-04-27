@@ -1,16 +1,62 @@
-# Rhodes Homes Sales Analytics
+# Rhodes Enterprise Sales Analytics
 
-This project is a take-home data engineering assessment for Rhodes Homes, a residential builder operating across three South Texas regions. It covers the full pipeline: raw data ingestion into Snowflake, transformation with dbt, and a five-page Streamlit dashboard that uses Snowflake Cortex for AI forecasting and natural-language queries over the actual data.
+This project is a take-home data engineering assessment for Rhodes Enterprise, a residential builder operating across three South Texas regions. It covers the full pipeline: raw data ingestion into Snowflake, transformation with dbt, and a five-page Streamlit dashboard that uses Snowflake Cortex for AI forecasting and natural-language queries over the actual data.
 
 ## Live Dashboard
 
-[Add Streamlit Cloud URL here]
+https://rhodes.streamlit.app
 
 ## Architecture
 
-Raw contract data lands in Snowflake's RAW schema. dbt reads from there and produces cleaned staging views, then a star-schema core layer, then pre-aggregated mart tables. Streamlit connects directly to the analytics layer and never touches raw or staging data.
+The pipeline follows a three-layer medallion architecture:
+raw data lands in Snowflake unchanged, dbt transforms it into
+clean staging models and analytics marts, and Streamlit reads
+from the analytics layer.
 
 The Cortex ML models (FORECAST and COMPLETE) run inside Snowflake — no data leaves the warehouse for AI queries.
+
+![dbt Lineage Graph](docs/lineage_graph.png)
+*dbt lineage: source → staging → dims/fact → aggregate marts*
+
+```mermaid
+  flowchart LR
+      subgraph Sources
+          CSV[Homebuilder_Sales.csv\n600 rows]
+          XLSX[Regional_Manager_Lookup.xlsx]
+      end
+
+      subgraph Snowflake["Snowflake — RHODES database"]
+          direction TB
+          subgraph Bronze["🥉 Bronze · RAW"]
+              R1[HOMEBUILDER_SALES]
+          end
+          subgraph Silver["🥈 Silver · STAGING · dbt"]
+              S1[stg_homebuilder_sales]
+              S2[stg_regional_manager]
+          end
+          subgraph Gold["🥇 Gold · ANALYTICS · dbt"]
+              F1[fct_home_sales]
+              M1[mart_region_month]
+              M2[mart_region_year]
+              M3[mart_consultant_performance]
+              M4[mart_channel_economics]
+          end
+          CX[Cortex FORECAST\nCortex COMPLETE]
+      end
+
+      CSV --> R1
+      XLSX --> S2
+      R1 --> S1
+      S1 --> F1
+      S2 --> F1
+      F1 --> M1 & M2 & M3 & M4
+      M1 --> CX
+      F1 --> CX
+      CX --> APP
+
+      APP[Streamlit Cloud\n5 pages · NL query]
+      M2 & M3 & M4 --> APP
+```
 
 ## Stack
 
@@ -61,13 +107,13 @@ The main CSV was uploaded through the Snowsight UI into `RHODES.RAW.HOMEBUILDER_
 - Realtor Referral is the most expensive acquisition channel (3.0% average commission) and has the second-highest cancellation rate (10.3%). Event/Home Show is the cheapest (2.1%) with the third-lowest cancel rate (3.1%).
 - James Whitfield's cancellation rate doubled year-over-year from 7.8% to 15.8%. Ana Garza's dropped from 4.3% to 1.9%.
 - All six consultants work across all three regions — no territory specialization shows up in the data.
-- Loan type shows no meaningful variation in cancel rate or close time, likely a synthetic data artifact. It's available as a filter but not a source of insights.
+- Agent commission rates vary meaningfully by acquisition channel (2.1% for Event/Home Show vs 3.0% for Realtor Referral). Combined with cancellation rate differences, channel mix is the clearest margin lever available to regional managers.
 
 ## Modeling Decisions
 
 Year-over-year comparisons use the same calendar window in both years (Jan–Sep vs. Jan–Sep), not annualized extrapolation. Annualized figures exist as secondary mart columns for reference, but the headlines compare the same time window because comparing different periods isn't apples-to-apples.
 
-The dataset has no construction cost column — confirmed with the hiring team as intentional. `estimated_margin_pct` is defined as `(contract_price - agent_commission) / contract_price`, a revenue-net-of-commission proxy rather than true gross margin. It's labeled as a proxy wherever it appears.
+The dataset has no construction cost column — confirmed with the hiring team as intentional. `estimated_margin_pct` is defined as `(contract_price - agent_commission) / contract_price`, a revenue-net-of-commission proxy rather than true gross margin. Agent commission is the only cost column available; it feeds both the margin proxy and the channel commission rate analysis on the Revenue & Channels page.
 
 A cancellation rate forecast model was trained but dropped from the dashboard. Monthly cancel rates are too noisy at the data volumes here — Coastal Bend averages 3 to 8 contracts per month — and showing unreliable projections to a sales director would do more harm than good.
 
@@ -89,3 +135,5 @@ Year boundaries in the dbt marts are derived dynamically from `MAX(contract_date
 4. Run the full dbt pipeline: `dbt build`
 5. Add Streamlit connection secrets: copy `streamlit/.streamlit/secrets.toml.example` to `secrets.toml` and fill in the values.
 6. Run locally: `streamlit run streamlit/Home.py`
+
+
