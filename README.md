@@ -1,107 +1,91 @@
 # Rhodes Homes Sales Analytics
 
-Take-home assessment: end-to-end data pipeline + analytics dashboard for a residential home builder with three South Texas sales regions (Rio Grande Valley, South Texas, Coastal Bend), covering Jan 2023 – Sep 2024.
+This project is a take-home data engineering assessment for Rhodes Homes, a residential builder operating across three South Texas regions. It covers the full pipeline: raw data ingestion into Snowflake, transformation with dbt, and a five-page Streamlit dashboard that uses Snowflake Cortex for AI forecasting and natural-language queries over the actual data.
+
+## Live Dashboard
+
+[Add Streamlit Cloud URL here]
+
+## Architecture
+
+Raw contract data lands in Snowflake's RAW schema. dbt reads from there and produces cleaned staging views, then a star-schema core layer, then pre-aggregated mart tables. Streamlit connects directly to the analytics layer and never touches raw or staging data.
+
+The Cortex ML models (FORECAST and COMPLETE) run inside Snowflake — no data leaves the warehouse for AI queries.
 
 ## Stack
 
-| Layer | Tool |
-| ----- | ---- |
-| Data warehouse | Snowflake (account `flkmkxj-in29512`) |
-| Transformation | dbt Core |
-| ML / NL | Snowflake Cortex FORECAST + COMPLETE |
-| Dashboard | Streamlit |
-| Auth | Key-pair authentication (RSA 2048) |
+- Snowflake — data warehouse, Cortex ML (FORECAST + COMPLETE)
+- dbt Cloud — transformations, testing, documentation
+- Streamlit Cloud — dashboard
+- Python — ingestion utilities
 
-## Repository layout
+## Project Structure
 
 ```text
-├── sql/setup/
-│   ├── 01_account_setup.sql        # Warehouses, schemas, roles, service users
-│   └── 02_cortex_forecast.sql      # ML forecast model creation + result tables
-├── ingestion/
-│   ├── load_raw.py                 # Bulk-loads CSV into RHODES.RAW
-│   ├── seed_data/
-│   │   ├── Homebuilder_Sales.csv
-│   │   └── Regional_Manager_Lookup.xlsx
-│   └── pyproject.toml
-├── dbt/
-│   ├── models/staging/             # stg_homebuilder_sales, stg_regional_manager
-│   ├── models/marts/core/          # dim_community, dim_consultant, dim_region, fct_home_sales
-│   └── models/marts/agg/           # mart_region_year, mart_region_month, mart_channel_economics,
-│                                   # mart_consultant_performance, mart_consultant_region
-└── streamlit/
-    ├── Home.py
-    ├── pages/
-    │   ├── 1_Region_Overview.py
-    │   ├── 2_Forecast.py
-    │   ├── 3_Channel_Economics.py
-    │   ├── 4_Consultants.py
-    │   └── 5_Ask_a_Question.py
-    └── utils/
-        ├── snowflake.py            # get_snowflake_connection(), CORTEX_MODEL
-        └── queries.py              # Cached query helpers
+rhodes/
+├── dbt/              # dbt project: staging, marts, tests, docs
+├── streamlit/        # Streamlit app: 5 pages + utils
+├── ingestion/        # Source data and conversion scripts
+├── sql/setup/        # Snowflake setup SQL (idempotent)
+└── README.md
 ```
 
-## Reproducing from scratch
+## Data
 
-### 1. Account setup
+The source data is 600 home sale contracts from January 2023 through September 2024, covering three regions: Rio Grande Valley, South Texas, and Coastal Bend. Each row represents one contract with buyer type, loan type, acquisition channel, agent commission, and sale price. A separate regional manager lookup maps communities to regions and managers.
 
-Run `sql/setup/01_account_setup.sql` as ACCOUNTADMIN. This creates three warehouses (`RHODES_LOAD_WH`, `RHODES_TRANSFORM_WH`, `RHODES_BI_WH`), three schemas (`RAW`, `STAGING`, `ANALYTICS`), three roles (`RHODES_LOADER`, `RHODES_TRANSFORMER`, `RHODES_READER`), and two service users (`DBT_USER`, `STREAMLIT_USER`).
+The main CSV was uploaded through the Snowsight UI into `RHODES.RAW.HOMEBUILDER_SALES`. The manager lookup is managed as a dbt seed so it stays version-controlled and gets loaded automatically during `dbt build`.
 
-### 2. Load raw data
+## dbt Models
 
-```bash
-cd ingestion
-pip install -e .
-python load_raw.py
-```
+| Layer | Models | Purpose |
+| --- | --- | --- |
+| Staging | stg_homebuilder_sales, stg_regional_manager | Clean and rename source columns |
+| Core marts | dim_region, dim_consultant, dim_community, fct_home_sales | Star schema with calculated flags and metrics |
+| Aggregate marts | mart_region_month, mart_region_year, mart_consultant_performance, mart_consultant_region, mart_channel_economics | Pre-aggregated for dashboard queries |
 
-Bulk-loads `Homebuilder_Sales.csv` (600 rows) into `RHODES.RAW.HOMEBUILDER_SALES` via a temporary stage. Alternatively, load via Snowsight UI — the schema is inferred automatically.
+158 tests pass across all models and sources, covering not-null, unique, accepted-value, and referential integrity constraints.
 
-### 3. Run dbt
+## Cortex AI
 
-```bash
-cd dbt
-dbt deps
-dbt seed          # loads regional_manager_lookup.csv into RHODES.ANALYTICS.DIM_REGION
-dbt run
-dbt test          # 158 tests across 9 models + 1 seed + 1 source
-```
+**Contract volume forecast.** Trained on 21 months of monthly closing history per region. Projects October through December 2024 closings with 90% confidence intervals. On the current trajectory, no region reaches its annual unit target — the Forecast page shows both the projection and the gap.
 
-Configure `dbt/profiles.yml` using the service account key. See `dbt/profiles.yml.example`.
+**Close-time forecast.** Trained on average days-to-close per region. Rio Grande Valley shows a slight projected improvement (~118 days vs. a recent 126-day average). Coastal Bend is excluded from this chart — at 3 to 4 closings per month, the model produces near-zero confidence intervals that would look precise but aren't.
 
-### 4. Cortex forecasts
+**Natural-language queries.** The Ask a Question page fetches relevant mart data based on keywords in the question, sends it as context to `claude-4-sonnet` via Cortex COMPLETE, and returns a plain-English answer. The raw data context sent to the model is visible in an expander on the page.
 
-Run `sql/setup/02_cortex_forecast.sql` as ACCOUNTADMIN. Creates two `SNOWFLAKE.ML.FORECAST` models trained on monthly region data and stores results in `FORECAST_RESULTS` and `CLOSE_TIME_FORECAST_RESULTS`. Generates a 3-month (Oct–Dec 2024) forward projection with 90% prediction intervals.
+## Key Findings
 
-### 5. Streamlit
+- Coastal Bend closings dropped 38.9% year-over-year (22 vs. 36, same Jan–Sep window). No other region shows this pattern.
+- South Texas is closest to its annual target at 72% YTD attainment. Rio Grande Valley is at 63%.
+- Realtor Referral is the most expensive acquisition channel (3.0% average commission) and has the second-highest cancellation rate (10.3%). Event/Home Show is the cheapest (2.1%) with the third-lowest cancel rate (3.1%).
+- James Whitfield's cancellation rate doubled year-over-year from 7.8% to 15.8%. Ana Garza's dropped from 4.3% to 1.9%.
+- All six consultants work across all three regions — no territory specialization shows up in the data.
+- Loan type shows no meaningful variation in cancel rate or close time, likely a synthetic data artifact. It's available as a filter but not a source of insights.
 
-```bash
-cd streamlit
-pip install -r requirements.txt
-# Copy and fill in secrets:
-cp .streamlit/secrets.toml.example .streamlit/secrets.toml
-streamlit run Home.py
-```
+## Modeling Decisions
 
-## Dashboard pages
+Year-over-year comparisons use the same calendar window in both years (Jan–Sep vs. Jan–Sep), not annualized extrapolation. Annualized figures exist as secondary mart columns for reference, but the headlines compare the same time window because comparing different periods isn't apples-to-apples.
 
-| Page | What it answers |
-| ---- | --------------- |
-| **Region Overview** | YoY volume, target attainment, margin posture, pipeline, quarterly cancel trend |
-| **Forecast** | Cortex FORECAST projection of Oct–Dec 2024 contract volume and close time per region |
-| **Channel Economics** | Acquisition channel cost (commission rate) vs. quality (cancel rate) quadrant analysis |
-| **Consultants** | Individual performance leaderboard, YoY scatter, regional breakdown |
-| **Ask a Question** | Free-text NL queries answered by Cortex COMPLETE, grounded in live warehouse data |
+The dataset has no construction cost column — confirmed with the hiring team as intentional. `estimated_margin_pct` is defined as `(contract_price - agent_commission) / contract_price`, a revenue-net-of-commission proxy rather than true gross margin. It's labeled as a proxy wherever it appears.
 
-## Key design decisions
+A cancellation rate forecast model was trained but dropped from the dashboard. Monthly cancel rates are too noisy at the data volumes here — Coastal Bend averages 3 to 8 contracts per month — and showing unreliable projections to a sales director would do more harm than good.
 
-**Same-period YoY.** 2024 data covers Jan–Sep only. All YoY comparisons use the same 9-month window in 2023 rather than annualizing 2024 — apples-to-apples. Annualized figures are available in the mart for reference but not surfaced in headlines.
+Year boundaries in the dbt marts are derived dynamically from `MAX(contract_date)`, not hardcoded. The only fixed date is `contract_date < '2024-10-01'`, which reflects a known extract boundary in the source data, not a business cutoff.
 
-**Margin proxy.** The dataset has no construction cost column. Margin is modeled as `(contract_price - commission_paid) / contract_price`, labeled explicitly as a proxy throughout. Large margin-vs-target deltas reflect this approximation.
+## If I Had More Time
 
-**Cortex model.** `claude-4-sonnet` is used for Cortex COMPLETE (NL queries). Cortex FORECAST uses the platform's built-in ML model.
+- dbt snapshots for SCD Type 2 — contracts change status over time (Under Contract → Closed or Cancelled). A snapshot model would capture that history and enable cohort analysis.
+- Separate dev and prod Snowflake environments with a promotion workflow, instead of the current shared STAGING and ANALYTICS schemas.
+- Per-developer dbt schema namespacing so developers don't step on each other.
+- A calendar dimension for cleaner period-over-period comparisons.
+- CRM integration for the full lead → contract → close funnel — the current data starts at contract signing, so everything upstream (visits, inquiries, follow-ups) is missing.
 
-**Coastal Bend close-time forecast.** CB has 3–4 closings/month, producing near-zero confidence intervals that are visually misleading. The close-time forecast chart excludes CB and displays a note explaining the exclusion. Volume forecast retains all three regions.
+## Setup
 
-**Role model.** LOADER writes only to RAW; TRANSFORMER reads RAW and writes STAGING + ANALYTICS; READER reads only ANALYTICS and has `SNOWFLAKE.CORTEX_USER`. ML model creation requires ACCOUNTADMIN privileges beyond these grants.
+1. Run `sql/setup/01_account_setup.sql` as ACCOUNTADMIN — creates warehouses, schemas, roles, and service users.
+2. Run `sql/setup/02_cortex_forecast.sql` as ACCOUNTADMIN — creates the Cortex FORECAST models and stores results.
+3. Install dbt dependencies: `dbt deps`
+4. Run the full dbt pipeline: `dbt build`
+5. Add Streamlit connection secrets: copy `streamlit/.streamlit/secrets.toml.example` to `secrets.toml` and fill in the values.
+6. Run locally: `streamlit run streamlit/Home.py`
