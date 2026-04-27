@@ -14,7 +14,7 @@ def fetch_session_info(_conn) -> pd.DataFrame:
                 CURRENT_WAREHOUSE() AS "WAREHOUSE",
                 CURRENT_DATABASE()  AS "DATABASE"
         """)
-        cols = [c[0] for c in cur.description]
+        cols = [c[0].lower() for c in cur.description]
         return pd.DataFrame(cur.fetchall(), columns=cols)
     finally:
         cur.close()
