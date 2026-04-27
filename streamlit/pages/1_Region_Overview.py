@@ -7,7 +7,6 @@ from utils.queries import (
     fetch_region_year,
     fetch_pipeline_by_region,
     fetch_cancel_trend,
-    fetch_monthly_closings,
 )
 from utils.styles import apply_global_styles
 
@@ -36,7 +35,6 @@ conn        = get_snowflake_connection()
 df          = fetch_region_year(conn)
 pipeline_df = fetch_pipeline_by_region(conn)
 cancel_df   = fetch_cancel_trend(conn)
-monthly_df  = fetch_monthly_closings(conn)
 
 if df.empty:
     st.error("No data returned from mart_region_year.")
@@ -46,9 +44,6 @@ if pipeline_df.empty:
     st.stop()
 if cancel_df.empty:
     st.error("No data returned from cancel trend query.")
-    st.stop()
-if monthly_df.empty:
-    st.error("No data returned from mart_region_month.")
     st.stop()
 
 df_2024 = df[df["contract_year"] == df["contract_year"].max()]
@@ -192,74 +187,42 @@ for i, region in enumerate(regions):
 
 st.markdown("<div style='margin-top: 2rem'></div>", unsafe_allow_html=True)
 
-# ── ZONE 2: Small-multiple monthly closings panels ─────────────────────
-monthly_df["month_start"] = pd.to_datetime(
-    monthly_df["year"].astype(str) + "-" +
-    monthly_df["month_num"].astype(str).str.zfill(2) + "-01"
+# ── ZONE 2: YoY grouped bar + cancel rate ──────────────────────────────
+col_left, col_right = st.columns([6, 4])
+
+y_2023 = [
+    int(df_2024[df_2024["region"] == r]["same_period_closed_prior_year"].values[0])
+    for r in regions
+]
+y_2024 = [
+    int(df_2024[df_2024["region"] == r]["contracts_closed"].values[0])
+    for r in regions
+]
+
+fig = go.Figure()
+fig.add_trace(go.Bar(
+    name="Jan–Sep 2023", x=regions, y=y_2023,
+    marker_color=GRAY, opacity=0.7,
+))
+fig.add_trace(go.Bar(
+    name="Jan–Sep 2024", x=regions, y=y_2024,
+    marker_color=GREEN, opacity=0.85,
+))
+fig.update_layout(
+    barmode="group", height=350,
+    margin=dict(l=10, r=10, t=10, b=10),
+    paper_bgcolor="white", plot_bgcolor="white",
+    yaxis=dict(title="Closed contracts", showgrid=True, gridcolor="#f0f0f0"),
+    legend=dict(orientation="h", y=-0.15),
+    showlegend=True,
 )
 
-MONTH_ORDER = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-               "Jul", "Aug", "Sep"]
-
-panel_cols = st.columns(3)
-panel_regions = ["Coastal Bend", "Rio Grande Valley", "South Texas"]
-
-for i, region in enumerate(panel_regions):
-    rdf = monthly_df[monthly_df["region"] == region].copy()
-    rdf_2023 = rdf[rdf["year"] == rdf["year"].min()].sort_values("month_num")
-    rdf_2024 = rdf[rdf["year"] == rdf["year"].max()].sort_values("month_num")
-
-    rdf_2023 = rdf_2023.copy()
-    rdf_2024 = rdf_2024.copy()
-    rdf_2023["cumulative"] = rdf_2023["contracts_closed"].cumsum()
-    rdf_2024["cumulative"] = rdf_2024["contracts_closed"].cumsum()
-
-    pfig = go.Figure()
-    pfig.add_trace(go.Bar(
-        x=rdf_2023["month_name"], y=rdf_2023["contracts_closed"],
-        name="2023", marker_color=GRAY, opacity=0.7, showlegend=(i == 0),
-        hovertemplate="%{x} 2023: %{y}<extra></extra>",
-    ))
-    pfig.add_trace(go.Bar(
-        x=rdf_2024["month_name"], y=rdf_2024["contracts_closed"],
-        name="2024", marker_color=GREEN, opacity=0.85, showlegend=(i == 0),
-        hovertemplate="%{x} 2024: %{y}<extra></extra>",
-    ))
-    pfig.add_trace(go.Scatter(
-        x=rdf_2023["month_name"], y=rdf_2023["cumulative"],
-        name="2023 cumulative", mode="lines",
-        line=dict(color=GRAY, dash="dash", width=1.5),
-        yaxis="y2", showlegend=(i == 0),
-        hovertemplate="Cumul 2023: %{y}<extra></extra>",
-    ))
-    pfig.add_trace(go.Scatter(
-        x=rdf_2024["month_name"], y=rdf_2024["cumulative"],
-        name="2024 cumulative", mode="lines",
-        line=dict(color=GREEN, width=2),
-        yaxis="y2", showlegend=(i == 0),
-        hovertemplate="Cumul 2024: %{y}<extra></extra>",
-    ))
-    pfig.update_layout(
-        title=dict(text=region, font=dict(size=12, color=TEXT), x=0.04),
-        barmode="group", height=220,
-        margin=dict(l=35, r=35, t=25, b=30),
-        paper_bgcolor="white", plot_bgcolor="white",
-        showlegend=False,
-        xaxis=dict(categoryorder="array", categoryarray=MONTH_ORDER,
-                   tickfont=dict(size=10), showgrid=False),
-        yaxis=dict(title=dict(text="Monthly", font=dict(size=10)),
-                   tickfont=dict(size=9), showgrid=True, gridcolor="#f0f0f0"),
-        yaxis2=dict(title=dict(text="Cumulative", font=dict(size=10)),
-                    tickfont=dict(size=9), overlaying="y", side="right",
-                    showgrid=False),
+with col_left:
+    st.caption("Jan–Sep 2023 vs Jan–Sep 2024 · same-period closed contracts")
+    st.plotly_chart(fig, use_container_width=True)
+    st.caption(
+        "Both bars cover January–Sep only — same-period, no extrapolation."
     )
-    with panel_cols[i]:
-        st.plotly_chart(pfig, use_container_width=True)
-
-st.caption(
-    "Bars = monthly closings · Lines = cumulative total · "
-    "Jan–Sep same-period comparison · Gray = prior year · Green = current year"
-)
 
 # Cancel rate chart
 REGION_COLORS = {
@@ -294,8 +257,9 @@ fig2.update_layout(
     height=250,
 )
 
-st.caption("Cancellation rate · 2024 · monthly")
-st.plotly_chart(fig2, use_container_width=True)
+with col_right:
+    st.caption("Cancellation rate · 2024 · monthly")
+    st.plotly_chart(fig2, use_container_width=True)
 
 
 # ── ZONE 3: Detail + About collapsed ───────────────────────────────────
