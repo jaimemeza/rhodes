@@ -56,6 +56,18 @@ The Cortex ML models (FORECAST and COMPLETE) run inside Snowflake — no data le
 
       APP[Streamlit Cloud<br>5 pages · NL query]
       M2 & M3 & M4 --> APP
+
+      classDef role fill:#5a8c3e,color:#fff,stroke:none
+      classDef service fill:#2563eb,color:#fff,stroke:none
+      classDef schema fill:#f5f5f7,color:#1c1c1e,stroke:#d1d1d6
+      classDef wh fill:#f5a623,color:#fff,stroke:none
+
+      class CSV,XLSX schema
+      class R1 wh
+      class S1,S2 schema
+      class F1,M1,M2,M3,M4 role
+      class CX service
+      class APP role
 ```
 
 ## Snowflake Access Control
@@ -64,15 +76,15 @@ Three functional roles follow a least-privilege pattern. Each role has access on
 
 ```mermaid
 flowchart TD
-    ACCOUNTADMIN["🔑 ACCOUNTADMIN\n(setup only)"]
+    ACCOUNTADMIN["🔑 ACCOUNTADMIN<br>(setup only)"]
     SYSADMIN["SYSADMIN"]
 
-    LOADER["RHODES_LOADER\nIngestion role"]
-    TRANSFORMER["RHODES_TRANSFORMER\ndbt Cloud role"]
-    READER["RHODES_READER\nStreamlit role"]
+    LOADER["RHODES_LOADER<br>Ingestion role"]
+    TRANSFORMER["RHODES_TRANSFORMER<br>dbt Cloud role"]
+    READER["RHODES_READER<br>Streamlit role"]
 
-    DBT_USER["DBT_USER\nservice account\nkey-pair auth"]
-    STREAMLIT_USER["STREAMLIT_USER\nservice account\nkey-pair auth"]
+    DBT_USER["DBT_USER<br>service account<br>key-pair auth"]
+    STREAMLIT_USER["STREAMLIT_USER<br>service account<br>key-pair auth"]
 
     subgraph Warehouses
         WH1["RHODES_LOAD_WH"]
@@ -81,12 +93,12 @@ flowchart TD
     end
 
     subgraph Schemas["RHODES database"]
-        RAW["RAW 🥉\nHOMEBUILDER_SALES"]
-        STAGING["STAGING 🥈\nstg_* · seeds"]
-        ANALYTICS["ANALYTICS 🥇\nfct_* · mart_*"]
+        RAW["RAW 🥉<br>HOMEBUILDER_SALES"]
+        STAGING["STAGING 🥈<br>stg_* · seeds"]
+        ANALYTICS["ANALYTICS 🥇<br>fct_* · mart_*"]
     end
 
-    CORTEX["Snowflake Cortex\nCORTEX_USER db role"]
+    CORTEX["Snowflake Cortex<br>CORTEX_USER db role"]
 
     SYSADMIN --> LOADER
     SYSADMIN --> TRANSFORMER
