@@ -209,7 +209,7 @@ fig.add_trace(go.Bar(
     marker_color=GREEN, opacity=0.85,
 ))
 fig.update_layout(
-    barmode="group", height=350,
+    barmode="group", height=300, bargap=0.3, bargroupgap=0.08,
     margin=dict(l=10, r=10, t=10, b=10),
     paper_bgcolor="white", plot_bgcolor="white",
     yaxis=dict(title="Closed contracts", showgrid=True, gridcolor="#f0f0f0"),
