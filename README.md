@@ -21,7 +21,7 @@ The Cortex ML models (FORECAST and COMPLETE) run inside Snowflake — no data le
 ```mermaid
   flowchart LR
       subgraph Sources
-          CSV[Homebuilder_Sales.csv\n600 rows]
+          CSV[Homebuilder_Sales.csv<br>600 rows]
           XLSX[Regional_Manager_Lookup.xlsx]
       end
 
@@ -41,7 +41,7 @@ The Cortex ML models (FORECAST and COMPLETE) run inside Snowflake — no data le
               M3[mart_consultant_performance]
               M4[mart_channel_economics]
           end
-          CX[Cortex FORECAST\nCortex COMPLETE]
+          CX[Cortex FORECAST<br>Cortex COMPLETE]
       end
 
       CSV --> R1
@@ -54,9 +54,73 @@ The Cortex ML models (FORECAST and COMPLETE) run inside Snowflake — no data le
       F1 --> CX
       CX --> APP
 
-      APP[Streamlit Cloud\n5 pages · NL query]
+      APP[Streamlit Cloud<br>5 pages · NL query]
       M2 & M3 & M4 --> APP
 ```
+
+## Snowflake Access Control
+
+Three functional roles follow a least-privilege pattern. Each role has access only to what it needs — the ingestion script can't read transformed data, and the dashboard can't write anything.
+
+```mermaid
+flowchart TD
+    ACCOUNTADMIN["🔑 ACCOUNTADMIN\n(setup only)"]
+    SYSADMIN["SYSADMIN"]
+
+    LOADER["RHODES_LOADER\nIngestion role"]
+    TRANSFORMER["RHODES_TRANSFORMER\ndbt Cloud role"]
+    READER["RHODES_READER\nStreamlit role"]
+
+    DBT_USER["DBT_USER\nservice account\nkey-pair auth"]
+    STREAMLIT_USER["STREAMLIT_USER\nservice account\nkey-pair auth"]
+
+    subgraph Warehouses
+        WH1["RHODES_LOAD_WH"]
+        WH2["RHODES_TRANSFORM_WH"]
+        WH3["RHODES_BI_WH"]
+    end
+
+    subgraph Schemas["RHODES database"]
+        RAW["RAW 🥉\nHOMEBUILDER_SALES"]
+        STAGING["STAGING 🥈\nstg_* · seeds"]
+        ANALYTICS["ANALYTICS 🥇\nfct_* · mart_*"]
+    end
+
+    CORTEX["Snowflake Cortex\nCORTEX_USER db role"]
+
+    SYSADMIN --> LOADER
+    SYSADMIN --> TRANSFORMER
+    SYSADMIN --> READER
+
+    LOADER -->|WRITE| RAW
+    LOADER -->|USE| WH1
+
+    TRANSFORMER -->|READ| RAW
+    TRANSFORMER -->|WRITE| STAGING
+    TRANSFORMER -->|WRITE| ANALYTICS
+    TRANSFORMER -->|USE| WH2
+
+    READER -->|READ| ANALYTICS
+    READER -->|USE| WH3
+    READER -->|USE| CORTEX
+
+    DBT_USER -->|granted| TRANSFORMER
+    STREAMLIT_USER -->|granted| READER
+
+    classDef role fill:#5a8c3e,color:#fff,stroke:none
+    classDef service fill:#2563eb,color:#fff,stroke:none
+    classDef schema fill:#f5f5f7,color:#1c1c1e,stroke:#d1d1d6
+    classDef wh fill:#f5a623,color:#fff,stroke:none
+    classDef admin fill:#c75a3e,color:#fff,stroke:none
+
+    class LOADER,TRANSFORMER,READER role
+    class DBT_USER,STREAMLIT_USER service
+    class RAW,STAGING,ANALYTICS schema
+    class WH1,WH2,WH3 wh
+    class ACCOUNTADMIN,SYSADMIN admin
+```
+
+FUTURE GRANTS on all schemas ensure new dbt models automatically inherit the correct permissions without manual re-granting.
 
 ## Stack
 
@@ -73,6 +137,7 @@ rhodes/
 ├── streamlit/        # Streamlit app: 5 pages + utils
 ├── ingestion/        # Source data and conversion scripts
 ├── sql/setup/        # Snowflake setup SQL (idempotent)
+├── docs/             # Diagrams
 └── README.md
 ```
 
