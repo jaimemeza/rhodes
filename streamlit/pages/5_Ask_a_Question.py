@@ -21,7 +21,7 @@ TEXT_MUTED = "#6e6e73"
 
 st.title("Ask a Question")
 st.caption(
-    "Ask anything about Rhodes Homes sales performance. "
+    "Ask anything about Rhodes Enterprise sales performance. "
     "Answers are grounded in data from the analytics warehouse — "
     "the model sees the actual numbers, not just general knowledge."
 )
@@ -151,7 +151,7 @@ def build_context(question: str) -> tuple[str, str]:
 # ── Cortex caller ──────────────────────────────────────────────────────
 def ask_cortex(question: str, context: str) -> str:
     full_prompt = (
-        "You are a data analyst for Rhodes Homes, a residential home builder "
+        "You are a data analyst for Rhodes Enterprise, a residential home builder "
         "in South Texas. Answer the question using ONLY the provided data "
         "context. Be concise, cite specific numbers, and flag clearly if the "
         "data does not support the question.\n\n"

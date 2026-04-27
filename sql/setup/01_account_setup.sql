@@ -38,9 +38,6 @@ GRANT ROLE RHODES_LOADER       TO ROLE SYSADMIN;
 GRANT ROLE RHODES_TRANSFORMER  TO ROLE SYSADMIN;
 GRANT ROLE RHODES_READER       TO ROLE SYSADMIN;
 
--- Grant to your own user so you can work (replace with your Snowflake username)
-GRANT ROLE RHODES_TRANSFORMER  TO USER <YOUR_USERNAME>;
-GRANT ROLE RHODES_READER       TO USER <YOUR_USERNAME>;
 
 -- ---- Warehouse grants ------------------------------------------------------
 GRANT USAGE ON WAREHOUSE RHODES_LOAD_WH      TO ROLE RHODES_LOADER;

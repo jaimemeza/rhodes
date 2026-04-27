@@ -21,21 +21,8 @@ try:
 except Exception as e:
     _conn_error = e
 
-# ── Sidebar ────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("### Rhodes Sales Analytics")
-    st.caption("Regional performance · 2023–2024")
-    st.divider()
-    with st.expander("Connection", expanded=False):
-        if _session is not None:
-            st.caption(f"**Role:** {_session['ROLE'].iloc[0]}")
-            st.caption(f"**Warehouse:** {_session['WAREHOUSE'].iloc[0]}")
-            st.caption(f"**Database:** {_session['DATABASE'].iloc[0]}")
-        else:
-            st.error("Not connected")
-
 # ── Main ───────────────────────────────────────────────────────────────
-st.title("Rhodes Homes Sales Analytics")
+st.title("Rhodes Enterprise Sales Analytics")
 
 if _conn_error:
     st.error(
@@ -50,7 +37,7 @@ if _conn_error:
     )
 
 st.markdown(
-    "This dashboard summarizes home sale contract performance across the three Rhodes Homes "
+    "This dashboard summarizes home sale contract performance across the three Rhodes Enterprise "
     "sales regions (South Texas, Rio Grande Valley, Coastal Bend) for 2023 and Jan–Sep 2024. "
     "Use the sidebar to navigate between views."
 )
