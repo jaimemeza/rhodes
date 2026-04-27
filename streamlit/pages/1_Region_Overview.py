@@ -240,12 +240,11 @@ for i, region in enumerate(panel_regions):
         hovertemplate="Cumul 2024: %{y}<extra></extra>",
     ))
     pfig.update_layout(
-        title=dict(text=region, font=dict(size=13, color=TEXT), x=0.02, y=0.97),
-        barmode="group", height=280,
-        margin=dict(l=10, r=10, t=30, b=10),
+        title=dict(text=region, font=dict(size=12, color=TEXT), x=0.04),
+        barmode="group", height=220,
+        margin=dict(l=35, r=35, t=25, b=30),
         paper_bgcolor="white", plot_bgcolor="white",
-        showlegend=(i == 0),
-        legend=dict(orientation="h", y=-0.15, x=0, font=dict(size=10)),
+        showlegend=False,
         xaxis=dict(categoryorder="array", categoryarray=MONTH_ORDER,
                    tickfont=dict(size=10), showgrid=False),
         yaxis=dict(title=dict(text="Monthly", font=dict(size=10)),
@@ -292,13 +291,11 @@ fig2.update_layout(
     yaxis=dict(title="Cancel rate (%)", range=[0, 35],
                gridcolor="#e8e8e8", ticksuffix="%"),
     margin=dict(t=40, b=20, l=10, r=10),
-    height=280,
+    height=250,
 )
 
-_, cancel_col = st.columns([1, 2])
-with cancel_col:
-    st.caption("Cancellation rate · 2024 · monthly")
-    st.plotly_chart(fig2, use_container_width=True)
+st.caption("Cancellation rate · 2024 · monthly")
+st.plotly_chart(fig2, use_container_width=True)
 
 
 # ── ZONE 3: Detail + About collapsed ───────────────────────────────────
