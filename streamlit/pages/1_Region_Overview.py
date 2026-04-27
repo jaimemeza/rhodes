@@ -248,9 +248,9 @@ for i, region in enumerate(panel_regions):
         legend=dict(orientation="h", y=-0.15, x=0, font=dict(size=10)),
         xaxis=dict(categoryorder="array", categoryarray=MONTH_ORDER,
                    tickfont=dict(size=10), showgrid=False),
-        yaxis=dict(title="Monthly", titlefont=dict(size=10),
+        yaxis=dict(title=dict(text="Monthly", font=dict(size=10)),
                    tickfont=dict(size=9), showgrid=True, gridcolor="#f0f0f0"),
-        yaxis2=dict(title="Cumulative", titlefont=dict(size=10),
+        yaxis2=dict(title=dict(text="Cumulative", font=dict(size=10)),
                     tickfont=dict(size=9), overlaying="y", side="right",
                     showgrid=False),
     )
