@@ -1,12 +1,14 @@
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+from plotly.subplots import make_subplots
 
 from utils.snowflake import get_snowflake_connection
 from utils.queries import (
     fetch_region_year,
     fetch_pipeline_by_region,
     fetch_cancel_trend,
+    fetch_region_month,
 )
 from utils.styles import apply_global_styles
 
@@ -35,6 +37,7 @@ conn        = get_snowflake_connection()
 df          = fetch_region_year(conn)
 pipeline_df = fetch_pipeline_by_region(conn)
 cancel_df   = fetch_cancel_trend(conn)
+hist_df     = fetch_region_month(conn)
 
 if df.empty:
     st.error("No data returned from mart_region_year.")
@@ -44,6 +47,9 @@ if pipeline_df.empty:
     st.stop()
 if cancel_df.empty:
     st.error("No data returned from cancel trend query.")
+    st.stop()
+if hist_df.empty:
+    st.error("No data returned from mart_region_month.")
     st.stop()
 
 df_2024 = df[df["contract_year"] == df["contract_year"].max()]
@@ -185,128 +191,110 @@ for i, region in enumerate(regions):
     with tile_cols[i + 4]:
         st.markdown(build_revenue_tile(p.iloc[0]), unsafe_allow_html=True)
 
+st.markdown("<div style='margin-top: 2rem'></div>", unsafe_allow_html=True)
 
 # ── ZONE 2: Two charts side by side ────────────────────────────────────
-col_left, col_right = st.columns([6, 4])
-
-# Bar chart data
-y_prior, y_curr, cd_prior, cd_curr = [], [], [], []
-for region in regions:
-    r_curr   = get_row(region, current_year)
-    sp_prior = int(r_curr["same_period_closed_prior_year"]) if r_curr is not None else 0
-    c_curr   = int(r_curr["contracts_closed"])              if r_curr is not None else 0
-    y_prior.append(sp_prior)
-    y_curr.append(c_curr)
-    cd_prior.append((region, prior_year,   sp_prior))
-    cd_curr.append( (region, current_year, c_curr))
-
-fig = go.Figure()
-fig.add_trace(go.Bar(
-    name=f"Jan–{month_abbr} {prior_year}",
-    x=regions,
-    y=y_prior,
-    marker_color=GRAY,
-    customdata=cd_prior,
-    hovertemplate=(
-        "<b>%{customdata[0]}</b><br>"
-        f"Jan–{month_abbr} %{{customdata[1]}}<br>"
-        "Closed: %{customdata[2]}<br>"
-        "<extra></extra>"
-    ),
-))
-fig.add_trace(go.Bar(
-    name=f"Jan–{month_abbr} {current_year}",
-    x=regions,
-    y=y_curr,
-    marker_color=GREEN,
-    customdata=cd_curr,
-    hovertemplate=(
-        "<b>%{customdata[0]}</b><br>"
-        f"Jan–{month_abbr} %{{customdata[1]}}<br>"
-        "Closed: %{customdata[2]}<br>"
-        "<extra></extra>"
-    ),
-))
-fig.update_layout(
-    barmode="group",
-    bargap=0.25,
-    bargroupgap=0.08,
-    plot_bgcolor="#ffffff",
-    paper_bgcolor="#ffffff",
-    font=dict(family="sans-serif", color=TEXT),
-    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-    xaxis=dict(title=None, tickfont=dict(size=13)),
-    yaxis=dict(title="Closed contracts", gridcolor="#e8e8e8"),
-    margin=dict(t=40, b=20, l=10, r=10),
-    height=350,
+selected_region = st.selectbox(
+    "Region",
+    options=["Coastal Bend", "Rio Grande Valley", "South Texas"],
+    index=1,
+    key="region_combo_chart",
 )
 
-# Cancel rate chart (quarterly bars)
+col_left, col_right = st.columns([6, 4])
+
+# Combo chart: monthly bars + cumulative lines for selected region
+hist = hist_df[hist_df["region"] == selected_region].copy()
+hist["month_start"] = pd.to_datetime(hist["month_start"])
+hist["year"]        = hist["month_start"].dt.year
+hist["month_num"]   = hist["month_start"].dt.month
+
+h23 = (hist[(hist["year"] == prior_year) & (hist["month_num"] <= months_elapsed)]
+       .sort_values("month_start"))
+h24 = (hist[(hist["year"] == current_year) & (hist["month_num"] <= months_elapsed)]
+       .sort_values("month_start"))
+
+x23 = h23["month_start"].dt.strftime("%b")
+x24 = h24["month_start"].dt.strftime("%b")
+
+fig = make_subplots(specs=[[{"secondary_y": True}]])
+fig.add_trace(go.Bar(name=str(prior_year), x=x23,
+                     y=h23["contracts_closed"], marker_color=GRAY,
+                     opacity=0.7), secondary_y=False)
+fig.add_trace(go.Bar(name=str(current_year), x=x24,
+                     y=h24["contracts_closed"], marker_color=GREEN,
+                     opacity=0.85), secondary_y=False)
+fig.add_trace(go.Scatter(x=x23, y=h23["contracts_closed"].cumsum(),
+                         mode="lines", line=dict(color=GRAY, dash="dash", width=2),
+                         showlegend=False), secondary_y=True)
+fig.add_trace(go.Scatter(x=x24, y=h24["contracts_closed"].cumsum(),
+                         mode="lines", line=dict(color=GREEN, width=2),
+                         showlegend=False), secondary_y=True)
+fig.update_layout(
+    barmode="group", bargap=0.25, bargroupgap=0.08,
+    plot_bgcolor="#ffffff", paper_bgcolor="#ffffff",
+    font=dict(family="sans-serif", color=TEXT),
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
+    xaxis=dict(title=None, tickfont=dict(size=12)),
+    margin=dict(t=40, b=20, l=10, r=60),
+    height=380,
+)
+fig.update_yaxes(title_text="Monthly closings", gridcolor="#e8e8e8",
+                 secondary_y=False)
+fig.update_yaxes(title_text="Cumulative closings", gridcolor=None,
+                 showgrid=False, secondary_y=True)
+
+# Cancel rate chart (monthly bars + 3-month rolling average)
 REGION_COLORS = {
     "Rio Grande Valley": GREEN,
     "South Texas":       GRAY,
     "Coastal Bend":      AMBER,
 }
-quarters = (
-    cancel_df.sort_values("sort_key")["quarter_label"]
-    .unique()
-    .tolist()
-)
+cancel_df["month_start"] = pd.to_datetime(cancel_df["month_start"])
+cancel_df["cancel_rate"] = pd.to_numeric(cancel_df["cancel_rate"], errors="coerce")
+
 fig2 = go.Figure()
 for region in regions:
-    rdf = cancel_df[cancel_df["region"] == region].sort_values("sort_key")
+    rdf = cancel_df[cancel_df["region"] == region].sort_values("month_start").copy()
     if rdf.empty:
         continue
+    rdf["rolling_cancel"] = (
+        rdf["cancel_rate"].rolling(3, min_periods=1).mean() * 100
+    )
+    color    = REGION_COLORS.get(region, GRAY)
+    xlabels  = rdf["month_start"].dt.strftime("%b %Y")
     fig2.add_trace(go.Bar(
-        name=region,
-        x=rdf["quarter_label"],
-        y=rdf["cancel_rate"] * 100,
-        marker_color=REGION_COLORS.get(region, GRAY),
-        opacity=0.85,
-        customdata=list(zip(
-            [region] * len(rdf),
-            rdf["quarter_label"],
-            rdf["cancel_rate"] * 100,
-        )),
-        hovertemplate=(
-            "<b>%{customdata[0]}</b><br>"
-            "%{customdata[1]}: %{customdata[2]:.1f}%<br>"
-            "<extra></extra>"
-        ),
+        name=region, x=xlabels, y=rdf["cancel_rate"] * 100,
+        marker_color=color, opacity=0.4, showlegend=True,
+    ))
+    fig2.add_trace(go.Scatter(
+        x=xlabels, y=rdf["rolling_cancel"], mode="lines",
+        line=dict(color=color, width=2), showlegend=False,
     ))
 fig2.update_layout(
-    barmode="group",
-    bargap=0.2,
-    bargroupgap=0.05,
-    plot_bgcolor="#ffffff",
-    paper_bgcolor="#ffffff",
+    barmode="group", bargap=0.2, bargroupgap=0.05,
+    plot_bgcolor="#ffffff", paper_bgcolor="#ffffff",
     font=dict(family="sans-serif", color=TEXT),
     legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-    xaxis=dict(
-        title=None,
-        tickfont=dict(size=12),
-        categoryorder="array",
-        categoryarray=quarters,
-    ),
-    yaxis=dict(
-        title="Cancel rate (%)",
-        range=[0, 25],
-        gridcolor="#e8e8e8",
-        ticksuffix="%",
-    ),
+    xaxis=dict(title=None, tickfont=dict(size=11)),
+    yaxis=dict(title="Cancel rate (%)", range=[0, 35],
+               gridcolor="#e8e8e8", ticksuffix="%"),
     margin=dict(t=40, b=20, l=10, r=10),
-    height=350,
+    height=380,
 )
 
 with col_left:
     st.caption(
-        f"Jan–{month_abbr} {prior_year} vs Jan–{month_abbr} {current_year}"
-        " · same-period closed contracts"
+        f"Monthly closings (bars) and cumulative total (lines) · "
+        f"{selected_region} · Jan–Sep same-period comparison"
     )
     st.plotly_chart(fig, use_container_width=True)
 
 with col_right:
-    st.caption("Cancellation rate by quarter · last 4 quarters")
+    st.caption(
+        "Cancellation rate · last 12 months · "
+        "bars = monthly, line = 3-month rolling average"
+    )
     st.plotly_chart(fig2, use_container_width=True)
 
 
