@@ -24,8 +24,10 @@ TEXT_MUTED  = "#6e6e73"
 
 st.title("Revenue & Channels")
 st.caption(
-    "Acquisition channel cost vs. quality — which channels deliver "
-    "the best buyers at the lowest commission cost."
+    "Acquisition channel cost vs. quality. Commission rate = agent "
+    "commission as a percentage of contract price — the only cost "
+    "column in the dataset. Lower-left on the quadrant = cheap and "
+    "low-cancel (high efficiency)."
 )
 
 conn        = get_snowflake_connection()

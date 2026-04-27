@@ -355,6 +355,13 @@ with st.expander("Show detail table", expanded=False):
         },
     )
 
+st.caption(
+    "Margin Δ vs target uses estimated_margin_pct = "
+    "(contract_price − agent_commission) / contract_price "
+    "as a proxy. No construction cost column exists in the "
+    "dataset by design — see 'About these numbers' for full context."
+)
+
 with st.expander("About these numbers", expanded=False):
     st.markdown(f"""
 **Year boundaries**
