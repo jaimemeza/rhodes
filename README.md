@@ -196,6 +196,8 @@ A cancellation rate forecast model was trained but dropped from the dashboard. M
 
 Year boundaries in the dbt marts are derived dynamically from `MAX(contract_date)`, not hardcoded. The only fixed date is `contract_date < '2024-10-01'`, which reflects a known extract boundary in the source data, not a business cutoff.
 
+October 2024 is excluded from all aggregates. The source extract was generated on approximately October 2, 2024 — only one contract was captured that day, making it a partial month. Including it would make October appear as a dramatic volume collapse rather than a data boundary. The exclusion is implemented as `contract_date < '2024-10-01'` with a comment in every affected mart model.
+
 ## If I Had More Time
 
 - dbt snapshots for SCD Type 2 — contracts change status over time (Under Contract → Closed or Cancelled). A snapshot model would capture that history and enable cohort analysis.
