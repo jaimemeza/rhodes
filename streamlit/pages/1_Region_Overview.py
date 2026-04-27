@@ -150,9 +150,6 @@ def build_revenue_tile(row) -> str:
   <div style="font-size:13px; color:{TEXT_MUTED}; margin-bottom:6px;">{region}</div>
   <div style="font-size:36px; font-weight:700; color:{TEXT}; line-height:1;
               margin-bottom:4px;">{closed_val}</div>
-  <div style="font-size:13px; color:{TEXT_MUTED}; margin-bottom:8px;">
-    YTD Revenue · {closed_n} units
-  </div>
   <hr style="border:none; border-top:1px solid #e5e5ea; margin:6px 0;">
   <div style="font-size:12px; color:{TEXT_MUTED}; line-height:1.7;">
     Pipeline: {pipe_n} contracts · {pipe_val}<br>
