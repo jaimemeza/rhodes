@@ -7,8 +7,8 @@ seeds:
       column_types:
         region: varchar
         regional_manager: varchar
-        sales_target_units: number
-        margin_target_pct: number(5,4)
+        sales_target_units: integer
+        margin_target_pct: numeric(5,4)
     columns:
       - name: region
         description: Sales region name.

@@ -43,7 +43,7 @@ renamed as (
         agent_commission,
 
         -- derived integrity columns (validated by model-level tests)
-        datediff('day', contract_date, close_date)      as days_to_close_calc,
+        (close_date::date - contract_date::date)        as days_to_close_calc,
         base_price + upgrade_amount - incentive_amount   as contract_price_calc
 
     from source

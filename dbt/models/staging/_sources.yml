@@ -3,8 +3,7 @@ version: 2
 sources:
   - name: rhodes_raw
     # Jinja is not supported in source YAML — database is hardcoded to RHODES.
-    database: RHODES
-    schema: RAW
+    schema: raw
     description: "Raw tables loaded into RHODES.RAW from source CSVs."
     tables:
       - name: homebuilder_sales

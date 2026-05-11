@@ -23,11 +23,11 @@ models:
   rhodes_analytics:
     staging:
       +materialized: view
-      +schema: STAGING
+      +schema: staging
     marts:
       core:
         +materialized: table
-        +schema: ANALYTICS
+        +schema: analytics
       agg:
         +materialized: table
-        +schema: ANALYTICS
+        +schema: analytics

@@ -13,12 +13,12 @@ select
     sales_consultant,
     region_sk,
     region,
-    count(*)                                            as contracts,
-    count_if(is_closed)                                 as closed_contracts,
-    count_if(is_cancelled)                              as cancelled_contracts,
-    count_if(is_cancelled) / nullif(count(*), 0)::float as cancel_rate,
-    avg(iff(is_closed, days_to_close, null))             as avg_days_to_close,
-    sum(iff(is_closed, contract_price, 0))              as total_contract_value,
-    avg(iff(is_closed, contract_price, null))            as avg_contract_price
+    count(*)                                                           as contracts,
+    count(*) filter (where is_closed)                                  as closed_contracts,
+    count(*) filter (where is_cancelled)                               as cancelled_contracts,
+    count(*) filter (where is_cancelled) / nullif(count(*), 0)::float  as cancel_rate,
+    avg(case when is_closed then days_to_close else null end)           as avg_days_to_close,
+    sum(case when is_closed then contract_price else 0 end)             as total_contract_value,
+    avg(case when is_closed then contract_price else null end)          as avg_contract_price
 from sales
 group by 1, 2, 3, 4

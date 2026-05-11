@@ -20,25 +20,25 @@ by_region_month as (
 
     select
         s.region_sk,
-        date_trunc('month', s.contract_date)::date  as month_start,
-        count(*)                                     as contracts,
-        count_if(s.is_closed)                        as contracts_closed,
-        count_if(s.is_cancelled)                     as contracts_cancelled,
-        count_if(s.is_under_contract)                as contracts_under_contract,
-        count_if(s.is_closed) / nullif(count(*), 0)::float
-                                                     as close_rate,
-        count_if(s.is_cancelled) / nullif(count(*), 0)::float
-                                                     as cancel_rate,
-        avg(iff(s.is_closed, s.contract_price, null))
-                                                     as avg_contract_price,
-        avg(iff(s.is_closed, s.price_per_sqft, null))
-                                                     as avg_price_per_sqft,
-        avg(iff(s.is_closed, s.estimated_margin_pct, null))
-                                                     as avg_estimated_margin_pct,
-        avg(iff(s.is_closed, s.upgrade_capture_pct, null))
-                                                     as avg_upgrade_capture_pct,
-        avg(iff(s.is_closed, s.days_to_close, null))
-                                                     as avg_days_to_close
+        date_trunc('month', s.contract_date::date)::date  as month_start,
+        count(*)                                                        as contracts,
+        count(*) filter (where s.is_closed)                             as contracts_closed,
+        count(*) filter (where s.is_cancelled)                          as contracts_cancelled,
+        count(*) filter (where s.is_under_contract)                     as contracts_under_contract,
+        count(*) filter (where s.is_closed) / nullif(count(*), 0)::float
+                                                                        as close_rate,
+        count(*) filter (where s.is_cancelled) / nullif(count(*), 0)::float
+                                                                        as cancel_rate,
+        avg(case when s.is_closed then s.contract_price else null end)
+                                                                        as avg_contract_price,
+        avg(case when s.is_closed then s.price_per_sqft else null end)
+                                                                        as avg_price_per_sqft,
+        avg(case when s.is_closed then s.estimated_margin_pct else null end)
+                                                                        as avg_estimated_margin_pct,
+        avg(case when s.is_closed then s.upgrade_capture_pct else null end)
+                                                                        as avg_upgrade_capture_pct,
+        avg(case when s.is_closed then s.days_to_close else null end)
+                                                                        as avg_days_to_close
     from sales s
     group by 1, 2
 
