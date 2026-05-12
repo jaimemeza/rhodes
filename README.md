@@ -1,218 +1,250 @@
 # Rhodes Enterprise Sales Analytics
 
-This project is a take-home data engineering assessment for Rhodes Enterprise, a residential builder operating across three South Texas regions. It covers the full pipeline: raw data ingestion into Snowflake, transformation with dbt, and a five-page Streamlit dashboard that uses Snowflake Cortex for AI forecasting and natural-language queries over the actual data.
+A full-stack data engineering project built as a take-home assessment for Rhodes Enterprise, a residential homebuilder operating across three South Texas regions. The pipeline covers raw ingestion, dbt transformation, automated orchestration, and a live Streamlit dashboard — all self-hosted on a Raspberry Pi 4.
 
-## Live Dashboard
+**Live dashboard:** [rhodes.jaimemeza.com](https://rhodes.jaimemeza.com)
 
-https://rhodes.streamlit.app
+---
+
+## Project Overview
+
+The source data is 600 home sale contracts from January 2023 through September 2024 across three regions: Rio Grande Valley, South Texas, and Coastal Bend. Each row represents one contract with buyer type, loan type, acquisition channel, agent commission, and sale price. A separate regional manager lookup maps communities to regions and managers.
+
+The dashboard surfaces regional performance, year-over-year trends, channel economics, consultant metrics, and a closing volume forecast — updated automatically on every push to main and every morning at 6 AM.
+
+---
 
 ## Architecture
 
-The pipeline follows a three-layer medallion architecture:
-raw data lands in Snowflake unchanged, dbt transforms it into
-clean staging models and analytics marts, and Streamlit reads
-from the analytics layer.
-
-The Cortex ML models (FORECAST and COMPLETE) run inside Snowflake — no data leaves the warehouse for AI queries.
-
-![dbt Lineage Graph](docs/lineage_graph.png)
-*dbt lineage: source → staging → dims/fact → aggregate marts*
+The pipeline follows a medallion architecture: raw source data lands in PostgreSQL unchanged, dbt transforms it through staging into analytics marts, and Streamlit reads from the analytics layer.
 
 ```mermaid
-  flowchart LR
-      subgraph Sources
-          CSV[Homebuilder_Sales.csv<br>600 rows]
-          XLSX[Regional_Manager_Lookup.xlsx]
-      end
-
-      subgraph Snowflake["Snowflake — RHODES database"]
-          direction TB
-          subgraph Bronze["🥉 Bronze · RAW"]
-              R1[HOMEBUILDER_SALES]
-          end
-          subgraph Silver["🥈 Silver · STAGING · dbt"]
-              S1[stg_homebuilder_sales]
-              S2[stg_regional_manager]
-          end
-          subgraph Gold["🥇 Gold · ANALYTICS · dbt"]
-              F1[fct_home_sales]
-              M1[mart_region_month]
-              M2[mart_region_year]
-              M3[mart_consultant_performance]
-              M4[mart_channel_economics]
-          end
-          CX[Cortex FORECAST<br>Cortex COMPLETE]
-      end
-
-      CSV --> R1
-      XLSX --> S2
-      R1 --> S1
-      S1 --> F1
-      S2 --> F1
-      F1 --> M1 & M2 & M3 & M4
-      M1 --> CX
-      F1 --> CX
-      CX --> APP
-
-      APP[Streamlit Cloud<br>5 pages · NL query]
-      M2 & M3 & M4 --> APP
-
-      classDef role fill:#5a8c3e,color:#fff,stroke:none
-      classDef service fill:#2563eb,color:#fff,stroke:none
-      classDef schema fill:#f5f5f7,color:#1c1c1e,stroke:#d1d1d6
-      classDef wh fill:#f5a623,color:#fff,stroke:none
-
-      class CSV,XLSX schema
-      class R1 wh
-      class S1,S2 schema
-      class F1,M1,M2,M3,M4 role
-      class CX service
-      class APP role
-```
-
-## Snowflake Access Control
-
-Three functional roles follow a least-privilege pattern. Each role has access only to what it needs — the ingestion script can't read transformed data, and the dashboard can't write anything.
-
-```mermaid
-flowchart TD
-    ACCOUNTADMIN["🔑 ACCOUNTADMIN<br>(setup only)"]
-    SYSADMIN["SYSADMIN"]
-
-    LOADER["RHODES_LOADER<br>Ingestion role"]
-    TRANSFORMER["RHODES_TRANSFORMER<br>dbt Cloud role"]
-    READER["RHODES_READER<br>Streamlit role"]
-
-    DBT_USER["DBT_USER<br>service account<br>key-pair auth"]
-    STREAMLIT_USER["STREAMLIT_USER<br>service account<br>key-pair auth"]
-
-    subgraph Warehouses
-        WH1["RHODES_LOAD_WH"]
-        WH2["RHODES_TRANSFORM_WH"]
-        WH3["RHODES_BI_WH"]
+flowchart LR
+    subgraph Sources
+        CSV[Homebuilder_Sales.csv<br>600 rows]
+        XLSX[Regional_Manager_Lookup.xlsx]
     end
 
-    subgraph Schemas["RHODES database"]
-        RAW["RAW 🥉<br>HOMEBUILDER_SALES"]
-        STAGING["STAGING 🥈<br>stg_* · seeds"]
-        ANALYTICS["ANALYTICS 🥇<br>fct_* · mart_*"]
+    subgraph Ingestion["Python Ingestion"]
+        PY[load_raw.py<br>pandas + SQLAlchemy]
     end
 
-    CORTEX["Snowflake Cortex<br>CORTEX_USER db role"]
+    subgraph Postgres["PostgreSQL — rhodes_homes"]
+        direction TB
+        subgraph Bronze["Bronze · raw"]
+            R1[homebuilder_sales]
+            R2[regional_manager_lookup]
+        end
+        subgraph Silver["Silver · staging · dbt views"]
+            S1[stg_homebuilder_sales]
+            S2[stg_regional_manager]
+        end
+        subgraph Gold["Gold · analytics · dbt tables"]
+            F1[fct_home_sales]
+            D1[dim_region]
+            D2[dim_consultant]
+            D3[dim_community]
+            M1[mart_region_month]
+            M2[mart_region_year]
+            M3[mart_consultant_performance]
+            M4[mart_consultant_region]
+            M5[mart_channel_economics]
+        end
+    end
 
-    SYSADMIN --> LOADER
-    SYSADMIN --> TRANSFORMER
-    SYSADMIN --> READER
+    subgraph Infra["Raspberry Pi 4 · Ubuntu · Docker Compose"]
+        PG[(PostgreSQL)]
+        ST[Streamlit<br>rhodes.jaimemeza.com]
+        CF[Cloudflare Tunnel]
+    end
 
-    LOADER -->|WRITE| RAW
-    LOADER -->|USE| WH1
+    subgraph CI["GitHub Actions"]
+        GHA[dbt_run.yml<br>push to main · daily 6AM]
+    end
 
-    TRANSFORMER -->|READ| RAW
-    TRANSFORMER -->|WRITE| STAGING
-    TRANSFORMER -->|WRITE| ANALYTICS
-    TRANSFORMER -->|USE| WH2
-
-    READER -->|READ| ANALYTICS
-    READER -->|USE| WH3
-    READER -->|USE| CORTEX
-
-    DBT_USER -->|granted| TRANSFORMER
-    STREAMLIT_USER -->|granted| READER
-
-    classDef role fill:#5a8c3e,color:#fff,stroke:none
-    classDef service fill:#2563eb,color:#fff,stroke:none
-    classDef schema fill:#f5f5f7,color:#1c1c1e,stroke:#d1d1d6
-    classDef wh fill:#f5a623,color:#fff,stroke:none
-    classDef admin fill:#c75a3e,color:#fff,stroke:none
-
-    class LOADER,TRANSFORMER,READER role
-    class DBT_USER,STREAMLIT_USER service
-    class RAW,STAGING,ANALYTICS schema
-    class WH1,WH2,WH3 wh
-    class ACCOUNTADMIN,SYSADMIN admin
+    CSV & XLSX --> PY --> R1 & R2
+    R1 --> S1
+    R2 --> S2
+    S1 & S2 --> F1
+    F1 --> D1 & D2 & D3
+    F1 --> M1 & M2 & M3 & M4 & M5
+    M1 & M2 & M3 & M4 & M5 --> ST
+    GHA -->|SSH via Cloudflare| PG
+    CF -->|HTTPS| ST
 ```
 
-FUTURE GRANTS on all schemas ensure new dbt models automatically inherit the correct permissions without manual re-granting.
+---
 
 ## Stack
 
-- Snowflake — data warehouse, Cortex ML (FORECAST + COMPLETE)
-- dbt Cloud — transformations, testing, documentation
-- Streamlit Cloud — dashboard
-- Python — ingestion utilities
+| Layer | Technology |
+|---|---|
+| Ingestion | Python 3.12, pandas, SQLAlchemy |
+| Warehouse | PostgreSQL 16 (self-hosted) |
+| Transformation | dbt Core 1.x — 11 models, 168 tests |
+| Orchestration | GitHub Actions (push + daily cron) |
+| Visualization | Streamlit — 5 pages |
+| Forecasting | scikit-learn linear regression |
+| Infrastructure | Raspberry Pi 4, Ubuntu, Docker Compose |
+| Networking | Cloudflare Tunnel (no open ports) |
+
+---
+
+## Pipeline: End to End
+
+**1. Ingestion**
+
+`ingestion/load_raw.py` reads the CSV and XLSX source files with pandas, lowercases column names, and writes them to the `raw` schema in PostgreSQL via SQLAlchemy. The table is replaced on every run — the raw layer is not append-only.
+
+**2. dbt Transformation**
+
+dbt runs three steps in sequence:
+
+- `dbt seed` — loads the regional manager lookup from `seeds/` into the staging schema
+- `dbt run` — materializes 11 models across three layers:
+  - **Staging (views):** `stg_homebuilder_sales`, `stg_regional_manager` — clean and rename source columns
+  - **Core (tables):** `fct_home_sales`, `dim_region`, `dim_consultant`, `dim_community` — star schema with calculated flags and metrics
+  - **Aggregate marts (tables):** `mart_region_month`, `mart_region_year`, `mart_consultant_performance`, `mart_consultant_region`, `mart_channel_economics` — pre-aggregated for dashboard queries
+- `dbt test` — runs 168 tests covering not-null, unique, accepted-value, and referential integrity constraints
+
+**3. Orchestration**
+
+A GitHub Actions workflow (`.github/workflows/dbt_run.yml`) triggers on every push to `main` and on a daily cron at 06:00 UTC. It installs `cloudflared`, opens an SSH tunnel to the Pi through the Cloudflare network, and runs the full pipeline remotely — no inbound ports required.
+
+**4. Forecasting**
+
+The Forecast page fits a linear regression (scikit-learn) on monthly closing history per region and projects forward with 90% confidence intervals. This replaced an earlier Snowflake Cortex ML integration after the infrastructure moved to self-hosted PostgreSQL.
+
+**5. Visualization**
+
+Streamlit reads from the analytics marts via a PostgreSQL connection utility (`streamlit/utils/postgres.py`). The app runs in a Docker container on the Pi, served over HTTPS through the Cloudflare Tunnel.
+
+| Page | Content |
+|---|---|
+| Home | KPI summary cards |
+| Region Overview | Monthly closings, YoY comparison by region |
+| Forecast | Projected closings through end of year |
+| Channel Economics | Commission rates, cancel rates by acquisition channel |
+| Consultants | Per-consultant performance and YoY trends |
+
+---
 
 ## Project Structure
 
-```text
+```
 rhodes/
-├── dbt/              # dbt project: staging, marts, tests, docs
-├── streamlit/        # Streamlit app: 5 pages + utils
-├── ingestion/        # Source data and conversion scripts
-├── sql/setup/        # Snowflake setup SQL (idempotent)
-├── docs/             # Diagrams
+├── .github/workflows/    # GitHub Actions CI/CD
+├── dbt/
+│   ├── models/
+│   │   ├── staging/      # 2 staging views
+│   │   └── marts/
+│   │       ├── core/     # fact + 3 dims
+│   │       └── agg/      # 5 aggregate marts
+│   ├── seeds/            # Regional manager lookup
+│   └── dbt_project.yml
+├── ingestion/
+│   ├── load_raw.py       # CSV/XLSX → PostgreSQL raw schema
+│   ├── seed_data/        # Source files
+│   └── requirements.txt
+├── streamlit/
+│   ├── Home.py
+│   ├── pages/            # 4 dashboard pages
+│   └── utils/            # DB connection, queries, styles
+├── docker-compose.yml    # Streamlit container
 └── README.md
 ```
 
-## Data
+---
 
-The source data is 600 home sale contracts from January 2023 through September 2024, covering three regions: Rio Grande Valley, South Texas, and Coastal Bend. Each row represents one contract with buyer type, loan type, acquisition channel, agent commission, and sale price. A separate regional manager lookup maps communities to regions and managers.
+## Local Setup
 
-The main CSV was uploaded through the Snowsight UI into `RHODES.RAW.HOMEBUILDER_SALES`. The manager lookup is managed as a dbt seed so it stays version-controlled and gets loaded automatically during `dbt build`.
+**Prerequisites:** Python 3.12+, PostgreSQL, dbt Core
 
-## dbt Models
+**1. Clone and install dependencies**
 
-| Layer | Models | Purpose |
-| --- | --- | --- |
-| Staging | stg_homebuilder_sales, stg_regional_manager | Clean and rename source columns |
-| Core marts | dim_region, dim_consultant, dim_community, fct_home_sales | Star schema with calculated flags and metrics |
-| Aggregate marts | mart_region_month, mart_region_year, mart_consultant_performance, mart_consultant_region, mart_channel_economics | Pre-aggregated for dashboard queries |
+```bash
+git clone https://github.com/jaimemeza/rhodes.git
+cd rhodes
+```
 
-158 tests pass across all models and sources, covering not-null, unique, accepted-value, and referential integrity constraints.
+**2. Start PostgreSQL and create the database**
 
-## Cortex AI
+```bash
+createdb rhodes_homes
+```
 
-**Contract volume forecast.** Trained on 21 months of monthly closing history per region. Projects October through December 2024 closings with 90% confidence intervals. On the current trajectory, no region reaches its annual unit target — the Forecast page shows both the projection and the gap.
+**3. Run ingestion**
 
-**Close-time forecast.** Trained on average days-to-close per region. Rio Grande Valley shows a slight projected improvement (~118 days vs. a recent 126-day average). Coastal Bend is excluded from this chart — at 3 to 4 closings per month, the model produces near-zero confidence intervals that would look precise but aren't.
+```bash
+cd ingestion
+pip install -r requirements.txt
+DATABASE_URL="postgresql://<user>:<pass>@localhost:5432/rhodes_homes" python load_raw.py
+```
 
-**Natural-language queries.** The Ask a Question page fetches relevant mart data based on keywords in the question, sends it as context to `claude-4-sonnet` via Cortex COMPLETE, and returns a plain-English answer. The raw data context sent to the model is visible in an expander on the page.
+**4. Configure dbt**
+
+Create `dbt/profiles.yml` (not committed):
+
+```yaml
+rhodes_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5432
+      user: <your_user>
+      password: <your_password>
+      dbname: rhodes_homes
+      schema: analytics
+```
+
+**5. Run dbt**
+
+```bash
+cd dbt
+dbt deps
+dbt seed
+dbt run
+dbt test
+```
+
+**6. Run Streamlit**
+
+```bash
+cd streamlit
+pip install -r requirements.txt
+```
+
+Create `.streamlit/secrets.toml`:
+
+```toml
+[postgres]
+host = "localhost"
+port = 5432
+dbname = "rhodes_homes"
+user = "<your_user>"
+password = "<your_password>"
+```
+
+```bash
+streamlit run Home.py
+```
+
+---
 
 ## Key Findings
 
 - Coastal Bend closings dropped 38.9% year-over-year (22 vs. 36, same Jan–Sep window). No other region shows this pattern.
 - South Texas is closest to its annual target at 72% YTD attainment. Rio Grande Valley is at 63%.
-- Realtor Referral is the most expensive acquisition channel (3.0% average commission) and has the second-highest cancellation rate (10.3%). Event/Home Show is the cheapest (2.1%) with the third-lowest cancel rate (3.1%).
+- Realtor Referral is the most expensive acquisition channel (3.0% avg commission) with the second-highest cancellation rate (10.3%). Event/Home Show is the cheapest (2.1%) with the third-lowest cancel rate (3.1%).
+- Agent commission rates vary by over 40% across channels (2.1% to 3.0%). Combined with cancellation rate differences, channel mix is the clearest margin lever available to regional managers.
 - James Whitfield's cancellation rate doubled year-over-year from 7.8% to 15.8%. Ana Garza's dropped from 4.3% to 1.9%.
-- All six consultants work across all three regions — no territory specialization shows up in the data.
-- Agent commission rates vary meaningfully by acquisition channel (2.1% for Event/Home Show vs 3.0% for Realtor Referral). Combined with cancellation rate differences, channel mix is the clearest margin lever available to regional managers.
+
+---
 
 ## Modeling Decisions
 
-Year-over-year comparisons use the same calendar window in both years (Jan–Sep vs. Jan–Sep), not annualized extrapolation. Annualized figures exist as secondary mart columns for reference, but the headlines compare the same time window because comparing different periods isn't apples-to-apples.
+Year-over-year comparisons use the same calendar window in both years (Jan–Sep vs. Jan–Sep), not annualized extrapolation. The dataset has no construction cost column — `estimated_margin_pct` is defined as `(contract_price - agent_commission) / contract_price`, a revenue-net-of-commission proxy. Year boundaries in the dbt marts are derived dynamically from `MAX(contract_date)`.
 
-The dataset has no construction cost column — confirmed with the hiring team as intentional. `estimated_margin_pct` is defined as `(contract_price - agent_commission) / contract_price`, a revenue-net-of-commission proxy rather than true gross margin. Agent commission is the only cost column available; it feeds both the margin proxy and the channel commission rate analysis on the Revenue & Channels page.
-
-A cancellation rate forecast model was trained but dropped from the dashboard. Monthly cancel rates are too noisy at the data volumes here — Coastal Bend averages 3 to 8 contracts per month — and showing unreliable projections to a sales director would do more harm than good.
-
-Year boundaries in the dbt marts are derived dynamically from `MAX(contract_date)`, not hardcoded. The only fixed date is `contract_date < '2024-10-01'`, which reflects a known extract boundary in the source data, not a business cutoff.
-
-October 2024 is excluded from all aggregates. The source extract was generated on approximately October 2, 2024 — only one contract was captured that day, making it a partial month. Including it would make October appear as a dramatic volume collapse rather than a data boundary. The exclusion is implemented as `contract_date < '2024-10-01'` with a comment in every affected mart model.
-
-## If I Had More Time
-
-- dbt snapshots for SCD Type 2 — contracts change status over time (Under Contract → Closed or Cancelled). A snapshot model would capture that history and enable cohort analysis.
-- Separate dev and prod Snowflake environments with a promotion workflow, instead of the current shared STAGING and ANALYTICS schemas.
-- Per-developer dbt schema namespacing so developers don't step on each other.
-- A calendar dimension for cleaner period-over-period comparisons.
-- CRM integration for the full lead → contract → close funnel — the current data starts at contract signing, so everything upstream (visits, inquiries, follow-ups) is missing.
-
-## Setup
-
-1. Run `sql/setup/01_account_setup.sql` as ACCOUNTADMIN — creates warehouses, schemas, roles, and service users.
-2. Run `sql/setup/02_cortex_forecast.sql` as ACCOUNTADMIN — creates the Cortex FORECAST models and stores results.
-3. Install dbt dependencies: `dbt deps`
-4. Run the full dbt pipeline: `dbt build`
-5. Add Streamlit connection secrets: copy `streamlit/.streamlit/secrets.toml.example` to `secrets.toml` and fill in the values.
-6. Run locally: `streamlit run streamlit/Home.py`
-
-
+October 2024 is excluded from all aggregates (`contract_date < '2024-10-01'`). The source extract was generated around October 2 — only one contract was captured, making it a partial month that would appear as a dramatic volume collapse rather than a data boundary.
