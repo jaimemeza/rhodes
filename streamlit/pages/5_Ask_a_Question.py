@@ -1,7 +1,8 @@
+import anthropic
 import pandas as pd
 import streamlit as st
 
-from utils.snowflake import get_snowflake_connection, CORTEX_MODEL
+from utils.postgres import get_connection
 from utils.queries import (
     fetch_region_year,
     fetch_pipeline_by_region,
@@ -27,7 +28,7 @@ st.caption(
 )
 
 # ── Data ───────────────────────────────────────────────────────────────
-conn          = get_snowflake_connection()
+conn          = get_connection()
 region_df     = fetch_region_year(conn)
 pipeline_df   = fetch_pipeline_by_region(conn)
 channel_df    = fetch_channel_economics(conn)
@@ -148,26 +149,27 @@ def build_context(question: str) -> tuple[str, str]:
     return "\n\n".join(parts), " + ".join(labels)
 
 
-# ── Cortex caller ──────────────────────────────────────────────────────
-def ask_cortex(question: str, context: str) -> str:
-    full_prompt = (
+# ── Claude caller ───────────────────────────────────────────────────────
+_anthropic_client = anthropic.Anthropic()
+
+def ask_claude(question: str, context: str) -> str:
+    system = (
         "You are a data analyst for Rhodes Enterprise, a residential home builder "
         "in South Texas. Answer the question using ONLY the provided data "
         "context. Be concise, cite specific numbers, and flag clearly if the "
-        "data does not support the question.\n\n"
-        f"DATA CONTEXT:\n{context}\n\n"
-        f"QUESTION: {question}"
+        "data does not support the question."
     )
-    sql = "SELECT SNOWFLAKE.CORTEX.COMPLETE(%s, %s) AS response"
-    cur = conn.cursor()
+    user_msg = f"DATA CONTEXT:\n{context}\n\nQUESTION: {question}"
     try:
-        cur.execute(sql, (CORTEX_MODEL, full_prompt))
-        result = cur.fetchone()
-        return result[0].strip() if result else "No response."
+        message = _anthropic_client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=1024,
+            system=system,
+            messages=[{"role": "user", "content": user_msg}],
+        )
+        return message.content[0].text.strip()
     except Exception as e:
         return f"Unable to generate a response: {e}"
-    finally:
-        cur.close()
 
 
 # ── Suggested questions ────────────────────────────────────────────────
@@ -207,8 +209,8 @@ question_to_ask = triggered or (custom.strip() if ask_clicked else None)
 # ── Answer ─────────────────────────────────────────────────────────────
 if question_to_ask:
     context_block, context_desc = build_context(question_to_ask)
-    with st.spinner("Querying Cortex…"):
-        answer = ask_cortex(question_to_ask, context_block)
+    with st.spinner("Asking Claude…"):
+        answer = ask_claude(question_to_ask, context_block)
 
     st.markdown(
         f'<div style="font-size:13px; color:{TEXT_MUTED}; margin-bottom:4px;">'

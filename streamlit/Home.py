@@ -1,6 +1,6 @@
 import streamlit as st
 
-from utils.snowflake import get_snowflake_connection
+from utils.postgres import get_connection
 from utils.queries import fetch_session_info
 from utils.styles import apply_global_styles
 
@@ -16,7 +16,7 @@ apply_global_styles()
 _conn_error = None
 _session = None
 try:
-    conn = get_snowflake_connection()
+    conn = get_connection()
     _session = fetch_session_info(conn)
 except Exception as e:
     _conn_error = e
@@ -26,14 +26,13 @@ st.title("Rhodes Enterprise Sales Analytics")
 
 if _conn_error:
     st.error(
-        "**Snowflake connection failed.**\n\n"
+        "**Postgres connection failed.**\n\n"
         f"`{_conn_error}`\n\n"
         "Common fixes:\n"
         "- Confirm `.streamlit/secrets.toml` exists in the `streamlit/` directory.\n"
-        "- Verify `private_key` is a complete PEM string with newlines preserved "
-        "(no single-line encoding).\n"
-        "- Check the account identifier is `flkmkxj-in29512`.\n"
-        "- Confirm STREAMLIT_USER has the RHODES_READER role assigned."
+        "- Verify the `[postgres]` section has correct `host`, `port`, `database`, "
+        "`user`, and `password` values.\n"
+        "- Confirm the Postgres server is running and reachable from this host."
     )
 
 st.markdown(
@@ -47,5 +46,5 @@ st.markdown("""
 - **Forecast** — Snowflake Cortex FORECAST projection of monthly contract volume through year-end.
 - **Channel Economics** — Acquisition channel cost (commission rate) vs. quality (cancel rate).
 - **Consultants** — Individual performance leaderboard with year-over-year deltas.
-- **Ask a Question** — Natural-language queries answered by Cortex using pre-computed context.
+- **Ask a Question** — Natural-language queries answered by Claude using pre-computed context.
 """)

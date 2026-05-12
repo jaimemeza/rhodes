@@ -2,8 +2,8 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from utils.snowflake import get_snowflake_connection
-from utils.queries import fetch_region_month, fetch_forecast_results
+from utils.postgres import get_connection
+from utils.queries import fetch_region_month
 from utils.styles import apply_global_styles
 
 st.set_page_config(page_title="Forecast · Rhodes", layout="wide",
@@ -40,7 +40,7 @@ st.caption(
     "wider bands indicate lower confidence."
 )
 
-conn    = get_snowflake_connection()
+conn    = get_connection()
 hist_df = fetch_region_month(conn)
 fore_df = fetch_forecast_results(conn)
 

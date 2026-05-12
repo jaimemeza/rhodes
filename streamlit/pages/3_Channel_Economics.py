@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from utils.snowflake import get_snowflake_connection
+from utils.postgres import get_connection
 from utils.queries import (
     fetch_channel_economics,
     fetch_pipeline_by_region,
@@ -30,7 +30,7 @@ st.caption(
     "low-cancel (high efficiency)."
 )
 
-conn        = get_snowflake_connection()
+conn        = get_connection()
 channel_df  = fetch_channel_economics(conn)
 region_df   = fetch_region_year(conn)      # noqa: F841 — available for future use
 pipeline_df = fetch_pipeline_by_region(conn)  # noqa: F841

@@ -4,16 +4,10 @@ import streamlit as st
 
 @st.cache_data(ttl=600)
 def fetch_session_info(_conn) -> pd.DataFrame:
-    """Returns CURRENT_USER, CURRENT_ROLE, CURRENT_WAREHOUSE, CURRENT_DATABASE for the active session."""
+    """Returns basic connection info for the active Postgres session."""
     cur = _conn.cursor()
     try:
-        cur.execute("""
-            SELECT
-                CURRENT_USER()      AS "USER",
-                CURRENT_ROLE()      AS "ROLE",
-                CURRENT_WAREHOUSE() AS "WAREHOUSE",
-                CURRENT_DATABASE()  AS "DATABASE"
-        """)
+        cur.execute('SELECT current_user AS "USER", current_database() AS "DATABASE"')
         cols = [c[0].lower() for c in cur.description]
         return pd.DataFrame(cur.fetchall(), columns=cols)
     finally:
@@ -50,7 +44,7 @@ def fetch_region_year(_conn) -> pd.DataFrame:
             annualization_factor,
             same_period_closed_prior_year,
             same_period_yoy_pct
-        from rhodes.analytics.mart_region_year
+        from analytics.mart_region_year
         order by region, contract_year
     """
     cur = _conn.cursor()
@@ -72,18 +66,18 @@ def fetch_pipeline_by_region(_conn) -> pd.DataFrame:
     query = """
         select
             region,
-            count_if(is_under_contract)                            as pipeline_contracts,
-            sum(iff(is_under_contract, contract_price, 0))         as pipeline_value,
-            count_if(is_closed)                                    as closed_contracts,
-            sum(iff(is_closed, contract_price, 0))                 as closed_value,
-            avg(iff(is_closed, contract_price, null))              as avg_contract_price,
-            avg(iff(is_closed, days_to_close, null))               as avg_days_to_close,
-            avg(iff(is_closed, upgrade_capture_pct, null))         as avg_upgrade_capture
-        from rhodes.analytics.fct_home_sales
+            count(*) filter (where is_under_contract)                           as pipeline_contracts,
+            sum(case when is_under_contract then contract_price else 0 end)     as pipeline_value,
+            count(*) filter (where is_closed)                                   as closed_contracts,
+            sum(case when is_closed then contract_price else 0 end)             as closed_value,
+            avg(case when is_closed then contract_price else null end)          as avg_contract_price,
+            avg(case when is_closed then days_to_close else null end)           as avg_days_to_close,
+            avg(case when is_closed then upgrade_capture_pct else null end)     as avg_upgrade_capture
+        from analytics.fct_home_sales
         where contract_date < '2024-10-01'
-          and year(contract_date) = (
-              select year(max(contract_date))
-              from rhodes.analytics.fct_home_sales
+          and extract(year from contract_date) = (
+              select extract(year from max(contract_date))
+              from analytics.fct_home_sales
               where contract_date < '2024-10-01'
           )
         group by region
@@ -105,32 +99,8 @@ def fetch_region_month(_conn) -> pd.DataFrame:
         select region, month_start, contracts_closed,
                cancel_rate, avg_days_to_close,
                sales_target_units
-        from rhodes.analytics.mart_region_month
+        from analytics.mart_region_month
         order by region, month_start
-    """
-    cur = _conn.cursor()
-    try:
-        cur.execute(query)
-        cols = [c[0].lower() for c in cur.description]
-        return pd.DataFrame(cur.fetchall(), columns=cols)
-    finally:
-        cur.close()
-
-
-@st.cache_data(ttl=3600)
-def fetch_forecast_results(_conn) -> pd.DataFrame:
-    """Returns volume and close-time Cortex FORECAST results, unioned."""
-    query = """
-        select 'volume'        as metric,
-               region, forecast_month, forecast,
-               lower_bound, upper_bound
-        from rhodes.analytics.forecast_results
-        union all
-        select 'days_to_close' as metric,
-               region, forecast_month, forecast,
-               lower_bound, upper_bound
-        from rhodes.analytics.close_time_forecast_results
-        order by metric, region, forecast_month
     """
     cur = _conn.cursor()
     try:
@@ -157,7 +127,7 @@ def fetch_channel_economics(_conn) -> pd.DataFrame:
             avg_upgrade_capture_pct,
             total_contract_value,
             total_commission_paid
-        from rhodes.analytics.mart_channel_economics
+        from analytics.mart_channel_economics
         order by total_contract_value desc
     """
     cur = _conn.cursor()
@@ -177,7 +147,7 @@ def fetch_consultant_region(_conn) -> pd.DataFrame:
                closed_contracts, cancelled_contracts,
                cancel_rate, avg_days_to_close,
                total_contract_value
-        from rhodes.analytics.mart_consultant_region
+        from analytics.mart_consultant_region
         order by sales_consultant, closed_contracts desc
     """
     cur = _conn.cursor()
@@ -199,7 +169,7 @@ def fetch_consultant_performance(_conn) -> pd.DataFrame:
                cancel_rate, cancel_rate_prior_year,
                cancel_rate_current_year, cancel_rate_yoy_delta,
                avg_days_to_close, cash_buyer_rate, regions_worked
-        from rhodes.analytics.mart_consultant_performance
+        from analytics.mart_consultant_performance
         order by closed_contracts desc
     """
     cur = _conn.cursor()
@@ -220,14 +190,15 @@ def fetch_cancel_trend(_conn) -> pd.DataFrame:
     query = """
         select
             region,
-            date_trunc('month', contract_date)::date            as month_start,
-            count(*)                                            as contracts,
-            count_if(is_cancelled)                              as cancellations,
-            count_if(is_cancelled) / nullif(count(*), 0)::float as cancel_rate
-        from rhodes.analytics.fct_home_sales
-        where year(contract_date) = (
-              select year(max(contract_date))
-              from rhodes.analytics.fct_home_sales
+            date_trunc('month', contract_date)::date                        as month_start,
+            count(*)                                                        as contracts,
+            count(*) filter (where is_cancelled)                            as cancellations,
+            count(*) filter (where is_cancelled)::float
+                / nullif(count(*), 0)                                       as cancel_rate
+        from analytics.fct_home_sales
+        where extract(year from contract_date) = (
+              select extract(year from max(contract_date))
+              from analytics.fct_home_sales
               where contract_date < '2024-10-01'
           )
           and contract_date < '2024-10-01'

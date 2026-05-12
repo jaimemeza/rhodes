@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from utils.snowflake import get_snowflake_connection
+from utils.postgres import get_connection
 from utils.queries import (
     fetch_region_year,
     fetch_pipeline_by_region,
@@ -31,7 +31,7 @@ st.caption(
 )
 
 # ── Data ───────────────────────────────────────────────────────────────
-conn        = get_snowflake_connection()
+conn        = get_connection()
 df          = fetch_region_year(conn)
 pipeline_df = fetch_pipeline_by_region(conn)
 cancel_df   = fetch_cancel_trend(conn)

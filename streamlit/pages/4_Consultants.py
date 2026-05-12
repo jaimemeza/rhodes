@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from utils.snowflake import get_snowflake_connection
+from utils.postgres import get_connection
 from utils.queries import fetch_consultant_performance, fetch_consultant_region
 from utils.styles import apply_global_styles
 
@@ -24,7 +24,7 @@ st.caption(
     "2024 figures cover Jan–Sep (same period as 2023 comparison)."
 )
 
-conn      = get_snowflake_connection()
+conn      = get_connection()
 df        = fetch_consultant_performance(conn)
 region_df = fetch_consultant_region(conn)
 
