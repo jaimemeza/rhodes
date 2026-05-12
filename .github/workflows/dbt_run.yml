@@ -31,11 +31,10 @@ jobs:
           EOF
 
       - name: Run pipeline on Atlas
-        env:
-          RHODES_DB_PASSWORD: ${{ secrets.RHODES_DB_PASSWORD }}
         run: |
           ssh ${{ secrets.SSH_HOST }} "bash -s" << ENDSSH
             set -e
+            export RHODES_DB_PASSWORD="${{ secrets.RHODES_DB_PASSWORD }}"
             cd ~/projects/rhodes-homes
 
             echo "📦 Pulling latest code..."
@@ -49,7 +48,9 @@ jobs:
             python ingestion/load_raw.py
 
             echo "🔧 Running dbt..."
+            export RHODES_DB_PASSWORD="${RHODES_DB_PASSWORD}"
             cd dbt
+            dbt seed
             dbt run
             dbt test
 
