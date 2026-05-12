@@ -1,12 +1,14 @@
-name: dbt run
+name: Rhodes Pipeline
 
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: '0 6 * * *'
   workflow_dispatch:
 
 jobs:
-  run-dbt:
+  run-pipeline:
     runs-on: ubuntu-latest
     steps:
       - name: Install cloudflared
@@ -28,6 +30,27 @@ jobs:
             StrictHostKeyChecking no
           EOF
 
-      - name: Test SSH connection
+      - name: Run pipeline on Atlas
         run: |
-          ssh ${{ secrets.SSH_HOST }} "echo '✅ Connected to Atlas successfully'"
+          ssh ${{ secrets.SSH_HOST }} << 'ENDSSH'
+            set -e
+            cd ~/projects/rhodes-homes
+
+            echo "📦 Pulling latest code..."
+            git pull
+
+            echo "🐍 Activating venv..."
+            source venv/bin/activate
+
+            echo "💾 Running ingestion..."
+            DATABASE_URL="postgresql://flux:$RHODES_DB_PASSWORD@localhost:5432/rhodes_homes" \
+            python ingestion/load_raw.py
+
+            echo "🔧 Running dbt..."
+            cd dbt
+            dbt seed
+            dbt run
+            dbt test
+
+            echo "✅ Pipeline complete"
+          ENDSSH
