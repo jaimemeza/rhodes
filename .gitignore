@@ -19,3 +19,6 @@ dbt/logs/
 # Python bytecode
 __pycache__/
 *.pycvenv/
+
+*.pyc
+venv/
