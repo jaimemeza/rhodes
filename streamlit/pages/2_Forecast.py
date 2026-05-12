@@ -1,6 +1,8 @@
 import pandas as pd
+import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
+from sklearn.linear_model import LinearRegression
 
 from utils.postgres import get_connection
 from utils.queries import fetch_region_month
@@ -14,7 +16,6 @@ GREEN       = "#5a8c3e"
 GREEN_LIGHT = "#7aa55c"
 AMBER       = "#c75a3e"
 GRAY        = "#8e8e93"
-BLUE        = "#2563eb"  # noqa: F841 — reserved for future use
 SURFACE     = "#f5f5f7"
 TEXT        = "#1c1c1e"
 TEXT_MUTED  = "#6e6e73"
@@ -30,33 +31,43 @@ REGION_FILL = {
     "Coastal Bend":      "rgba(199,90,62,0.15)",
 }
 
-FORECAST_START_MS = pd.Timestamp("2024-09-15").timestamp() * 1000
-FORECAST_END_MS   = pd.Timestamp("2025-01-01").timestamp() * 1000
+ALL_REGIONS = ["Coastal Bend", "Rio Grande Valley", "South Texas"]
+FORECAST_PERIODS = 3
 
-st.title("Forecast")
-st.caption(
-    "Snowflake Cortex FORECAST — trained on 21 months of closing history. "
-    "Projections cover Oct–Dec 2024. Confidence bands reflect model uncertainty; "
-    "wider bands indicate lower confidence."
-)
+
+def build_forecast(df: pd.DataFrame, region: str) -> pd.DataFrame:
+    sub = df[df["region"] == region].sort_values("month_start").copy()
+    sub["t"] = np.arange(len(sub))
+    X = sub[["t"]].values
+    y = sub["contracts_closed"].astype(float).values
+    model = LinearRegression().fit(X, y)
+    future_t = np.arange(len(sub), len(sub) + FORECAST_PERIODS).reshape(-1, 1)
+    last_date = sub["month_start"].max()
+    future_dates = pd.date_range(
+        start=last_date + pd.DateOffset(months=1),
+        periods=FORECAST_PERIODS, freq="MS"
+    )
+    forecast = model.predict(future_t)
+    residuals = y - model.predict(X)
+    std = residuals.std()
+    return pd.DataFrame({
+        "region":         region,
+        "forecast_month": future_dates,
+        "forecast":       np.maximum(forecast, 0),
+        "upper_bound":    np.maximum(forecast + 1.96 * std, 0),
+        "lower_bound":    np.maximum(forecast - 1.96 * std, 0),
+    })
+
 
 conn    = get_connection()
 hist_df = fetch_region_month(conn)
-fore_df = fetch_forecast_results(conn)
 
 if hist_df.empty:
     st.error("No data returned from mart_region_month.")
     st.stop()
-if fore_df.empty:
-    st.warning(
-        "Forecast tables are empty. "
-        "Run `sql/setup/02_cortex_forecast.sql` to generate Cortex predictions."
-    )
-    st.stop()
 
-hist_df                  = hist_df.copy()
-hist_df["month_start"]   = pd.to_datetime(hist_df["month_start"])
-hist_df["year"]          = hist_df["month_start"].dt.year
+hist_df["month_start"] = pd.to_datetime(hist_df["month_start"])
+hist_df["year"]        = hist_df["month_start"].dt.year
 
 targets = (
     hist_df[["region", "sales_target_units"]]
@@ -64,56 +75,30 @@ targets = (
     .set_index("region")["sales_target_units"]
 )
 
-ALL_REGIONS = ["Coastal Bend", "Rio Grande Valley", "South Texas"]
+fore_df = pd.concat([build_forecast(hist_df, r) for r in ALL_REGIONS])
 
-
-def _jan_sep_2024(region: str) -> int:
-    mask = (hist_df["region"] == region) & (hist_df["year"] == 2024)
-    return int(hist_df[mask]["contracts_closed"].sum())
-
-
-def _oct_dec_vol(region: str) -> int:
-    sub = fore_df[(fore_df["metric"] == "volume") & (fore_df["region"] == region)]
-    return round(float(sub["forecast"].sum()))
-
-
-def _add_conf_band(fig, x, upper, lower, fill_color):
-    """Shaded confidence band: add upper trace first, lower fills to it."""
-    fig.add_trace(go.Scatter(
-        x=x, y=upper,
-        mode="lines", line=dict(width=0),
-        showlegend=False,
-    ))
-    fig.add_trace(go.Scatter(
-        x=x, y=lower,
-        fill="tonexty", fillcolor=fill_color,
-        mode="lines", line=dict(width=0),
-        showlegend=False,
-    ))
-
+st.title("Forecast")
+st.caption(
+    "Linear regression forecast trained on closing history per region. "
+    f"Projections cover the next {FORECAST_PERIODS} months. "
+    "Confidence bands show 95% confidence interval."
+)
 
 tab1, tab2 = st.tabs(["Contract Volume", "Close Time"])
 
-# ══════════════════════════════════════════════════════════════════════
-# TAB 1 — Contract Volume
-# ══════════════════════════════════════════════════════════════════════
 with tab1:
-    vol_fore = fore_df[fore_df["metric"] == "volume"].copy()
-    vol_fore["forecast_month"] = pd.to_datetime(vol_fore["forecast_month"])
-
-    # ── Section A: Summary cards ────────────────────────────────────────
     card_cols = st.columns(3)
     for i, region in enumerate(ALL_REGIONS):
-        jan_sep  = _jan_sep_2024(region)
-        oct_dec  = _oct_dec_vol(region)
-        year_end = jan_sep + oct_dec
+        ytd      = int(hist_df[(hist_df["region"] == region) &
+                               (hist_df["year"] == hist_df["year"].max())]
+                       ["contracts_closed"].sum())
+        forecast = int(fore_df[fore_df["region"] == region]["forecast"].sum().round())
+        year_end = ytd + forecast
         target   = int(targets.get(region, 0))
         gap      = year_end - target
         g_color  = GREEN_LIGHT if gap >= 0 else AMBER
-        g_label  = (
-            f"+{gap} units above target" if gap >= 0
-            else f"−{abs(gap)} units to target"
-        )
+        g_label  = (f"+{gap} units above target" if gap >= 0
+                    else f"−{abs(gap)} units to target")
         with card_cols[i]:
             st.markdown(f"""
 <div style="background:{SURFACE}; border-radius:10px; padding:14px 16px;
@@ -128,24 +113,13 @@ with tab1:
               margin-bottom:8px;">{g_label}</div>
   <hr style="border:none; border-top:1px solid #e5e5ea; margin:6px 0;">
   <div style="font-size:12px; color:{TEXT_MUTED}; line-height:1.7;">
-    Oct–Dec Cortex forecast: +{oct_dec} closings<br>
-    Jan–Sep actual: {jan_sep} closings
+    Forecast next {FORECAST_PERIODS}mo: +{forecast} closings<br>
+    YTD actual: {ytd} closings
   </div>
 </div>""", unsafe_allow_html=True)
 
-    with st.expander("How this is calculated", expanded=False):
-        st.write(
-            "Jan–Sep actual closings (from mart_region_month) plus Cortex FORECAST "
-            "Oct–Dec projection. Cortex was trained on 21 months of monthly closing "
-            "history per region. Coastal Bend has very wide confidence intervals due "
-            "to low volume (avg ~4 closings/month)."
-        )
-
-    # ── Section B: Time series with forecast overlay ────────────────────
     selected_regions = st.multiselect(
-        "Regions",
-        options=ALL_REGIONS,
-        default=ALL_REGIONS,
+        "Regions", options=ALL_REGIONS, default=ALL_REGIONS
     )
 
     fig = go.Figure()
@@ -153,7 +127,7 @@ with tab1:
         color = REGION_COLOR.get(region, GRAY)
         fill  = REGION_FILL.get(region, "rgba(142,142,147,0.15)")
         h = hist_df[hist_df["region"] == region].sort_values("month_start")
-        f = vol_fore[vol_fore["region"] == region].sort_values("forecast_month")
+        f = fore_df[fore_df["region"] == region].sort_values("forecast_month")
 
         fig.add_trace(go.Scatter(
             name=f"{region} (actual)",
@@ -162,40 +136,23 @@ with tab1:
             line=dict(color=color, width=2),
             marker=dict(size=5),
         ))
-        if not f.empty:
-            _add_conf_band(fig, f["forecast_month"],
-                           f["upper_bound"], f["lower_bound"], fill)
-            fig.add_trace(go.Scatter(
-                name=f"{region} (forecast)",
-                x=f["forecast_month"], y=f["forecast"],
-                mode="lines+markers",
-                line=dict(dash="dash", color=color, width=2),
-                marker=dict(symbol="diamond", size=7),
-            ))
+        fig.add_trace(go.Scatter(
+            x=f["forecast_month"], y=f["upper_bound"],
+            mode="lines", line=dict(width=0), showlegend=False,
+        ))
+        fig.add_trace(go.Scatter(
+            x=f["forecast_month"], y=f["lower_bound"],
+            fill="tonexty", fillcolor=fill,
+            mode="lines", line=dict(width=0), showlegend=False,
+        ))
+        fig.add_trace(go.Scatter(
+            name=f"{region} (forecast)",
+            x=f["forecast_month"], y=f["forecast"],
+            mode="lines+markers",
+            line=dict(dash="dash", color=color, width=2),
+            marker=dict(symbol="diamond", size=7),
+        ))
 
-        if region in targets.index:
-            monthly = float(targets[region]) / 12
-            x_end   = (f["forecast_month"].max() if not f.empty
-                       else h["month_start"].max())
-            fig.add_trace(go.Scatter(
-                name=f"{region} monthly target pace",
-                x=[h["month_start"].min(), x_end],
-                y=[monthly, monthly],
-                mode="lines",
-                line=dict(dash="dot", color=color, width=1),
-                opacity=0.4,
-                showlegend=False,
-            ))
-
-    fig.add_vrect(
-        x0=FORECAST_START_MS, x1=FORECAST_END_MS,
-        fillcolor="rgba(240,244,255,0.6)",
-        layer="below", line_width=0,
-        annotation_text="Forecast →",
-        annotation_position="top left",
-        annotation_font_size=11,
-        annotation_font_color=TEXT_MUTED,
-    )
     fig.update_layout(
         plot_bgcolor="#ffffff", paper_bgcolor="#ffffff",
         font=dict(family="sans-serif", color=TEXT),
@@ -207,134 +164,29 @@ with tab1:
         height=420,
     )
     st.plotly_chart(fig, use_container_width=True)
-    st.caption(
-        "Dashed lines = Cortex forecast. Shaded band = confidence interval. "
-        "Dotted horizontal = monthly target pace (annual ÷ 12)."
-    )
+    st.caption("Dashed = forecast. Shaded band = 95% confidence interval.")
 
-    # ── Section C: Methodology comparison table ─────────────────────────
-    st.caption("Linear pace projection vs. Cortex forecast vs. annual target")
-    rows = []
-    for region in ALL_REGIONS:
-        jan_sep = _jan_sep_2024(region)
-        oct_dec = _oct_dec_vol(region)
-        target  = int(targets.get(region, 0))
-        cortex  = jan_sep + oct_dec
-        rows.append({
-            "Region":                 region,
-            "Jan–Sep Actual":         jan_sep,
-            "Linear Pace (×12/9)":    round(jan_sep * 12 / 9),
-            "Cortex Year-End Est.":   cortex,
-            "Annual Target":          target,
-            "Gap (Cortex)":           cortex - target,
-        })
-    st.dataframe(
-        pd.DataFrame(rows),
-        use_container_width=True,
-        hide_index=True,
-        height=175,
-        column_config={
-            "Region":
-                st.column_config.TextColumn("Region"),
-            "Jan–Sep Actual":
-                st.column_config.NumberColumn("Jan–Sep Actual", format="%d"),
-            "Linear Pace (×12/9)":
-                st.column_config.NumberColumn("Linear Pace (×12/9)", format="%d"),
-            "Cortex Year-End Est.":
-                st.column_config.NumberColumn("Cortex Year-End", format="%d"),
-            "Annual Target":
-                st.column_config.NumberColumn("Annual Target", format="%d"),
-            "Gap (Cortex)":
-                st.column_config.NumberColumn("Gap (Cortex)", format="%+d"),
-        },
-    )
-
-# ══════════════════════════════════════════════════════════════════════
-# TAB 2 — Close Time
-# ══════════════════════════════════════════════════════════════════════
 with tab2:
-    st.caption(
-        "Average days from contract to close, per region. Longer close times "
-        "signal buyer financing stress or operational friction. "
-        "Coastal Bend excluded — insufficient monthly volume for a reliable "
-        "close-time forecast (avg 3.7 closings/month produces zero-width "
-        "confidence intervals)."
-    )
-
-    close_hist = hist_df[hist_df["avg_days_to_close"].notna()].copy()
-    close_fore = fore_df[
-        (fore_df["metric"] == "days_to_close") &
-        (fore_df["region"] != "Coastal Bend")
-    ].copy()
-    close_fore["forecast_month"] = pd.to_datetime(close_fore["forecast_month"])
-
     fig2 = go.Figure()
     for region in ["Rio Grande Valley", "South Texas"]:
         color = REGION_COLOR.get(region, GRAY)
-        fill  = REGION_FILL.get(region, "rgba(142,142,147,0.15)")
-        h = close_hist[close_hist["region"] == region].sort_values("month_start")
-        f = close_fore[close_fore["region"] == region].sort_values("forecast_month")
-
+        h = hist_df[hist_df["region"] == region].sort_values("month_start")
         fig2.add_trace(go.Scatter(
-            name=f"{region} (actual)",
+            name=region,
             x=h["month_start"], y=h["avg_days_to_close"],
             mode="lines+markers",
             line=dict(color=color, width=2),
             marker=dict(size=5),
         ))
-        if not f.empty:
-            _add_conf_band(fig2, f["forecast_month"],
-                           f["upper_bound"], f["lower_bound"], fill)
-            fig2.add_trace(go.Scatter(
-                name=f"{region} (forecast)",
-                x=f["forecast_month"], y=f["forecast"],
-                mode="lines+markers",
-                line=dict(dash="dash", color=color, width=2),
-                marker=dict(symbol="diamond", size=7),
-            ))
-
-    fig2.add_vline(
-        x=FORECAST_START_MS,
-        line_dash="dot", line_color=GRAY,
-        annotation_text="Forecast →",
-        annotation_position="top right",
-        annotation_font_size=11,
-        annotation_font_color=TEXT_MUTED,
-    )
     fig2.update_layout(
         plot_bgcolor="#ffffff", paper_bgcolor="#ffffff",
         font=dict(family="sans-serif", color=TEXT),
         legend=dict(orientation="h", yanchor="bottom", y=1.02,
                     xanchor="left", x=0),
         xaxis=dict(title=None, gridcolor="#e8e8e8"),
-        yaxis=dict(title="Avg days to close", range=[80, 180],
-                   gridcolor="#e8e8e8"),
+        yaxis=dict(title="Avg days to close", gridcolor="#e8e8e8"),
         margin=dict(t=80, b=20, l=10, r=10),
         height=380,
     )
     st.plotly_chart(fig2, use_container_width=True)
-
-    for region in ["Rio Grande Valley", "South Texas"]:
-        h = close_hist[close_hist["region"] == region].sort_values("month_start")
-        f = close_fore[close_fore["region"] == region].sort_values("forecast_month")
-        if h.empty or f.empty:
-            continue
-        oct_row = f[f["forecast_month"] == f["forecast_month"].min()]
-        if oct_row.empty:
-            continue
-        recent_avg   = float(
-            h[h["month_start"].dt.year == 2024]["avg_days_to_close"].mean()
-        )
-        forecast_oct = float(oct_row.iloc[0]["forecast"])
-        delta        = forecast_oct - recent_avg
-        if delta < -3:
-            direction_text = f"improved by {abs(delta):.0f} days"
-        elif delta > 3:
-            direction_text = f"worsened by {abs(delta):.0f} days"
-        else:
-            direction_text = "remained stable"
-        st.info(
-            f"**{region}** close times have {direction_text} — Cortex projects "
-            f"approximately {forecast_oct:.0f} days in Oct 2024, compared to a "
-            f"2024 average of {recent_avg:.0f} days."
-        )
+    st.caption("Coastal Bend excluded — insufficient monthly volume for reliable trend.")

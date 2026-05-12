@@ -46,5 +46,4 @@ st.markdown("""
 - **Forecast** — Snowflake Cortex FORECAST projection of monthly contract volume through year-end.
 - **Channel Economics** — Acquisition channel cost (commission rate) vs. quality (cancel rate).
 - **Consultants** — Individual performance leaderboard with year-over-year deltas.
-- **Ask a Question** — Natural-language queries answered by Claude using pre-computed context.
 """)

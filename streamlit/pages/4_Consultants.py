@@ -197,7 +197,7 @@ selected = st.selectbox(
 filtered = region_df[region_df["sales_consultant"] == selected].copy()
 if not filtered.empty:
     filtered["cancel_pct"]  = (filtered["cancel_rate"] * 100).round(1)
-    filtered["revenue_M"]   = (filtered["total_contract_value"] / 1e6).round(2)
+    filtered["revenue_M"]   = (filtered["total_contract_value"].astype(float) / 1e6).round(2)
     st.dataframe(
         filtered[["region", "contracts", "closed_contracts",
                   "cancel_pct", "avg_days_to_close", "revenue_M"]],
