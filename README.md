@@ -78,7 +78,7 @@ flowchart LR
 ## Stack
 
 | Layer | Technology |
-|---|---|
+| --- | --- |
 | Ingestion | Python 3.12, pandas, SQLAlchemy |
 | Warehouse | PostgreSQL 16 (self-hosted) |
 | Transformation | dbt Core 1.x — 11 models, 168 tests |
@@ -92,11 +92,11 @@ flowchart LR
 
 ## Pipeline: End to End
 
-**1. Ingestion**
+### 1. Ingestion
 
 `ingestion/load_raw.py` reads the CSV and XLSX source files with pandas, lowercases column names, and writes them to the `raw` schema in PostgreSQL via SQLAlchemy. The table is replaced on every run — the raw layer is not append-only.
 
-**2. dbt Transformation**
+### 2. dbt Transformation
 
 dbt runs three steps in sequence:
 
@@ -107,20 +107,20 @@ dbt runs three steps in sequence:
   - **Aggregate marts (tables):** `mart_region_month`, `mart_region_year`, `mart_consultant_performance`, `mart_consultant_region`, `mart_channel_economics` — pre-aggregated for dashboard queries
 - `dbt test` — runs 168 tests covering not-null, unique, accepted-value, and referential integrity constraints
 
-**3. Orchestration**
+### 3. Orchestration
 
 A GitHub Actions workflow (`.github/workflows/dbt_run.yml`) triggers on every push to `main` and on a daily cron at 06:00 UTC. It installs `cloudflared`, opens an SSH tunnel to the Pi through the Cloudflare network, and runs the full pipeline remotely — no inbound ports required.
 
-**4. Forecasting**
+### 4. Forecasting
 
 The Forecast page fits a linear regression (scikit-learn) on monthly closing history per region and projects forward with 90% confidence intervals. This replaced an earlier Snowflake Cortex ML integration after the infrastructure moved to self-hosted PostgreSQL.
 
-**5. Visualization**
+### 5. Visualization
 
 Streamlit reads from the analytics marts via a PostgreSQL connection utility (`streamlit/utils/postgres.py`). The app runs in a Docker container on the Pi, served over HTTPS through the Cloudflare Tunnel.
 
 | Page | Content |
-|---|---|
+| --- | --- |
 | Home | KPI summary cards |
 | Region Overview | Monthly closings, YoY comparison by region |
 | Forecast | Projected closings through end of year |
@@ -131,7 +131,7 @@ Streamlit reads from the analytics marts via a PostgreSQL connection utility (`s
 
 ## Project Structure
 
-```
+```text
 rhodes/
 ├── .github/workflows/    # GitHub Actions CI/CD
 ├── dbt/
@@ -160,20 +160,20 @@ rhodes/
 
 **Prerequisites:** Python 3.12+, PostgreSQL, dbt Core
 
-**1. Clone and install dependencies**
+### 1. Clone and install dependencies
 
 ```bash
 git clone https://github.com/jaimemeza/rhodes.git
 cd rhodes
 ```
 
-**2. Start PostgreSQL and create the database**
+### 2. Start PostgreSQL and create the database
 
 ```bash
 createdb rhodes_homes
 ```
 
-**3. Run ingestion**
+### 3. Run ingestion
 
 ```bash
 cd ingestion
@@ -181,7 +181,7 @@ pip install -r requirements.txt
 DATABASE_URL="postgresql://<user>:<pass>@localhost:5432/rhodes_homes" python load_raw.py
 ```
 
-**4. Configure dbt**
+### 4. Configure dbt
 
 Create `dbt/profiles.yml` (not committed):
 
@@ -199,7 +199,7 @@ rhodes_analytics:
       schema: analytics
 ```
 
-**5. Run dbt**
+### 5. Run dbt
 
 ```bash
 cd dbt
@@ -209,7 +209,7 @@ dbt run
 dbt test
 ```
 
-**6. Run Streamlit**
+### 6. Run Streamlit
 
 ```bash
 cd streamlit
