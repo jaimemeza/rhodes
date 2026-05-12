@@ -31,8 +31,10 @@ jobs:
           EOF
 
       - name: Run pipeline on Atlas
+        env:
+          RHODES_DB_PASSWORD: ${{ secrets.RHODES_DB_PASSWORD }}
         run: |
-          ssh ${{ secrets.SSH_HOST }} << 'ENDSSH'
+          ssh ${{ secrets.SSH_HOST }} "bash -s" << ENDSSH
             set -e
             cd ~/projects/rhodes-homes
 
@@ -43,13 +45,11 @@ jobs:
             source venv/bin/activate
 
             echo "💾 Running ingestion..."
-            export $(cat .env | xargs)
             DATABASE_URL="postgresql://flux:${RHODES_DB_PASSWORD}@localhost:5432/rhodes_homes" \
             python ingestion/load_raw.py
 
             echo "🔧 Running dbt..."
             cd dbt
-            dbt seed
             dbt run
             dbt test
 
