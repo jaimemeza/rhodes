@@ -43,6 +43,7 @@ jobs:
             source venv/bin/activate
 
             echo "💾 Running ingestion..."
+            export $(cat .env | xargs)
             DATABASE_URL="postgresql://flux:${RHODES_DB_PASSWORD}@localhost:5432/rhodes_homes" \
             python ingestion/load_raw.py
 
