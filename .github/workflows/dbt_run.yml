@@ -32,9 +32,9 @@ jobs:
 
       - name: Run pipeline on Atlas
         run: |
-          ssh ${{ secrets.SSH_HOST }} "bash -s" << ENDSSH
+          ssh -o SendEnv=RHODES_DB_PASSWORD \
+              ${{ secrets.SSH_HOST }} "bash -s" << 'ENDSSH'
             set -e
-            export RHODES_DB_PASSWORD="${{ secrets.RHODES_DB_PASSWORD }}"
             cd ~/projects/rhodes-homes
 
             echo "📦 Pulling latest code..."
@@ -48,7 +48,6 @@ jobs:
             python ingestion/load_raw.py
 
             echo "🔧 Running dbt..."
-            export RHODES_DB_PASSWORD="${RHODES_DB_PASSWORD}"
             cd dbt
             dbt seed
             dbt run
@@ -56,3 +55,5 @@ jobs:
 
             echo "✅ Pipeline complete"
           ENDSSH
+        env:
+          RHODES_DB_PASSWORD: ${{ secrets.RHODES_DB_PASSWORD }}
